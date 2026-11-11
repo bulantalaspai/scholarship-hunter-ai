@@ -1,11 +1,14 @@
-"""Phase 1 API: application startup and a typed health check."""
+"""Application startup, local catalogue, and the original typed health check."""
 
+from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Literal
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-app = FastAPI(title="Scholarship Hunter AI", version="0.1.0")
+from backend.app.database import create_database_engine, initialize_database
+from backend.app.scholarships import router
 
 
 class HealthResponse(BaseModel):
@@ -13,7 +16,30 @@ class HealthResponse(BaseModel):
     service: Literal["scholarship-hunter-ai"]
 
 
-@app.get("/api/health", response_model=HealthResponse, tags=["Health"])
 def health() -> HealthResponse:
-    """Report API availability; no database or model is required in Phase 1."""
+    """Report API availability without invoking a model or querying the catalogue."""
     return HealthResponse(status="ok", service="scholarship-hunter-ai")
+
+
+def create_app(database_path: str | Path | None = None) -> FastAPI:
+    @asynccontextmanager
+    async def lifespan(application: FastAPI):
+        engine = create_database_engine(database_path)
+        try:
+            initialize_database(engine)
+            application.state.database_engine = engine
+            yield
+        finally:
+            engine.dispose()
+
+    application = FastAPI(
+        title="Scholarship Hunter AI", version="0.2.0", lifespan=lifespan
+    )
+    application.add_api_route(
+        "/api/health", health, response_model=HealthResponse, tags=["Health"]
+    )
+    application.include_router(router)
+    return application
+
+
+app = create_app()
