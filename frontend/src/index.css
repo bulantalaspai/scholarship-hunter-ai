@@ -1,0 +1,92 @@
+:root {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  color: #193b55;
+  background: #edf4fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.65;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button { font: inherit; }
+
+.page {
+  width: min(1100px, 100%);
+  margin-inline: auto;
+  padding: 40px clamp(24px, 5vw, 64px);
+}
+
+.page-header { display: flex; align-items: center; gap: 16px; }
+.page-header p { font-size: 0.9rem; color: #456174; }
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50% 50% 8px 50%;
+  background: #193b55;
+  color: #fff;
+  font-family: Georgia, serif;
+  font-weight: bold;
+}
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 64px;
+  padding-block: clamp(48px, 10vh, 112px);
+}
+
+h1 { font-size: 1.2rem; font-weight: 650; margin: 0 0 20px; }
+.lead {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  margin: 0 0 28px;
+}
+.introduction > p:not(.lead) { max-width: 58ch; }
+.scope-note { color: #456174; font-size: 0.9rem; margin-top: 24px; }
+.connection-panel {
+  background: #fff;
+  border: 1px solid #aec6d7;
+  border-top: 4px solid #215f68;
+  border-radius: 4px;
+  padding: 28px;
+}
+h2 { margin: 0 0 20px; font-size: 1.2rem; }
+.connection-status { margin: 0 0 24px; min-height: 5em; }
+.status-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #456174;
+}
+[data-state='connected'] .status-dot { background: #215f68; }
+[data-state='error'] .status-dot { background: #a13232; }
+button {
+  padding: 10px 20px;
+  border: 2px solid #193b55;
+  border-radius: 4px;
+  background: #193b55;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 44px;
+}
+button:hover:enabled { background: #215f68; border-color: #215f68; }
+button:disabled { cursor: wait; opacity: 0.7; }
+button:focus-visible { outline: 3px solid #215f68; outline-offset: 4px; }
+footer { font-size: 0.85rem; color: #456174; border-top: 1px solid #aec6d7; padding-top: 24px; }
+
+@media (max-width: 760px) {
+  main { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-block: 40px; }
+  .page { padding-block: 24px; }
+  .connection-status { min-height: auto; }
+}

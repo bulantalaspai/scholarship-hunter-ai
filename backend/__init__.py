@@ -1,0 +1,1 @@
+"""Scholarship Hunter AI backend."""
