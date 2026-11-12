@@ -33,6 +33,9 @@ def create_database_engine(database_path: str | Path | None = None) -> Engine:
 
     @event.listens_for(engine, "connect")
     def register_casefold(connection: Connection, _connection_record: object) -> None:
+        connection.autocommit = True
+        connection.execute("PRAGMA foreign_keys=ON")
+        connection.autocommit = False
         connection.create_function(
             "casefold",
             1,

@@ -2,7 +2,7 @@
 
 from datetime import date
 
-from sqlalchemy import JSON, CheckConstraint, Date, Float, String, Text
+from sqlalchemy import JSON, CheckConstraint, Date, Float, ForeignKey, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -80,3 +80,15 @@ class Scholarship(Base):
     last_verified_at: Mapped[date] = mapped_column(Date)
     additional_requirements: Mapped[str | None] = mapped_column(Text)
     notes: Mapped[str | None] = mapped_column(Text)
+
+
+class ScholarshipEligibilityPolicy(Base):
+    """Additive table; existing Phase 2 databases need no column migration."""
+
+    __tablename__ = "scholarship_eligibility_policies"
+
+    identity_key: Mapped[str] = mapped_column(
+        ForeignKey("scholarships.identity_key", ondelete="CASCADE"), primary_key=True
+    )
+    catalogue_fingerprint: Mapped[str] = mapped_column(String(64))
+    rules: Mapped[dict] = mapped_column(JSON)

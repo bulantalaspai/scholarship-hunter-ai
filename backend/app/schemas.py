@@ -17,6 +17,8 @@ from pydantic import (
     model_validator,
 )
 
+from backend.app.eligibility_rules import EligibilityRules
+
 ShortText = Annotated[
     str, StringConstraints(strip_whitespace=True, min_length=1, max_length=300)
 ]
@@ -156,6 +158,40 @@ class ScholarshipRead(ScholarshipInput):
     id: int = Field(gt=0)
 
 
+class CatalogueRecord(ScholarshipInput):
+    eligibility_rules: EligibilityRules | None = None
+
+    @model_validator(mode="after")
+    def consistent_rules(self) -> Self:
+        rules = self.eligibility_rules
+        if rules is None:
+            return self
+        if rules.verified_at < self.last_verified_at:
+            raise ValueError("Rules must be reviewed on or after the catalogue facts")
+        if rules.nationality_scope == "listed_only" and not self.eligible_nationalities:
+            raise ValueError("Listed-only nationality rules require a documented list")
+        if rules.field_scope == "listed_only" and not self.eligible_study_fields:
+            raise ValueError("Listed-only field rules require a documented list")
+        if rules.gpa_requirement == "minimum" and self.minimum_gpa is None:
+            raise ValueError("Minimum GPA rule requires a documented threshold")
+        if rules.gpa_requirement == "none" and self.minimum_gpa is not None:
+            raise ValueError(
+                "No-minimum GPA rule conflicts with the catalogue threshold"
+            )
+        if rules.language_requirement == "ielts_only" and self.minimum_ielts is None:
+            raise ValueError("IELTS-only rule requires a documented threshold")
+        if rules.language_requirement == "none" and (
+            self.minimum_ielts is not None or rules.minimum_ielts_component is not None
+        ):
+            raise ValueError("Language waiver conflicts with IELTS thresholds")
+        return self
+
+    def database_values(self) -> dict:
+        values = super().database_values()
+        values.pop("eligibility_rules", None)
+        return values
+
+
 class ScholarshipPage(BaseModel):
     items: list[ScholarshipRead]
     total: int
@@ -178,7 +214,7 @@ class CatalogueImport(BaseModel):
 
     schema_version: Literal[1]
     data_kind: Literal["curated", "fictional_demo"]
-    scholarships: list[ScholarshipInput] = Field(max_length=10_000)
+    scholarships: list[CatalogueRecord] = Field(max_length=10_000)
 
 
 class ImportResult(BaseModel):
