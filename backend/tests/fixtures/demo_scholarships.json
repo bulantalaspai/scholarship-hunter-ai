@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "data_kind": "fictional_demo",
+  "scholarships": [
+    {
+      "scholarship_name": "Fictional Demo Engineering Award",
+      "university_or_provider": "Fictional Demo University",
+      "destination_country": ["Germany", "Finland"],
+      "degree_level": "master",
+      "eligible_study_fields": ["Computer Science", "Electrical Engineering"],
+      "eligible_nationalities": ["Kazakhstan"],
+      "minimum_gpa": 3.0,
+      "gpa_scale": 4.0,
+      "minimum_ielts": 6.5,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "Fictional test tuition coverage, not a real offer.",
+      "living_stipend": "Fictional test stipend, not a real offer.",
+      "application_deadline": "2027-01-01",
+      "application_cycle": "2027-2028",
+      "official_source_url": "https://example.org/fictional-engineering",
+      "last_verified_at": "2026-01-01",
+      "notes": "Entirely fictional fixture used only in isolated tests."
+    },
+    {
+      "scholarship_name": "Fictional Demo Arts Grant",
+      "university_or_provider": "Fictional Demo Institute",
+      "destination_country": "France",
+      "eligible_study_fields": ["Économie", "Arts"],
+      "funding_type": "partially_funded",
+      "tuition_coverage": "Fictional partial support.",
+      "official_source_url": "https://example.org/fictional-arts",
+      "last_verified_at": "2026-01-01",
+      "notes": "Entirely fictional fixture used only in isolated tests."
+    },
+    {
+      "scholarship_name": "Fictional Demo Unknown Requirements Award",
+      "university_or_provider": "Fictional Demo Provider",
+      "official_source_url": "https://example.org/fictional-unknown",
+      "last_verified_at": "2026-01-01",
+      "notes": "Entirely fictional fixture. Omitted requirements are unknown, not waived."
+    }
+  ]
+}

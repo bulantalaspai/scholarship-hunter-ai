@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "data_kind": "curated",
+  "scholarships": [
+    {
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "university_or_provider": "DAAD",
+      "destination_country": ["Germany"],
+      "degree_level": "master",
+      "eligible_study_fields": null,
+      "eligible_nationalities": null,
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "partially_funded",
+      "tuition_coverage": "Tuition fees are not covered by DAAD.",
+      "living_stipend": "EUR 992 monthly.",
+      "application_deadline": null,
+      "application_cycle": "Funding starts in 2027",
+      "official_source_url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200",
+      "last_verified_at": "2026-11-11",
+      "additional_requirements": "Complete a first university degree before funding starts; obtain admission and evidence of proficiency in the course language.",
+      "notes": "Nationality-specific eligibility and deadlines need separate verification. Artistic disciplines and architecture have separate schemes. No universal GPA or IELTS threshold was verified. This general programme record does not establish eligibility for Kazakhstan applicants."
+    },
+    {
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "university_or_provider": "SMACCs consortium",
+      "destination_country": ["Belgium", "Greece", "Spain", "Finland"],
+      "degree_level": "master",
+      "eligible_study_fields": ["Engineering", "Physics", "Chemistry", "Mathematics", "Computer Science"],
+      "eligible_nationalities": ["Worldwide"],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "EMJM scholarship recipients are exempt from tuition fees.",
+      "living_stipend": "EUR 1400 monthly for up to 24 months, contributing to travel, visa, installation and subsistence.",
+      "application_deadline": "2027-02-01",
+      "application_cycle": "2027-2029",
+      "official_source_url": "https://www.smaccs.eu/practical/scholarships/",
+      "last_verified_at": "2026-11-11",
+      "additional_requirements": "Engineering/science bachelor's background; some other degrees considered individually. IELTS route requires 6.5 overall and 5.5 per element; alternatives and exemptions exist. Prior EMJM recipients cannot receive another EMJM award. Selection depends on competition, mobility paths and funds.",
+      "notes": "International mobility is compulsory. IELTS is one evidence route, not universally mandatory. Scholarship deadline for the 2027-2029 edition: https://www.smaccs.eu/admissions/deadlines/ . Admission conditions: https://www.smaccs.eu/admissions/admission-criteria/ . Destinations: https://www.smaccs.eu/ . The homepage's 2026 closure notice concerns an older edition; current application opening status was not independently established."
+    }
+  ]
+}
