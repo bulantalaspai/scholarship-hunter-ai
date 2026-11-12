@@ -1,0 +1,812 @@
+{
+  "schema_version": 1,
+  "judgments": [
+    {
+      "profile_id": "P01",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P01",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P01",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P01",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P02",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P02",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P02",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P02",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P03",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P03",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P03",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P03",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P04",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P04",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P04",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P04",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P05",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P05",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P05",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P05",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P06",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P06",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P06",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P06",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P07",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P07",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P07",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P07",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P08",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P08",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P08",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P08",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P09",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P09",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P09",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P09",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P10",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P10",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P10",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P10",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P11",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P11",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P11",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P11",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P12",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P12",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P12",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P12",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P13",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P13",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P13",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P13",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P14",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P14",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P14",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P14",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P15",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P15",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P15",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P15",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P16",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P16",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P16",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P16",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P17",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P17",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P17",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P17",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P18",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P18",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P18",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P18",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P19",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P19",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P19",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P19",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    },
+    {
+      "profile_id": "P20",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "profile_id": "P20",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-HUNGARY-CLOSED.",
+      "source_urls": [
+        "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/"
+      ]
+    },
+    {
+      "profile_id": "P20",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "relevant": false,
+      "rationale": "E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "profile_id": "P20",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "unresolved",
+      "relevant": null,
+      "rationale": "E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ]
+    }
+  ],
+  "limitations": [
+    "Positive relevance requires source-backed confirmation of applicant eligibility and suitability. No such complete positive judgment is available.",
+    "The 80 judgments cover four programme families across the same 20 synthetic profiles. Other programme/profile pairs are unjudged.",
+    "Verified negative judgments cover expired calls or documented funding-preference conflicts. They do not establish admission rejection.",
+    "Precision@3 remains NOT EVALUABLE because there are no verified positive matches and no profile with three independently verified relevant opportunities.",
+    "Annotations were authored by an AI research assistant through official-source inspection, independently of engine outputs. Team review is pending."
+  ]
+}

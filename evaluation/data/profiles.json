@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "profiles": [
+    {
+      "id": "P01",
+      "description": "Completed computing bachelor's with a four-point GPA and IELTS evidence.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Computer Science",
+        "gpa": 3.8,
+        "gpa_scale": 4,
+        "ielts_overall": 7.5,
+        "intended_start_year": 2027,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P02",
+      "description": "Final-year AI student with no IELTS result supplied.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": false,
+        "field_of_study": "Artificial Intelligence",
+        "gpa": 3.4,
+        "gpa_scale": 4,
+        "ielts_overall": null,
+        "intended_start_year": 2027,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P03",
+      "description": "Completed data science bachelor's with a percentage GPA.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Data Science",
+        "gpa": 85,
+        "gpa_scale": 100,
+        "ielts_overall": 6.5,
+        "intended_start_year": 2027,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P04",
+      "description": "Software engineering degree completion and GPA remain unspecified.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": null,
+        "field_of_study": "Software Engineering",
+        "gpa": null,
+        "gpa_scale": null,
+        "ielts_overall": 5,
+        "intended_start_year": 2027,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P05",
+      "description": "Electrical engineering graduate using a five-point GPA scale.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Electrical Engineering",
+        "gpa": 4.3,
+        "gpa_scale": 5,
+        "ielts_overall": 7,
+        "intended_start_year": 2028,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P06",
+      "description": "Mechanical engineering student with an unfinished bachelor's.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": false,
+        "field_of_study": "Mechanical Engineering",
+        "gpa": 3.2,
+        "gpa_scale": 4,
+        "ielts_overall": 6,
+        "intended_start_year": 2027,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P07",
+      "description": "Physics master's graduate seeking another master's.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "master",
+        "degree_completed": true,
+        "field_of_study": "Physics",
+        "gpa": 4.7,
+        "gpa_scale": 5,
+        "ielts_overall": 8,
+        "intended_start_year": 2027,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P08",
+      "description": "Mathematics graduate using a ten-point GPA scale and no IELTS evidence.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Mathematics",
+        "gpa": 9,
+        "gpa_scale": 10,
+        "ielts_overall": null,
+        "intended_start_year": 2027,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P09",
+      "description": "Chemistry graduate with GPA 2.4/4 and IELTS overall 4.5.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Chemistry",
+        "gpa": 2.4,
+        "gpa_scale": 4,
+        "ielts_overall": 4.5,
+        "intended_start_year": 2027,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P10",
+      "description": "Environmental engineering profile requests a 2026 start.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": null,
+        "field_of_study": "Environmental Engineering",
+        "gpa": 90,
+        "gpa_scale": 100,
+        "ielts_overall": 7.5,
+        "intended_start_year": 2026,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P11",
+      "description": "Robotics graduate requests a 2028 start.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Robotics",
+        "gpa": 3,
+        "gpa_scale": 4,
+        "ielts_overall": 6.5,
+        "intended_start_year": 2028,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P12",
+      "description": "Cybersecurity student has no GPA or IELTS evidence supplied.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": false,
+        "field_of_study": "Cybersecurity",
+        "gpa": null,
+        "gpa_scale": null,
+        "ielts_overall": null,
+        "intended_start_year": 2027,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P13",
+      "description": "Business master's graduate requests full funding.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "master",
+        "degree_completed": true,
+        "field_of_study": "Business",
+        "gpa": 3.6,
+        "gpa_scale": 4,
+        "ielts_overall": 7,
+        "intended_start_year": 2027,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P14",
+      "description": "Arts bachelor's graduate with IELTS 8.5.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Arts",
+        "gpa": 4.8,
+        "gpa_scale": 5,
+        "ielts_overall": 8.5,
+        "intended_start_year": 2027,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P15",
+      "description": "Computer science interest with current or completed degree level high school.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "high_school",
+        "degree_completed": true,
+        "field_of_study": "Computer Science",
+        "gpa": 4.7,
+        "gpa_scale": 5,
+        "ielts_overall": 6.5,
+        "intended_start_year": 2027,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P16",
+      "description": "Engineering profile supplies an associate qualification.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "associate",
+        "degree_completed": true,
+        "field_of_study": "Engineering",
+        "gpa": 3.2,
+        "gpa_scale": 4,
+        "ielts_overall": 6.5,
+        "intended_start_year": 2027,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P17",
+      "description": "Uzbekistan computing graduate provides a five-point GPA.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Uzbekistan",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Computer Science",
+        "gpa": 4.5,
+        "gpa_scale": 5,
+        "ielts_overall": 7,
+        "intended_start_year": 2027,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P18",
+      "description": "India data science graduate provides a ten-point GPA.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "India",
+        "degree_level": "bachelor",
+        "degree_completed": true,
+        "field_of_study": "Data Science",
+        "gpa": 8.5,
+        "gpa_scale": 10,
+        "ielts_overall": 7,
+        "intended_start_year": 2027,
+        "funding_preference": "fully_funded"
+      }
+    },
+    {
+      "id": "P19",
+      "description": "Biomedical engineering doctorate holder requests a 2029 start.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "doctorate",
+        "degree_completed": true,
+        "field_of_study": "Biomedical Engineering",
+        "gpa": null,
+        "gpa_scale": null,
+        "ielts_overall": 9,
+        "intended_start_year": 2029,
+        "funding_preference": "any_funding"
+      }
+    },
+    {
+      "id": "P20",
+      "description": "Other qualification with unspecified completion requests the past year 2025.",
+      "goal": "Find master's scholarship candidates for my profile and explain missing evidence.",
+      "profile": {
+        "nationality": "Kazakhstan",
+        "degree_level": "other",
+        "degree_completed": null,
+        "field_of_study": "Engineering",
+        "gpa": 3,
+        "gpa_scale": 4,
+        "ielts_overall": null,
+        "intended_start_year": 2025,
+        "funding_preference": "fully_funded"
+      }
+    }
+  ]
+}

@@ -50,6 +50,10 @@ class AgentResponse(BaseModel):
     steps: int = Field(ge=0, le=MAX_STEPS)
     tool_calls: int = Field(ge=0, le=MAX_TOOL_CALLS)
     recommendations: list[RankedProgramme] = Field(max_length=MAX_IDS)
+    fallback_recommendations: list[RankedProgramme] = Field(
+        default_factory=list, max_length=MAX_IDS
+    )
+    fallback_reason: str | None = None
     message: str
     warnings: list[str]
     tool_trace: list[ToolTrace] = Field(max_length=MAX_TOOL_CALLS)

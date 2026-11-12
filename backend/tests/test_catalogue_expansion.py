@@ -215,7 +215,13 @@ def test_agent_search_check_and_rank_use_expanded_database(engine, curated):
             if self.round == 1:
                 functions = [("search_scholarships", {})]
             elif self.round == 2:
-                search = json.loads(messages[-1]["content"])
+                search = json.loads(
+                    next(
+                        message["content"]
+                        for message in messages
+                        if message.get("tool_name") == "search_scholarships"
+                    )
+                )
                 assert search["total"] == len(curated.scholarships)
                 assert len(search["candidates"]) <= 3
                 functions = [

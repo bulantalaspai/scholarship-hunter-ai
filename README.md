@@ -3,7 +3,7 @@
 A course project for students from Kazakhstan seeking fully funded master's
 scholarships abroad. See [PROPOSAL.md](PROPOSAL.md) for the planned application.
 
-## Current scope: Phase 6A
+## Current scope: Phase 6B
 
 The React/TypeScript application now supports scholarship discovery, details,
 student profiles, eligibility results, and grouped matches. The original
@@ -19,6 +19,10 @@ eligibility verification.
 An optional, model-directed local Ollama agent now selects candidates through
 four validated tools. Existing catalogue, eligibility, ranking and health APIs
 work independently of Ollama. Applicant accounts remain outside the scope.
+Phase 6B adds synthetic evaluation data, reproducible baseline and real-model
+experiments, and deterministic candidates when a model run has no validated
+selection. Measured results and annotation limits are documented in
+[the evaluation report](docs/EVALUATION_REPORT.md).
 No database server, paid API, cloud account,
 credentials, or personal student data is required. All application data stays
 in a local SQLite file. Development servers bind to `127.0.0.1` only.
@@ -496,12 +500,22 @@ Invoke-RestMethod http://127.0.0.1:8000/api/agent/recommend -Method Post -Conten
 
 The typed response contains `status`, `model`, `evaluated_on`, `steps`,
 `tool_calls`, `recommendations`, `message`, `warnings`, `tool_trace` and
-`disclaimer`. Each recommendation is the existing `RankedProgramme` contract:
-a full deterministic `assessment` and `ranking_reasons`, including official
+`disclaimer`, plus `fallback_recommendations` and `fallback_reason`.
+Each recommendation uses the existing `RankedProgramme` contract with a full
+deterministic `assessment` and `ranking_reasons`, including official
 source links, catalogue/rule review dates, unknowns and individual checks.
 Statuses are `completed`, `needs_verification`, `no_matches` or `limit_reached`.
 The overall agent status does not replace individual eligibility classifications;
 confirmed failures still take precedence over unknown requirements.
+
+When a completed model run has no grounded selection or reaches its budget,
+the server can reassess its retrieved records and return up to three
+`needs_verification` candidates in `fallback_recommendations`. The UI labels
+these **Deterministic candidates to verify** and shows the reason, rule checks,
+official links and dates. The model's status, recommendations and attempted-tool
+trace retain their original values. Fallback assessment preserves the IDs
+previously assessed by model-requested tools. Ollama transport/protocol errors use
+the documented HTTP error responses and the ordinary matches link.
 
 Trace entries expose validated tool arguments, a safe summary and outcome;
 successful page reads also include their source and retrieval timestamp.
@@ -534,8 +548,8 @@ retrieve/check/rank sequence or automatic fallback pretending to be AI.
 - `rank_scholarships(scholarship_ids)`: the existing ranking service, at most
   three discovered IDs, with eligibility classifications preserved.
 
-Every argument and service result is validated. Only IDs discovered and assessed
-through model-requested tools can appear in a final response. The model selects
+Every argument and service result is validated. Model-selected recommendations
+require IDs discovered and assessed through model-requested tools. The model selects
 IDs only; server services attach all facts and determine the displayed order.
 Model-written claims, invented IDs and attempted classification/profile overrides
 are rejected. Web excerpts are explicitly untrusted; they cannot update catalogue
@@ -548,7 +562,8 @@ attempts count), **90 seconds overall**, **45 seconds per model call**, and
 to 3,200 UTF-8 bytes; page text is further reduced to 600 characters. A conservative
 input-size heuristic stops oversized conversations before inference; reported
 Ollama prompt-token counts are checked too. The heuristic is not a tokenizer.
-Budget exhaustion returns an explicit limitation with no invented fallback.
+Budget exhaustion returns an explicit model status. A separately labeled
+deterministic fallback can accompany that response using retrieved records.
 
 The 4B model may choose poor filters or miss candidates. This is a small curated
 catalogue assistant, not an exhaustive scholarship search or a new eligibility
@@ -574,6 +589,47 @@ the application database or pulls a model. Exit codes: 0 for a completed respons
 See [the recorded Phase 5 live example](docs/AGENT_SMOKE.md) for measured behavior
 against the original two-record catalogue. The expanded catalogue can produce
 different candidates and model-selected plans; normal limits still apply.
+
+## Academic evaluation
+
+[Evaluation data](evaluation/data/README.md) defines 20 synthetic profiles,
+60 eligibility cases, 80 relevance judgments and 12 short official-source
+extraction examples. Source-backed negative labels, provisional expectations
+and unresolved judgments carry explicit statuses. Team adjudication is pending.
+
+Run the deterministic baseline locally from the repository root:
+
+```powershell
+.\.venv\Scripts\python.exe -m backend.evaluation.run --output "$env:TEMP\scholarship-baseline-evaluation.json"
+```
+
+Run the installed local model on all 20 recommendation requests, 60 case-specific
+audits and 12 extraction examples:
+
+```powershell
+.\.venv\Scripts\python.exe -m backend.evaluation.run --real-model --output "$env:TEMP\scholarship-evaluation.json"
+```
+
+Continue an interrupted run with the same output path:
+
+```powershell
+.\.venv\Scripts\python.exe -m backend.evaluation.run --real-model --resume --output "$env:TEMP\scholarship-evaluation.json"
+```
+
+The runner uses temporary SQLite data and records an atomic checkpoint after each
+request. Resume verifies normalized input and implementation hashes, the fixed
+assessment date, Ollama version and model digest. The JSON contains per-profile
+results, case verdicts, model-round diagnostics, tool traces, timings and explicit
+metric denominators. The extraction task is an evaluation-only excerpt probe.
+Its annotations are excluded from model input.
+
+The recorded experiment and its error analysis appear in
+[EVALUATION_REPORT.md](docs/EVALUATION_REPORT.md). Accuracy on source-backed
+negative cases, draft-label agreement, source-excerpt extraction scores, reference
+presence and audited source support have defined sample scopes. Proposal-level
+targets remain **NOT EVALUABLE** where gold classes, independently verified
+positive relevance or complete claim audits are missing. Ordinary test commands
+below use mocked inference and source transport.
 
 ## Tests and checks
 

@@ -131,7 +131,9 @@ class AgentTools:
         self.assessed: dict[int, RankedProgramme] = {}
         self.pages: dict[str, OfficialPage] = {}
 
-    def _rank(self, ids: list[int]) -> list[RankedProgramme]:
+    def _rank(
+        self, ids: list[int], *, record_assessment: bool = True
+    ) -> list[RankedProgramme]:
         candidates = [
             (
                 self.discovered[identifier],
@@ -146,9 +148,10 @@ class AgentTools:
         validated = [
             RankedProgramme.model_validate(item.model_dump()) for item in ranked
         ]
-        self.assessed.update(
-            {item.assessment.scholarship_id: item for item in validated}
-        )
+        if record_assessment:
+            self.assessed.update(
+                {item.assessment.scholarship_id: item for item in validated}
+            )
         return validated
 
     @staticmethod
@@ -253,7 +256,16 @@ class AgentTools:
                 ranked = self._rank(args.scholarship_ids)
                 output = ToolOutput(
                     data={
-                        "ranked": [self._compact(item.assessment) for item in ranked]
+                        # Sources/dates already appeared in the search results.
+                        # Public assessments retain the full evidence metadata.
+                        "ranked": [
+                            {
+                                key: value
+                                for key, value in self._compact(item.assessment).items()
+                                if key not in {"source", "verified"}
+                            }
+                            for item in ranked
+                        ]
                     },
                     summary=(
                         f"Ranked {len(ranked)} candidates without changing eligibility."
@@ -305,3 +317,13 @@ class AgentTools:
         if any(identifier not in self.assessed for identifier in ids):
             raise ValueError("Final IDs must have a validated tool assessment")
         return self._rank(ids) if ids else []
+
+    def fallback_recommendations(self) -> list[RankedProgramme]:
+        """Reassess retrieved candidates and retain unresolved classifications."""
+        if not self.discovered:
+            return []
+        return [
+            item
+            for item in self._rank(list(self.discovered), record_assessment=False)
+            if item.assessment.status == "needs_verification"
+        ][:3]

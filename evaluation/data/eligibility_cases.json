@@ -1,0 +1,687 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "annotation_method": "AI research assistant annotations based on independently inspected official sources and explicit synthetic inputs. Labels were authored without calling the eligibility engine. Verified gold entries establish a decisive negative condition for this record at the fixed assessment date. Provisional labels and unresolved cases await team review. Gold contains no verified eligible cases and cannot establish the proposal's three-class accuracy target.",
+  "cases": [
+    {
+      "id": "P01-MEXT-CLOSED",
+      "profile_id": "P01",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P01-SMACCS-REVIEW",
+      "profile_id": "P01",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P01-DAAD-FUNDING",
+      "profile_id": "P01",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P02-MEXT-CLOSED",
+      "profile_id": "P02",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P02-SMACCS-REVIEW",
+      "profile_id": "P02",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P02-DAAD-FUNDING",
+      "profile_id": "P02",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P03-MEXT-CLOSED",
+      "profile_id": "P03",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P03-SMACCS-REVIEW",
+      "profile_id": "P03",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P03-DAAD-FUNDING",
+      "profile_id": "P03",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P04-MEXT-CLOSED",
+      "profile_id": "P04",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P04-SMACCS-REVIEW",
+      "profile_id": "P04",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P04-DAAD-FUNDING",
+      "profile_id": "P04",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P05-MEXT-CLOSED",
+      "profile_id": "P05",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P05-SMACCS-REVIEW",
+      "profile_id": "P05",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P05-DAAD-FUNDING",
+      "profile_id": "P05",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P06-MEXT-CLOSED",
+      "profile_id": "P06",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P06-SMACCS-REVIEW",
+      "profile_id": "P06",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P06-DAAD-FUNDING",
+      "profile_id": "P06",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P07-MEXT-CLOSED",
+      "profile_id": "P07",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P07-SMACCS-REVIEW",
+      "profile_id": "P07",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P07-DAAD-FUNDING",
+      "profile_id": "P07",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P08-MEXT-CLOSED",
+      "profile_id": "P08",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P08-SMACCS-REVIEW",
+      "profile_id": "P08",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P08-DAAD-FUNDING",
+      "profile_id": "P08",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P09-MEXT-CLOSED",
+      "profile_id": "P09",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P09-SMACCS-REVIEW",
+      "profile_id": "P09",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P09-DAAD-FUNDING",
+      "profile_id": "P09",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P10-MEXT-CLOSED",
+      "profile_id": "P10",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P10-SMACCS-REVIEW",
+      "profile_id": "P10",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P10-DAAD-FUNDING",
+      "profile_id": "P10",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P11-MEXT-CLOSED",
+      "profile_id": "P11",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P11-SMACCS-REVIEW",
+      "profile_id": "P11",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P11-DAAD-FUNDING",
+      "profile_id": "P11",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P12-MEXT-CLOSED",
+      "profile_id": "P12",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P12-SMACCS-REVIEW",
+      "profile_id": "P12",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P12-DAAD-FUNDING",
+      "profile_id": "P12",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P13-MEXT-CLOSED",
+      "profile_id": "P13",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P13-SMACCS-REVIEW",
+      "profile_id": "P13",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P13-DAAD-FUNDING",
+      "profile_id": "P13",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P14-MEXT-CLOSED",
+      "profile_id": "P14",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P14-SMACCS-REVIEW",
+      "profile_id": "P14",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P14-DAAD-FUNDING",
+      "profile_id": "P14",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P15-MEXT-CLOSED",
+      "profile_id": "P15",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P15-SMACCS-REVIEW",
+      "profile_id": "P15",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P15-DAAD-FUNDING",
+      "profile_id": "P15",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P16-MEXT-CLOSED",
+      "profile_id": "P16",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P16-SMACCS-REVIEW",
+      "profile_id": "P16",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P16-DAAD-FUNDING",
+      "profile_id": "P16",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P17-MEXT-CLOSED",
+      "profile_id": "P17",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P17-SMACCS-REVIEW",
+      "profile_id": "P17",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P17-DAAD-FUNDING",
+      "profile_id": "P17",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P18-MEXT-CLOSED",
+      "profile_id": "P18",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P18-SMACCS-REVIEW",
+      "profile_id": "P18",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P18-DAAD-FUNDING",
+      "profile_id": "P18",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P19-MEXT-CLOSED",
+      "profile_id": "P19",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P19-SMACCS-REVIEW",
+      "profile_id": "P19",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "needs_verification",
+      "rationale": "Unresolved conditions. See E-SMACCS-REVIEW.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P19-DAAD-FUNDING",
+      "profile_id": "P19",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "unresolved",
+      "expected_status": null,
+      "rationale": "Unresolved. See E-DAAD-UNRESOLVED.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    },
+    {
+      "id": "P20-MEXT-CLOSED",
+      "profile_id": "P20",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Expired call. See E-MEXT-CLOSED.",
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ]
+    },
+    {
+      "id": "P20-SMACCS-REVIEW",
+      "profile_id": "P20",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "label_status": "provisional",
+      "expected_status": "ineligible",
+      "rationale": "The requested start year 2025 precedes the fixed 2026 assessment year. This application-level expectation requires team review. See E-PROFILE-PAST.",
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ]
+    },
+    {
+      "id": "P20-DAAD-FUNDING",
+      "profile_id": "P20",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "label_status": "verified_gold",
+      "expected_status": "ineligible",
+      "rationale": "Tuition exclusion conflicts with full-funding preference. See E-DAAD-TUITION.",
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ]
+    }
+  ]
+}

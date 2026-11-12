@@ -1,0 +1,77 @@
+{
+  "record_kind": "Live diagnostic transcribed from observed console output before reliability edits",
+  "production_source_commit": "1706a164a67f93a45a348aea6b70c4f514400bde",
+  "as_of": "2026-11-12",
+  "model": "qwen3:4b-instruct",
+  "ollama_version": "0.40.16",
+  "catalogue_sha256": "6cf30b41a8f004e91932680efd3cbbe8833b052bb33d9906e2de6f8a175674b2",
+  "request": {
+    "profile": {
+      "nationality": "Kazakhstan",
+      "degree_level": "bachelor",
+      "degree_completed": true,
+      "field_of_study": "Computer Science",
+      "gpa": 3.5,
+      "gpa_scale": 4.0,
+      "ielts_overall": 7.0,
+      "intended_start_year": 2027,
+      "funding_preference": "fully_funded"
+    },
+    "goal": "Find funded master's candidates related to my field."
+  },
+  "rounds": [
+    {
+      "step": 1,
+      "prompt_tokens": 838,
+      "estimated_input_tokens": 1822,
+      "tool": "search_scholarships",
+      "arguments": {
+        "field": "Computer Science",
+        "funding_type": "fully_funded"
+      },
+      "matches": 9,
+      "returned_ids": [
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "step": 2,
+      "prompt_tokens": 1096,
+      "estimated_input_tokens": 2325,
+      "final_ids": [
+        2,
+        3,
+        4
+      ],
+      "validation": "rejected_unassessed_ids"
+    },
+    {
+      "step": 3,
+      "prompt_tokens": 1134,
+      "estimated_input_tokens": 2461,
+      "final_ids": [
+        2,
+        3,
+        4
+      ],
+      "validation": "rejected_unassessed_ids"
+    },
+    {
+      "step": 4,
+      "prompt_tokens": 1172,
+      "estimated_input_tokens": 2598,
+      "final_ids": [],
+      "validation": "accepted_empty_selection"
+    }
+  ],
+  "response_status": "no_matches",
+  "recommendations": [],
+  "elapsed_seconds": null,
+  "limitations": [
+    "One diagnostic, with elapsed time unrecorded.",
+    "The synthetic diagnostic request differs from the20-profile comparison dataset.",
+    "No controlled before/after performance estimate is derived from this observation."
+  ]
+}

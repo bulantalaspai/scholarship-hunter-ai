@@ -67,6 +67,18 @@ function mockResponse(body: unknown, status = 200) {
   return mock
 }
 
+function fallbackResponse(): AgentResponse {
+  return {
+    ...response(),
+    status: 'no_matches',
+    recommendations: [],
+    message: 'The model returned no grounded recommendations.',
+    fallback_recommendations: response().recommendations,
+    fallback_reason:
+      'These retrieved candidates were assessed with deterministic rules and need further verification.',
+  }
+}
+
 describe('local agent API contract', () => {
   it('posts the profile and request only to the existing local endpoint', async () => {
     const expected = response()
@@ -166,6 +178,64 @@ describe('local agent API contract', () => {
       fetchAgentRecommendations(profile, 'Find candidates.', controller.signal),
     ).rejects.toBe(error)
   })
+
+  it('accepts separately identified deterministic candidates', async () => {
+    const payload = fallbackResponse()
+    mockResponse(payload)
+    await expect(
+      fetchAgentRecommendations(
+        profile,
+        'Find candidates.',
+        new AbortController().signal,
+      ),
+    ).resolves.toEqual(payload)
+  })
+
+  it.each([
+    { ...fallbackResponse(), fallback_reason: undefined },
+    { ...fallbackResponse(), fallback_reason: null },
+    { ...fallbackResponse(), fallback_reason: '   ' },
+    { ...fallbackResponse(), fallback_recommendations: null },
+    { ...fallbackResponse(), fallback_recommendations: {} },
+    {
+      ...fallbackResponse(),
+      fallback_recommendations: Array.from({ length: 4 }, (_, index) => ({
+        assessment: demoAssessment('needs_verification', index + 1),
+        ranking_reasons: [],
+      })),
+    },
+    {
+      ...fallbackResponse(),
+      fallback_recommendations: [
+        response().recommendations[0],
+        response().recommendations[0],
+      ],
+    },
+    {
+      ...fallbackResponse(),
+      fallback_recommendations: [
+        { assessment: demoAssessment('eligible'), ranking_reasons: [] },
+      ],
+    },
+    {
+      ...fallbackResponse(),
+      fallback_recommendations: [
+        { assessment: demoAssessment('ineligible'), ranking_reasons: [] },
+      ],
+    },
+    { ...fallbackResponse(), recommendations: response().recommendations },
+    { ...fallbackResponse(), status: 'completed' },
+    { ...fallbackResponse(), status: 'needs_verification' },
+  ])('rejects inconsistent fallback data: %j', async (payload) => {
+    mockResponse(payload)
+    await expect(
+      fetchAgentRecommendations(
+        profile,
+        'Find candidates.',
+        new AbortController().signal,
+      ),
+    ).rejects.toThrow('unexpected response')
+  })
 })
 
 describe('local agent recommendations', () => {
@@ -213,6 +283,41 @@ describe('local agent recommendations', () => {
     expect(screen.getByLabelText('What would you like to find?')).toHaveFocus()
     expect(mock).not.toHaveBeenCalled()
   })
+
+  it.each(['no_matches', 'limit_reached'] as const)(
+    'displays deterministic candidates after %s while preserving the model trace',
+    async (status) => {
+      const user = userEvent.setup()
+      const payload = { ...fallbackResponse(), status }
+      mockResponse(payload)
+      render(<AgentRecommendations profile={profile} />)
+      await user.click(
+        screen.getByRole('button', { name: 'Generate AI recommendations' }),
+      )
+      const fallback = await screen.findByRole('region', {
+        name: 'Deterministic candidates to verify',
+      })
+      expect(
+        within(fallback).getByText(payload.fallback_reason!),
+      ).toBeVisible()
+      const assessment = within(fallback).getByRole('region', {
+        name: 'Eligibility assessment',
+      })
+      expect(
+        within(assessment).getAllByText('Needs verification').length,
+      ).toBeGreaterThan(0)
+      expect(
+        within(assessment).queryByText('Eligible', { exact: true }),
+      ).not.toBeInTheDocument()
+      expect(
+        within(assessment).getByRole('link', { name: /View official source/ }),
+      ).toHaveAttribute('href', demoAssessment().official_source_url)
+      expect(screen.getByText(payload.message)).toBeVisible()
+      expect(screen.getByText(/2 of 8 tool calls/)).toBeVisible()
+      expect(screen.getByText('Step 1: search scholarships')).toBeVisible()
+      expect(screen.getByText('Step 2: rank scholarships')).toBeVisible()
+    },
+  )
 
   it('shows a pending state and cancels waiting on navigation', async () => {
     const user = userEvent.setup()

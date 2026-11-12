@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { fetchAgentRecommendations } from '../agent'
 import type { AgentResponse } from '../agent'
-import type { StudentProfile } from '../types'
+import type { RankedProgramme, StudentProfile } from '../types'
 import { calendarDate } from '../display'
 import { Assessment, SourceLink } from './ui'
 
@@ -169,26 +169,22 @@ function AgentOutput({ response }: { response: AgentResponse }) {
         </section>
       )}
       {response.recommendations.map((item) => (
-        <article className="content-panel" key={item.assessment.scholarship_id}>
-          <Assessment result={item.assessment} />
-          <h3>Ranking explanation</h3>
-          <ul>
-            {item.ranking_reasons.map((reason, index) => (
-              <li key={`${index}:${reason}`}>
-                {reason
-                  .replaceAll('needs_verification', 'needs verification')
-                  .replaceAll('fully_funded', 'fully funded')
-                  .replaceAll('partially_funded', 'partially funded')}
-              </li>
-            ))}
-          </ul>
-        </article>
+        <ProgrammeResult item={item} key={item.assessment.scholarship_id} />
       ))}
       {response.recommendations.length === 0 && (
         <p>
           No grounded recommendation was returned. Try a simpler request or use{' '}
           <a href="#/matches">deterministic matches</a>.
         </p>
+      )}
+      {Boolean(response.fallback_recommendations?.length) && (
+        <section aria-labelledby="fallback-heading">
+          <h2 id="fallback-heading">Deterministic candidates to verify</h2>
+          <p>{response.fallback_reason}</p>
+          {response.fallback_recommendations?.map((item) => (
+            <ProgrammeResult item={item} key={item.assessment.scholarship_id} />
+          ))}
+        </section>
       )}
       <section className="agent-trace content-panel">
         <h2>Tools actually attempted</h2>
@@ -229,5 +225,24 @@ function AgentOutput({ response }: { response: AgentResponse }) {
         )}
       </section>
     </section>
+  )
+}
+
+function ProgrammeResult({ item }: { item: RankedProgramme }) {
+  return (
+    <article className="content-panel">
+      <Assessment result={item.assessment} />
+      <h3>Ranking explanation</h3>
+      <ul>
+        {item.ranking_reasons.map((reason, index) => (
+          <li key={`${index}:${reason}`}>
+            {reason
+              .replaceAll('needs_verification', 'needs verification')
+              .replaceAll('fully_funded', 'fully funded')
+              .replaceAll('partially_funded', 'partially funded')}
+          </li>
+        ))}
+      </ul>
+    </article>
   )
 }

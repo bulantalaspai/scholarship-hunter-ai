@@ -117,8 +117,13 @@ def test_model_directs_search_ranking_and_selection(tools, agent_request):
         for item in result.recommendations
     )
     assert str(result.recommendations[0].assessment.official_source_url) == SOURCE
-    assert model.requests[1][0][-1]["role"] == "tool"
-    assert "candidates" in model.requests[1][0][-1]["content"]
+    search_message = next(
+        message
+        for message in model.requests[1][0]
+        if message.get("tool_name") == "search_scholarships"
+    )
+    assert search_message["role"] == "tool"
+    assert "candidates" in search_message["content"]
 
 
 def test_all_four_tools_are_dispatched_and_page_injection_cannot_override_rules(
