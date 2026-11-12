@@ -633,7 +633,16 @@ def test_real_catalogue_stays_conservative(engine, profile_data):
             )
             for record in records
         ]
-    assert all(item.status == "needs_verification" for item in results)
+    for record, result in zip(records, results, strict=True):
+        if (
+            record.application_deadline is not None
+            and record.application_deadline < date(2026, 11, 12)
+        ):
+            assert result.status == "ineligible"
+            assert "deadline" in result.failed_requirements
+        else:
+            assert result.status == "needs_verification"
+        assert "rule_evidence" in result.unknown_requirements
     assert all("language" in item.unknown_requirements for item in results)
 
 

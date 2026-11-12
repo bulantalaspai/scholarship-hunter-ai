@@ -1,0 +1,568 @@
+{
+  "as_of": "2026-11-12",
+  "deadline_counts": {
+    "future": 12,
+    "past": 2,
+    "today": 0,
+    "unknown": 8
+  },
+  "duplicate_evidence_names": [],
+  "duplicate_identity_keys": [],
+  "earliest_verification_date": "2026-11-11",
+  "fully_reviewed_current_rule_records": 0,
+  "funding_counts": {
+    "fully_funded": 16,
+    "partially_funded": 6,
+    "unknown": 0
+  },
+  "interpretation": "Source metadata and recorded official-source reviews document catalogue facts, not complete applicant eligibility. Missing numeric fields may represent unknown, conditional or non-comparable requirements; they never imply a waiver. Rule completeness is profile-independent and is not an eligible verdict. This offline report cannot independently authenticate website claims.",
+  "latest_verification_date": "2026-11-12",
+  "missing_field_counts": {
+    "additional_requirements": 0,
+    "application_cycle": 2,
+    "application_deadline": 8,
+    "degree_level": 0,
+    "destination_country": 0,
+    "eligible_nationalities": 8,
+    "eligible_study_fields": 4,
+    "gpa_scale": 22,
+    "living_stipend": 1,
+    "minimum_gpa": 22,
+    "minimum_ielts": 12,
+    "tuition_coverage": 0
+  },
+  "programme_provider_multiple_cycles": [],
+  "records": [
+    {
+      "application_cycle": "Funding starts in 2027",
+      "application_deadline": null,
+      "documented_gaps": [
+        "Original verification date preserved; no complete structured eligibility review.",
+        "Applicant-specific language, admission, funding and opening conditions require confirmation."
+      ],
+      "funding_type": "partially_funded",
+      "last_verified_at": "2026-11-11",
+      "missing_fields": [
+        "eligible_study_fields",
+        "eligible_nationalities",
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts",
+        "application_deadline"
+      ],
+      "official_source_url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "DAAD",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027-2029",
+      "application_deadline": "2027-02-01",
+      "documented_gaps": [
+        "Original verification date preserved; no complete structured eligibility review.",
+        "Applicant-specific language, admission, funding and opening conditions require confirmation."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-11",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale"
+      ],
+      "official_source_url": "https://www.smaccs.eu/practical/scholarships/",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "SMACCs consortium",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027-2029 (intake 7)",
+      "application_deadline": "2027-01-12",
+      "documented_gaps": [
+        "No numeric GPA minimum verified",
+        "No full structured policy review",
+        "Scholarship selection not guaranteed",
+        "Detailed language and mobility conditions not represented by profile"
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts"
+      ],
+      "official_source_url": "https://www.master-ediss.eu/scholarship/",
+      "scholarship_name": "EDISS Erasmus Mundus Scholarships - Engineering of Data-intensive Intelligent Software Systems",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "EDISS consortium",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027-2029",
+      "application_deadline": "2027-01-11",
+      "documented_gaps": [
+        "Exhaustive nationality scope unverified",
+        "Current application portal availability",
+        "Numeric GPA minimum unverified",
+        "No complete structured policy review"
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_nationalities",
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts"
+      ],
+      "official_source_url": "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+      "scholarship_name": "DEAI Full Scholarship - Data Engineering and Artificial Intelligence",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "DEAI consortium",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027 intake",
+      "application_deadline": "2027-01-04",
+      "documented_gaps": [
+        "2027 stipend amount/count",
+        "Numeric GPA minimum unverified",
+        "No full structured policy review",
+        "Admission and FAQ give differing result announcement months; no result date stored"
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts"
+      ],
+      "official_source_url": "https://www.cybersure-master.eu/scholarships-and-fees",
+      "scholarship_name": "CYBERSURE Erasmus Mundus Scholarships - Cybersecurity and Assurance",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "CYBERSURE consortium",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "Published scholarship scheme; next intake unconfirmed",
+      "application_deadline": null,
+      "documented_gaps": [
+        "Next intake and deadline",
+        "Current scholarship availability/count",
+        "Current language test details",
+        "No full structured policy review"
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts",
+        "application_deadline"
+      ],
+      "official_source_url": "https://cybermacs.eu/scholarships/",
+      "scholarship_name": "CyberMACS Erasmus Mundus Scholarships - Applied Cybersecurity",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "CyberMACS consortium",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027 intake",
+      "application_deadline": "2027-01-13",
+      "documented_gaps": [
+        "Numeric GPA cutoff not verified",
+        "Language/qualification equivalences need individual verification",
+        "No complete structured policy review"
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts"
+      ],
+      "official_source_url": "https://www.imlex.org/fees-and-scholarships/",
+      "scholarship_name": "IMLEX Erasmus Mundus Scholarships - Imaging and Light in Extended Reality",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "IMLEX consortium",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027-2029",
+      "application_deadline": "2027-01-27",
+      "documented_gaps": [
+        "Confirm deadline timezone label CEST forJanuary",
+        "Current targetedregionextraawardallocation",
+        "ConditionalGPA statement not hardrule",
+        "No complete structured policy review"
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts"
+      ],
+      "official_source_url": "https://densys.univ-lorraine.fr/fees-and-scholarships/",
+      "scholarship_name": "DENSYS 2.0 Erasmus Mundus Scholarships - Decentralised Smart Energy Systems",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "DENSYS consortium",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "Scholarship call closing March 2027; intake year unconfirmed",
+      "application_deadline": "2027-03-12",
+      "documented_gaps": [
+        "Exact intake year and stale page heading need clarification; numeric language threshold and complete award conditions remain unstructured."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts"
+      ],
+      "official_source_url": "https://www.erasmus-mundus.emimep.eu/admission-applications/erasmus-scholarships/",
+      "scholarship_name": "EMIMEP European Master for Industry in Microwave Electronics and Photonics - Erasmus Mundus Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "EMIMEP consortium / University of Limoges",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027-2029",
+      "application_deadline": "2027-02-15",
+      "documented_gaps": [
+        "Full scholarship exceptions and complete structured policy remain unreviewed; no verified numeric GPA threshold."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale"
+      ],
+      "official_source_url": "https://emsse.eu/admission-and-scholarships/scholarships/",
+      "scholarship_name": "EMSSE European Master in Sustainable Systems Engineering - Erasmus Mundus Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "EMSSE consortium / Universite de technologie de Compiegne",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027 admission (two-year programme)",
+      "application_deadline": "2027-01-05",
+      "documented_gaps": [
+        "Nationality scope needs complete review; Kazakhstan GPA is individualized; host/English prerequisites need individual assessment."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_nationalities",
+        "minimum_gpa",
+        "gpa_scale"
+      ],
+      "official_source_url": "https://www.unite-codas-master.eu/scholarship.html",
+      "scholarship_name": "CoDaS Communications Engineering and Data Science - Erasmus Mundus Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "CoDaS consortium / Aalto University",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027/2028 intake",
+      "application_deadline": null,
+      "documented_gaps": [
+        "No single deadline or IELTS threshold applies across all routes; complete residence/mobility conditions need assessment."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts",
+        "application_deadline"
+      ],
+      "official_source_url": "https://www.eusmat.net/international-studies/master/amase/application/fees-and-scholarships/",
+      "scholarship_name": "AMASE Advanced Materials Science and Engineering - Full Erasmus Mundus Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "AMASE consortium / EUSMAT, Saarland University",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027-2029",
+      "application_deadline": "2027-01-31",
+      "documented_gaps": [
+        "Admission page is older than the current call; confirm all requirements and residency/funding conditions for 2027."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale"
+      ],
+      "official_source_url": "https://master-epico.ec-nantes.fr/english-version/admission/fees-scholarships-1",
+      "scholarship_name": "E-PiCo+ Electric Vehicle Propulsion and Control - Erasmus Mundus Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "E-PiCo+ consortium / Centrale Nantes",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027-2029",
+      "application_deadline": "2027-01-31",
+      "documented_gaps": [
+        "Complete residence, prior-award and admission conditions need individual assessment."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale"
+      ],
+      "official_source_url": "https://master-eu-core.ec-nantes.fr/admission/students/fees-scholarships",
+      "scholarship_name": "EU-CORE European Master on Control of Renewable Energy Systems - Erasmus Mundus Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "EU-CORE consortium / Centrale Nantes",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027 intake (consortium partial tuition awards)",
+      "application_deadline": null,
+      "documented_gaps": [
+        "2027 award amount, fees, grant nationality restrictions, living support and application calendar are unresolved; only France/Japan destinations independently confirmed."
+      ],
+      "funding_type": "partially_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_nationalities",
+        "minimum_gpa",
+        "gpa_scale",
+        "living_stipend",
+        "application_deadline"
+      ],
+      "official_source_url": "https://jemaro.ec-nantes.fr/english-version/admission/jemaro-fees-and-scholarships",
+      "scholarship_name": "JEMARO Japan-Europe Master on Advanced Robotics - Consortium Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "JEMARO consortium / Centrale Nantes and Keio University",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2026-2028 (published Consortium Excellence Grant)",
+      "application_deadline": null,
+      "documented_gaps": [
+        "2027 funding not yet announced; the captured grant terms apply only to 2026-2028; current grant deadlines and detailed quotas unknown."
+      ],
+      "funding_type": "partially_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "minimum_gpa",
+        "gpa_scale",
+        "application_deadline"
+      ],
+      "official_source_url": "https://ifrosmaster.org/ifros-applicants/fees-grants",
+      "scholarship_name": "IFRoS Intelligent Field Robotic Systems - Consortium Excellence Grants",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "IFRoS consortium / Universitat de Girona",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027 admission",
+      "application_deadline": "2027-03-01",
+      "documented_gaps": [
+        "Inverse German grade cannot safely populate minimum_gpa; full nationality, academic progression and ancillary-fee conditions need assessment."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_nationalities",
+        "minimum_gpa",
+        "gpa_scale"
+      ],
+      "official_source_url": "https://eminent-master.eu/scholarships/",
+      "scholarship_name": "EMINENT Embedded Intelligence Nanosystems Engineering - Erasmus Mundus Scholarships",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "EMINENT consortium / University of Siegen",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "Winter semester 2027/2028",
+      "application_deadline": null,
+      "documented_gaps": [
+        "Complete current admission, scholarship and intake conditions require individual verification; no executable eligibility rules added.",
+        "Kazakhstan-specific scope and deadline unverified; no universal GPA or IELTS cutoff."
+      ],
+      "funding_type": "partially_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_nationalities",
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts",
+        "application_deadline"
+      ],
+      "official_source_url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=57742130",
+      "scholarship_name": "Study scholarships for STEM disciplines",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "DAAD",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2026/2027 (closed published call)",
+      "application_deadline": "2026-01-15",
+      "documented_gaps": [
+        "Complete current admission, scholarship and intake conditions require individual verification; no executable eligibility rules added.",
+        "Closed historical call, no2027/28 date inferred; host admission and sending-partner nomination require review."
+      ],
+      "funding_type": "partially_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_study_fields",
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts"
+      ],
+      "official_source_url": "https://stipendiumhungaricum.hu/about/",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "Tempus Public Foundation / Hungarian Government",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": "2027 embassy recommendation (Kazakhstan; closed)",
+      "application_deadline": "2026-05-29",
+      "documented_gaps": [
+        "Complete current admission, scholarship and intake conditions require individual verification; no executable eligibility rules added."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_study_fields",
+        "minimum_gpa",
+        "gpa_scale",
+        "minimum_ielts"
+      ],
+      "official_source_url": "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "Japan Ministry of Education, Culture, Sports, Science and Technology (MEXT)",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": null,
+      "application_deadline": null,
+      "documented_gaps": [
+        "Complete current admission, scholarship and intake conditions require individual verification; no executable eligibility rules added.",
+        "Current intake/deadline and exhaustive nationality/field list not verified."
+      ],
+      "funding_type": "fully_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_study_fields",
+        "eligible_nationalities",
+        "minimum_gpa",
+        "gpa_scale",
+        "application_deadline",
+        "application_cycle"
+      ],
+      "official_source_url": "https://admission.kaist.ac.kr/intl-graduate/FinancialSupport/Scholarship/KAISTScholarship/",
+      "scholarship_name": "KAIST Global Presidential Scholarship (KGPS) - master's route",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "Korea Advanced Institute of Science and Technology (KAIST)",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    },
+    {
+      "application_cycle": null,
+      "application_deadline": null,
+      "documented_gaps": [
+        "Complete current admission, scholarship and intake conditions require individual verification; no executable eligibility rules added.",
+        "EntryGPA unknown; continuingstudent GPA not an entrythreshold. Intake/deadline unknown; partialfunding."
+      ],
+      "funding_type": "partially_funded",
+      "last_verified_at": "2026-11-12",
+      "missing_fields": [
+        "eligible_nationalities",
+        "minimum_gpa",
+        "gpa_scale",
+        "application_deadline",
+        "application_cycle"
+      ],
+      "official_source_url": "https://www.gist.ac.kr/iadm/html/sub04/0401.html",
+      "scholarship_name": "GIST Scholarships - international master's students",
+      "source_date_after_report_date": false,
+      "source_review_documented": true,
+      "university_or_provider": "Gwangju Institute of Science and Technology (GIST)",
+      "unresolved_rule_conditions": [
+        "structured_eligibility_rules_not_reviewed"
+      ]
+    }
+  ],
+  "records_requiring_further_eligibility_verification": 22,
+  "records_without_documented_source_review": [],
+  "source_metadata_complete_records": 22,
+  "source_review_documented_records": 22,
+  "total_records": 22,
+  "unique_identity_records": 22,
+  "unused_evidence_names": [],
+  "verification_date_counts": {
+    "2026-11-11": 2,
+    "2026-11-12": 20
+  }
+}

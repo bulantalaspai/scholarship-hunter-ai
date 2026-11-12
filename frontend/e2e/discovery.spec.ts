@@ -1,11 +1,44 @@
 import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
+import type {
+  FundingPreference,
+  MatchResult,
+  ScholarshipPage,
+  StudentProfile,
+} from '../src/types'
 
 const daadName =
   'Study Scholarships - Master Studies for All Academic Disciplines'
 const smaccsName = 'SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships'
 
-async function fillProfile(page: Page, funding = 'any_funding') {
+const profile: StudentProfile = {
+  nationality: 'Kazakhstan',
+  degree_level: 'bachelor',
+  degree_completed: true,
+  field_of_study: 'Computer Science',
+  gpa: 3.5,
+  gpa_scale: 4,
+  ielts_overall: 7,
+  intended_start_year: 2027,
+  funding_preference: 'any_funding',
+}
+
+function scholarshipCard(page: Page, name: string) {
+  return page.getByRole('article').filter({
+    has: page.getByRole('heading', { name, exact: true }),
+  })
+}
+
+async function catalogueSearch(page: Page, query: string): Promise<ScholarshipPage> {
+  const response = await page.request.get(`/api/scholarships?${query}&page_size=10`)
+  expect(response.ok()).toBe(true)
+  return response.json()
+}
+
+async function fillProfile(
+  page: Page,
+  funding: FundingPreference = 'any_funding',
+) {
   await page.getByLabel('Nationality', { exact: true }).fill('Kazakhstan')
   await page
     .getByLabel('Degree level', { exact: true })
@@ -28,6 +61,7 @@ async function fillProfile(page: Page, funding = 'any_funding') {
 test('searches from home and opens a real source-backed scholarship', async ({
   page,
 }, testInfo) => {
+  const search = await catalogueSearch(page, 'field=Engineering')
   await page.goto('/')
   await page.getByLabel('What would you like to study?').fill('Engineering')
   await page
@@ -41,7 +75,13 @@ test('searches from home and opens a real source-backed scholarship', async ({
   await expect(
     page.getByRole('heading', { name: smaccsName, exact: true }),
   ).toBeVisible()
-  await expect(page.getByText('1 opportunity in this search')).toBeVisible()
+  await expect(
+    page.getByText(
+      `${search.total} ${search.total === 1 ? 'opportunity' : 'opportunities'} in this search`,
+      { exact: true },
+    ),
+  ).toBeVisible()
+  await expect(page.getByRole('article')).toHaveCount(search.items.length)
   await expect(
     page.getByRole('heading', { name: daadName, exact: true }),
   ).toHaveCount(0)
@@ -50,7 +90,7 @@ test('searches from home and opens a real source-backed scholarship', async ({
     fullPage: true,
   })
 
-  await page
+  await scholarshipCard(page, smaccsName)
     .getByRole('link', { name: 'View scholarship', exact: true })
     .click()
   await expect(
@@ -74,6 +114,7 @@ test('searches from home and opens a real source-backed scholarship', async ({
 test('filters Germany and checks eligibility without turning unknown conditions into a pass', async ({
   page,
 }, testInfo) => {
+  const search = await catalogueSearch(page, 'country=Germany')
   await page.goto('/#/explore')
   await page.getByLabel('Destination country').fill('Germany')
   await page.getByRole('button', { name: 'Apply filters' }).click()
@@ -83,7 +124,8 @@ test('filters Germany and checks eligibility without turning unknown conditions 
   await expect(
     page.getByRole('heading', { name: smaccsName, exact: true }),
   ).toHaveCount(0)
-  await page
+  await expect(page.getByRole('article')).toHaveCount(search.items.length)
+  await scholarshipCard(page, daadName)
     .getByRole('link', { name: 'View scholarship', exact: true })
     .click()
   await expect(
@@ -131,6 +173,27 @@ test('filters Germany and checks eligibility without turning unknown conditions 
 test('separates unresolved matches from confirmed full-funding preference failures', async ({
   page,
 }, testInfo) => {
+  const response = await page.request.post('/api/eligibility/matches', {
+    data: {
+      profile: { ...profile, funding_preference: 'fully_funded' },
+      page_size: 100,
+    },
+  })
+  expect(response.ok()).toBe(true)
+  const matches: MatchResult = await response.json()
+  expect(matches.counts.eligible).toBe(0)
+  const ordered = [
+    ...matches.eligible,
+    ...matches.needs_verification,
+    ...matches.ineligible,
+  ]
+  expect(ordered).toHaveLength(matches.total)
+  const daadIndex = ordered.findIndex(
+    (item) => item.assessment.scholarship_name === daadName,
+  )
+  expect(daadIndex).toBeGreaterThanOrEqual(0)
+  // The UI pages the global ranking in groups of ten, unlike this full snapshot.
+  const daadPage = Math.floor(daadIndex / 10) + 1
   await page.goto('/#/profile')
   await fillProfile(page, 'fully_funded')
   await page
@@ -146,23 +209,53 @@ test('separates unresolved matches from confirmed full-funding preference failur
   await expect(
     page.getByText(/No fully verified eligible programmes were found/),
   ).toBeVisible()
+  for (const [status, label] of [
+    ['eligible', 'Eligible'],
+    ['needs_verification', 'Needs verification'],
+    ['ineligible', 'Ineligible'],
+  ] as const) {
+    const summary = page
+      .locator('.match-summary')
+      .getByText(label, { exact: true })
+      .locator('..')
+    await expect(summary.locator('strong')).toHaveText(
+      String(matches.counts[status]),
+    )
+  }
   const unresolved = page
-    .getByRole('heading', { name: /^Needs verification \(1\)/ })
-    .locator('..')
-  const ineligible = page
-    .getByRole('heading', { name: /^Ineligible \(1\)/ })
+    .getByRole('heading', {
+      name: `Needs verification (${matches.counts.needs_verification})`,
+      exact: true,
+    })
     .locator('..')
   await expect(
     unresolved.getByRole('link', { name: smaccsName, exact: true }),
   ).toBeVisible()
-  await expect(
-    ineligible.getByRole('link', { name: daadName, exact: true }),
-  ).toBeVisible()
   await expect(page.getByRole('heading', { name: /^Eligible \(/ })).toHaveCount(
     0,
   )
+  for (let next = 2; next <= daadPage; next += 1) {
+    const pagination = page.getByRole('navigation', { name: 'Results pages' })
+    await pagination.getByRole('link', { name: 'Next page', exact: true }).click()
+    await expect(page).toHaveURL(new RegExp(`#/matches\\?page=${next}$`))
+    await expect(
+      pagination.getByText(`Page ${next} of ${Math.ceil(matches.total / 10)}`, {
+        exact: true,
+      }),
+    ).toBeVisible()
+  }
+  const ineligible = page
+    .getByRole('heading', {
+      name: `Ineligible (${matches.counts.ineligible})`,
+      exact: true,
+    })
+    .locator('..')
+  const daad = ineligible.getByRole('article').filter({
+    has: page.getByRole('link', { name: daadName, exact: true }),
+  })
+  await expect(daad.getByRole('link', { name: daadName, exact: true })).toBeVisible()
   await expect(
-    ineligible.getByText(/Published funding: partially funded/),
+    daad.getByText(/Published funding: partially funded/),
   ).toBeVisible()
   await page.screenshot({
     path: testInfo.outputPath('ranked-matches.png'),

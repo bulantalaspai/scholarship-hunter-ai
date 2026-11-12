@@ -28,6 +28,33 @@ APPROVED_URLS = frozenset(
         "https://www.smaccs.eu/practical/scholarships/",
         "https://www.smaccs.eu/admissions/admission-criteria/",
         "https://www.smaccs.eu/admissions/deadlines/",
+        # Phase 6A: individually reviewed catalogue sources, never a domain wildcard.
+        "https://www.master-ediss.eu/scholarship/",
+        "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+        "https://www.cybersure-master.eu/scholarships-and-fees",
+        "https://cybermacs.eu/scholarships/",
+        "https://www.imlex.org/fees-and-scholarships/",
+        "https://densys.univ-lorraine.fr/fees-and-scholarships/",
+        "https://www.erasmus-mundus.emimep.eu/admission-applications/"
+        "erasmus-scholarships/",
+        "https://emsse.eu/admission-and-scholarships/scholarships/",
+        "https://www.unite-codas-master.eu/scholarship.html",
+        "https://www.eusmat.net/international-studies/master/amase/application/"
+        "fees-and-scholarships/",
+        "https://master-epico.ec-nantes.fr/english-version/admission/"
+        "fees-scholarships-1",
+        "https://master-eu-core.ec-nantes.fr/admission/students/fees-scholarships",
+        "https://jemaro.ec-nantes.fr/english-version/admission/"
+        "jemaro-fees-and-scholarships",
+        "https://ifrosmaster.org/ifros-applicants/fees-grants",
+        "https://eminent-master.eu/scholarships/",
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/"
+        "21148-scholarship-database/?detail=57742130",
+        "https://stipendiumhungaricum.hu/about/",
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html",
+        "https://admission.kaist.ac.kr/intl-graduate/FinancialSupport/Scholarship/"
+        "KAISTScholarship/",
+        "https://www.gist.ac.kr/iadm/html/sub04/0401.html",
     }
 )
 _RESOLVER_POOL = ThreadPoolExecutor(max_workers=2, thread_name_prefix="official-dns")

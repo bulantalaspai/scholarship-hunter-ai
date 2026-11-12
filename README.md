@@ -3,16 +3,18 @@
 A course project for students from Kazakhstan seeking fully funded master's
 scholarships abroad. See [PROPOSAL.md](PROPOSAL.md) for the planned application.
 
-## Current scope: Phase 5
+## Current scope: Phase 6A
 
 The React/TypeScript application now supports scholarship discovery, details,
 student profiles, eligibility results, and grouped matches. The original
 connection check and health endpoint are preserved. The FastAPI/Pydantic v2 backend provides a local SQLite scholarship
 catalogue through SQLAlchemy 2.0, an explicit curated-JSON importer, and read-only
 search/detail endpoints. Phase 3 adds stateless, deterministic eligibility
-checks and grouped profile matching. The initial dataset contains two real, officially
-verified programme records; it is not a list of guaranteed or currently open
-opportunities.
+checks and grouped profile matching. The catalogue now contains **22 real,
+source-backed scholarship records** (20 additions and two preserved originals):
+16 full-award schemes and six partial-award schemes. It is not a list of guaranteed
+or currently open opportunities. All 22 still need further applicant-specific
+eligibility verification.
 
 An optional, model-directed local Ollama agent now selects candidates through
 four validated tools. Existing catalogue, eligibility, ranking and health APIs
@@ -195,6 +197,44 @@ The importer reads local JSON only; it does not scrape or contact any API.
   and any uncertainty belong in `notes`. Import does not establish that a call
   is currently open, or that its deadline applies to every nationality.
 
+### Verified data expansion and quality report
+
+The 20 additions were reviewed against official programme, university or provider
+pages on **2026-11-12**. The original two records and their **2026-11-11** source
+dates are unchanged. The importer, schema and existing import command are reused;
+there is no automatic scraping, separate database service or paid API.
+
+- [Source index](backend/data/SOURCES.md) and
+  [per-source evidence](backend/data/catalogue_evidence.json) document claims,
+  supplementary admission/funding pages and unresolved conditions.
+- [Quality summary](backend/data/QUALITY_REPORT.md) and
+  [machine-readable report](backend/data/QUALITY_REPORT.json) record funding,
+  null fields, duplicates, dates, per-record gaps and excluded research leads.
+- The snapshot has **0 duplicate identities**, **16 fully funded** and **6
+  partially funded** schemes. Eight deadlines are unknown; two are past and
+  retained as closed historical calls. Future dates never prove opening status.
+- No complete structured eligibility policy was inferred from narrative pages.
+  Conditional language routes, non-comparable GPA criteria and scholarship
+  selection conditions remain explicit. Admission and award selection are
+  separate; all 22 require further eligibility verification.
+
+Regenerate the offline JSON report without touching SQLite or contacting sources:
+
+```powershell
+.\.venv\Scripts\python.exe -m backend.app.catalogue_quality --as-of 2026-11-12 --evidence backend/data/catalogue_evidence.json
+```
+
+Omit `--as-of` to use the server's current UTC date. For a saved UTF-8 report in
+Windows PowerShell, pipe to `Set-Content -Encoding utf8`; its plain `>` redirection
+may otherwise write UTF-16. The CLI checks source metadata/provenance coverage and
+completeness; authenticating official facts still requires manual source review.
+Do not advance source dates or roll deadlines forward without that review.
+
+New primary official URLs are individually added to the existing AI fetcher's
+exact allowlist. Domain wildcards, arbitrary URLs and local-network access remain
+disallowed. A source page can still fail the existing size, timeout or redirect
+limits; the agent keeps missing evidence unresolved.
+
 Fictional demo data is clearly labeled under `backend/tests/fixtures/` and is
 never seeded at startup. The CLI rejects `data_kind: "fictional_demo"`; only tests
 explicitly opt into importing it into temporary databases.
@@ -340,8 +380,8 @@ availability must be reviewed separately.
 ### Curator-reviewed rules
 
 Phase 2 records remain valid and unchanged. Their free-text notes are not parsed
-into executable conditions. The two current real records have no complete
-structured review and therefore cannot receive an overall `eligible` result
+into executable conditions. None of the 22 current real records has a complete
+structured review, so they cannot receive an overall `eligible` result
 until unresolved requirements are verified. Confirmed failures can still apply.
 
 Curators can optionally add `eligibility_rules` to a record in the existing
@@ -484,7 +524,7 @@ retrieve/check/rank sequence or automatic fallback pretending to be AI.
   filters, with at most three candidates per search. Country means destination,
   not nationality. Omit filters to broaden the search.
 - `fetch_official_page(url)`: reads only a discovered record's approved source.
-  An additional exact URL allowlist covers the current DAAD/SMACCs sources.
+  An additional exact URL allowlist covers the reviewed catalogue sources.
   HTTPS/443, public-IP checks on every hop, DNS-pinned TLS, at most two approved
   redirects, a six-second deadline, 64 KiB bodies and content-type limits apply.
   Environment proxies, private/local/reserved IPs, arbitrary query parameters
@@ -512,7 +552,7 @@ Budget exhaustion returns an explicit limitation with no invented fallback.
 
 The 4B model may choose poor filters or miss candidates. This is a small curated
 catalogue assistant, not an exhaustive scholarship search or a new eligibility
-authority. Both current records still lack complete reviewed rules. Strict source
+authority. All 22 current records still lack complete reviewed rules. Strict source
 limits can reject large, compressed or redirected official pages; these failures
 remain visible and never establish missing requirements. No automatic extraction,
 database mutation, model downloads, accounts or admission guarantees are added.
@@ -531,7 +571,9 @@ The command prints HTTP status, timing, actual per-round prompt-token counts,
 requested tools, the complete response and execution trace. It never writes to
 the application database or pulls a model. Exit codes: 0 for a completed response
 (including no matches), 1 for an HTTP error, 2 for a step/context budget stop.
-See [the recorded live example](docs/AGENT_SMOKE.md) for measured behavior.
+See [the recorded Phase 5 live example](docs/AGENT_SMOKE.md) for measured behavior
+against the original two-record catalogue. The expanded catalogue can produce
+different candidates and model-selected plans; normal limits still apply.
 
 ## Tests and checks
 
