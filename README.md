@@ -3,18 +3,19 @@
 A course project for students from Kazakhstan seeking fully funded master's
 scholarships abroad. See [PROPOSAL.md](PROPOSAL.md) for the planned application.
 
-## Current scope: Phase 3
+## Current scope: Phase 4
 
-The React/TypeScript connection-check page and original health endpoint are
-preserved. The FastAPI/Pydantic v2 backend now provides a local SQLite scholarship
+The React/TypeScript application now supports scholarship discovery, details,
+student profiles, eligibility results, and grouped matches. The original
+connection check and health endpoint are preserved. The FastAPI/Pydantic v2 backend provides a local SQLite scholarship
 catalogue through SQLAlchemy 2.0, an explicit curated-JSON importer, and read-only
 search/detail endpoints. Phase 3 adds stateless, deterministic eligibility
 checks and grouped profile matching. The initial dataset contains two real, officially
 verified programme records; it is not a list of guaranteed or currently open
 opportunities.
 
-AI agents, Ollama/Qwen, stored applicant accounts, and a catalogue frontend
-remain future work. No database server, paid API, cloud account,
+AI agents, Ollama/Qwen, and stored applicant accounts remain future work.
+No database server, paid API, cloud account,
 credentials, or personal student data is required. All application data stays
 in a local SQLite file. Development servers bind to `127.0.0.1` only.
 
@@ -54,6 +55,54 @@ npm.cmd --prefix frontend run dev
 Open **http://127.0.0.1:5173**. The page checks the API automatically and supports
 retrying after a failure. Checks time out after five seconds. Ports 5173 and
 8000 must be available; the frontend does not silently choose another port.
+
+Import the curated records using the database instructions below before browsing.
+A fresh, unseeded database correctly shows an empty catalogue; the UI never
+substitutes demonstration records.
+
+## Using the frontend
+
+- **Home** (`#/`): enter a study field to begin searching, open your profile,
+  or retry the existing API connection check.
+- **Explorer** (`#/explore`): browse cards and apply country, study-field, and
+  funding filters together. Filters and pagination live in the hash URL, so
+  browser Back/Forward and shared search links work. Country is an exact name;
+  field is a literal substring search. There is no unsupported name/keyword API.
+- **Scholarship details** (`#/scholarships/{id}`): read funding descriptions,
+  deadlines, requirements and caveats, with official links and verification dates.
+  Missing data is visibly unconfirmed; a source date does not prove a call is open.
+- **My profile** (`#/profile`): enter only academic information, scores and funding
+  preferences. A detail-page eligibility action preserves the selected scholarship.
+  GPA and scale must be supplied together; optional blank scores stay null.
+  Degree completion can explicitly remain unspecified. Validation errors are
+  linked to controls and move focus to the first field needing correction.
+- **Eligibility results** (`#/results/{id}`): view the backend verdict, separate
+  admission/funding/application checks, missing information, explanations,
+  suggestions and supporting sources. Unverified conditions are never converted
+  into positive results. A check never guarantees admission or an award.
+- **My matches** (`#/matches`): compare the submitted profile against the catalogue.
+  Eligible, Needs verification and Ineligible records remain separate, with
+  global counts, backend ranking explanations and pagination. When none are
+  verified eligible, the interface says so explicitly.
+
+Profiles exist only in React memory, with no cookies, local/session storage,
+accounts or external authentication. Submitting requests sends the profile only
+to the local FastAPI application using its existing POST endpoints; nothing is
+saved in the application database. Use **Clear profile** on the profile page to
+remove it, or refresh/close the tab. Direct result links after a refresh ask for
+a new profile. Never put student scores or nationality into shared URLs.
+
+The interface includes keyboard navigation, a skip link, visible focus, labeled
+controls, status announcements, reduced-motion support, and layouts for mobile
+through desktop. Loading, empty, invalid-link, not-found and retryable failure
+states are explicit. Official links open a new tab safely. Requests are cancelled
+when obsolete; health checks time out after 5 seconds and catalogue/eligibility
+requests after 15 seconds. Unexpected response shapes, inconsistent eligibility
+summaries and unsafe source URLs produce errors rather than guessed results.
+
+No frontend dependencies were added. The app uses React, native hash navigation,
+the browser Fetch API, and the existing Vite `/api` proxy. TypeScript contracts
+mirror the actual backend schemas; the backend remains the decision authority.
 
 - Health endpoint: **http://127.0.0.1:8000/api/health**
 - Interactive API documentation: **http://127.0.0.1:8000/docs**
@@ -392,10 +441,29 @@ npm.cmd --prefix frontend exec -- playwright install chromium
 npm.cmd --prefix frontend run test:e2e
 ```
 
-End-to-end tests start both servers automatically, verify the real React → Vite
-proxy → FastAPI connection, and check the mobile layout. Stop manually running
-servers on ports 8000 and 5173 first. Test servers are stopped when the tests
-finish. The first browser installation requires internet access.
+End-to-end tests start both servers automatically and seed the existing curated
+records into a **temporary SQLite database**, never the local application database.
+The test server fixes eligibility evaluation at **2026-11-12** so the recorded
+source snapshot's outcomes do not drift as real deadlines pass; production still
+uses its UTC clock. Tests exercise the real React → Vite → FastAPI flow, discovery,
+filters, details, profile submission, conservative eligibility, matching groups,
+empty/404/error recovery, refresh privacy, keyboard use and mobile overflow. The
+original three connection tests remain intact. Stop manually running servers on
+ports 8000 and 5173 first. Test servers stop after the run. The first browser
+installation requires internet access.
+
+Frontend Vitest tests cover the existing health check, complete runtime-validated
+API contracts, profile validation, supported filters, detail/eligibility journeys,
+all three verdicts, matching, privacy and failure recovery. All mock programme
+records are explicitly fictional and restricted to test files. TypeScript is
+checked by `npm.cmd --prefix frontend run build` before bundling.
+
+The browser-test Python wrapper is also checked with Ruff:
+
+```powershell
+.\.venv\Scripts\python.exe -m ruff check backend frontend/e2e/start_test_api.py
+.\.venv\Scripts\python.exe -m ruff format --check backend frontend/e2e/start_test_api.py
+```
 
 For a local build preview while the backend is running:
 
