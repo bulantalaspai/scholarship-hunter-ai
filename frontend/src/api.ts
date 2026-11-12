@@ -221,6 +221,8 @@ function ranked(value: unknown): value is RankedProgramme {
   )
 }
 
+export { ranked as isRankedProgramme }
+
 function matches(value: unknown): value is MatchResult {
   if (!object(value) || !pagination(value) || !object(value.counts))
     return false
@@ -262,11 +264,12 @@ function validationMessage(body: unknown): string {
     : 'Check the submitted values and try again.'
 }
 
-async function request<T>(
+export async function request<T>(
   url: string,
   signal: AbortSignal,
   validate: Validator<T>,
   body?: unknown,
+  timeoutMs = 15_000,
 ): Promise<T> {
   let response: Response
   try {
@@ -276,7 +279,7 @@ async function request<T>(
         Accept: 'application/json',
         ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
       },
-      signal: AbortSignal.any([signal, AbortSignal.timeout(15_000)]),
+      signal: AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]),
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     })
   } catch (error) {

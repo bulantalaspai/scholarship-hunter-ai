@@ -14,10 +14,7 @@ router = APIRouter(prefix="/api/scholarships", tags=["Scholarships"])
 DatabaseSession = Annotated[Session, Depends(get_session)]
 
 
-@router.get("", response_model=ScholarshipPage)
-def list_scholarships(
-    filters: Annotated[ScholarshipQuery, Query()], session: DatabaseSession
-) -> ScholarshipPage:
+def query_scholarships(filters: ScholarshipQuery, session: Session) -> ScholarshipPage:
     conditions = []
     if filters.country is not None:
         countries = func.json_each(Scholarship.destination_country).table_valued(
@@ -58,6 +55,13 @@ def list_scholarships(
         page=filters.page,
         page_size=filters.page_size,
     )
+
+
+@router.get("", response_model=ScholarshipPage)
+def list_scholarships(
+    filters: Annotated[ScholarshipQuery, Query()], session: DatabaseSession
+) -> ScholarshipPage:
+    return query_scholarships(filters, session)
 
 
 @router.get("/{scholarship_id}", response_model=ScholarshipRead)

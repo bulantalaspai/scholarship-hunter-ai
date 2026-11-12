@@ -3,7 +3,7 @@
 A course project for students from Kazakhstan seeking fully funded master's
 scholarships abroad. See [PROPOSAL.md](PROPOSAL.md) for the planned application.
 
-## Current scope: Phase 4
+## Current scope: Phase 5
 
 The React/TypeScript application now supports scholarship discovery, details,
 student profiles, eligibility results, and grouped matches. The original
@@ -14,7 +14,9 @@ checks and grouped profile matching. The initial dataset contains two real, offi
 verified programme records; it is not a list of guaranteed or currently open
 opportunities.
 
-AI agents, Ollama/Qwen, and stored applicant accounts remain future work.
+An optional, model-directed local Ollama agent now selects candidates through
+four validated tools. Existing catalogue, eligibility, ranking and health APIs
+work independently of Ollama. Applicant accounts remain outside the scope.
 No database server, paid API, cloud account,
 credentials, or personal student data is required. All application data stays
 in a local SQLite file. Development servers bind to `127.0.0.1` only.
@@ -84,6 +86,10 @@ substitutes demonstration records.
   Eligible, Needs verification and Ineligible records remain separate, with
   global counts, backend ranking explanations and pagination. When none are
   verified eligible, the interface says so explicitly.
+- **AI recommendations** (`#/agent`): explicitly submit your in-memory profile
+  and a short goal to the local model. Read deterministic assessments, missing
+  evidence, sources and the actual tool-attempt trace. Nothing calls the model
+  automatically; ordinary matches remain available when Ollama is offline.
 
 Profiles exist only in React memory, with no cookies, local/session storage,
 accounts or external authentication. Submitting requests sends the profile only
@@ -413,6 +419,120 @@ restrictions, convert GPA scales, process alternative test documents, or assess
 conditions absent from the profile. Additional profile fields and structured
 rules require further design before those conditions can be automated safely.
 
+## Local AI agent
+
+Run the existing **Ollama 0.40.16** service on **127.0.0.1:11434** with the
+already-installed **qwen3:4b-instruct** model. No SDK, model download, cloud
+inference or new dependency is needed. Check availability locally:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:11434/api/version
+Invoke-RestMethod http://127.0.0.1:11434/api/tags
+```
+
+Start FastAPI and Vite with the usual commands above. The **AI recommendations**
+navigation item reuses the student profile form and requires an explicit request.
+An Ollama outage never prevents startup or ordinary search/eligibility/matching.
+
+### Request and response
+
+`POST /api/agent/recommend` takes `profile` with the exact existing
+`StudentProfile` schema and an optional trimmed `goal` (1–300 characters).
+The serialized profile is limited to 1,500 UTF-8 bytes for the small context.
+Synthetic example, from PowerShell:
+
+```powershell
+$body = @{
+  profile = @{
+    nationality = 'Kazakhstan'; degree_level = 'bachelor'; degree_completed = $true
+    field_of_study = 'Computer Science'; gpa = 3.5; gpa_scale = 4.0
+    ielts_overall = 7.0; intended_start_year = 2027
+    funding_preference = 'fully_funded'
+  }
+  goal = "Find funded master's candidates related to my field."
+} | ConvertTo-Json -Depth 4
+Invoke-RestMethod http://127.0.0.1:8000/api/agent/recommend -Method Post -ContentType 'application/json' -Body $body
+```
+
+The typed response contains `status`, `model`, `evaluated_on`, `steps`,
+`tool_calls`, `recommendations`, `message`, `warnings`, `tool_trace` and
+`disclaimer`. Each recommendation is the existing `RankedProgramme` contract:
+a full deterministic `assessment` and `ranking_reasons`, including official
+source links, catalogue/rule review dates, unknowns and individual checks.
+Statuses are `completed`, `needs_verification`, `no_matches` or `limit_reached`.
+The overall agent status does not replace individual eligibility classifications;
+confirmed failures still take precedence over unknown requirements.
+
+Trace entries expose validated tool arguments, a safe summary and outcome;
+successful page reads also include their source and retrieval timestamp.
+Rejected arguments, raw pages, model prose/thinking and student profiles are
+not included in the trace. The application does not log or persist profiles,
+prompts, traces or agent results. Only the local Ollama service receives the
+profile; outbound source requests contain no profile or goal.
+
+Validation errors return **422**, unavailable/busy Ollama **503**, inference
+timeouts **504**, and invalid/truncated/oversized model responses **502**.
+The frontend offers ordinary deterministic matching after errors. One AI request
+per backend process is admitted at a time to avoid a GPU inference queue.
+
+### Tools, grounding and limits
+
+Qwen chooses tool calls and arguments from live results; there is no scripted
+retrieve/check/rank sequence or automatic fallback pretending to be AI.
+
+- `search_scholarships(country?, field?, funding_type?)`: the existing SQLite
+  filters, with at most three candidates per search. Country means destination,
+  not nationality. Omit filters to broaden the search.
+- `fetch_official_page(url)`: reads only a discovered record's approved source.
+  An additional exact URL allowlist covers the current DAAD/SMACCs sources.
+  HTTPS/443, public-IP checks on every hop, DNS-pinned TLS, at most two approved
+  redirects, a six-second deadline, 64 KiB bodies and content-type limits apply.
+  Environment proxies, private/local/reserved IPs, arbitrary query parameters
+  and unapproved redirects are disallowed. DNS work is bounded to two workers.
+- `check_eligibility(scholarship_id)`: the existing deterministic engine,
+  always using the original submitted profile and the server's evaluation date.
+- `rank_scholarships(scholarship_ids)`: the existing ranking service, at most
+  three discovered IDs, with eligibility classifications preserved.
+
+Every argument and service result is validated. Only IDs discovered and assessed
+through model-requested tools can appear in a final response. The model selects
+IDs only; server services attach all facts and determine the displayed order.
+Model-written claims, invented IDs and attempted classification/profile overrides
+are rejected. Web excerpts are explicitly untrusted; they cannot update catalogue
+facts, review dates or eligibility rules. Reading a page is not verification by
+a curator, and missing evidence remains `needs_verification`.
+
+Limits are **four model steps**, **eight total attempted tool calls** (invalid
+attempts count), **90 seconds overall**, **45 seconds per model call**, and
+**4,096 context tokens** with at most 384 output tokens. Tool results are bounded
+to 3,200 UTF-8 bytes; page text is further reduced to 600 characters. A conservative
+input-size heuristic stops oversized conversations before inference; reported
+Ollama prompt-token counts are checked too. The heuristic is not a tokenizer.
+Budget exhaustion returns an explicit limitation with no invented fallback.
+
+The 4B model may choose poor filters or miss candidates. This is a small curated
+catalogue assistant, not an exhaustive scholarship search or a new eligibility
+authority. Both current records still lack complete reviewed rules. Strict source
+limits can reject large, compressed or redirected official pages; these failures
+remain visible and never establish missing requirements. No automatic extraction,
+database mutation, model downloads, accounts or admission guarantees are added.
+
+### Optional real-model smoke test
+
+Normal tests mock Ollama and network transport. To explicitly exercise the real
+installed model against the typed endpoint using **synthetic academic input** and
+a temporary database seeded from the unchanged curated catalogue:
+
+```powershell
+.\.venv\Scripts\python.exe -m backend.scripts.smoke_agent
+```
+
+The command prints HTTP status, timing, actual per-round prompt-token counts,
+requested tools, the complete response and execution trace. It never writes to
+the application database or pulls a model. Exit codes: 0 for a completed response
+(including no matches), 1 for an HTTP error, 2 for a step/context budget stop.
+See [the recorded live example](docs/AGENT_SMOKE.md) for measured behavior.
+
 ## Tests and checks
 
 Run from the repository root:
@@ -433,6 +553,11 @@ duplicate prevention, transaction rollback, unknown requirements, filters,
 pagination, invalid parameters, 404s, and API documentation. No live source
 requests or production database writes occur during pytest. Frontend tests cover
 loading, valid and invalid responses, network failures, retry, and cancellation.
+Agent tests additionally exercise real tool dispatch behind scripted model replies,
+malformed arguments/results, prompt injection, model-selected alternative plans,
+unknown evidence, tool/context/time budgets, safe source fetching and Ollama
+outages. Browser AI responses are mocked so browser tests do not require a GPU;
+existing catalogue/eligibility browser flows still use the real local backend.
 
 Install the browser once, then run the end-to-end tests:
 
