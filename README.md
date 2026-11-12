@@ -3,17 +3,18 @@
 A course project for students from Kazakhstan seeking fully funded master's
 scholarships abroad. See [PROPOSAL.md](PROPOSAL.md) for the planned application.
 
-## Current scope: Phase 2
+## Current scope: Phase 3
 
 The React/TypeScript connection-check page and original health endpoint are
 preserved. The FastAPI/Pydantic v2 backend now provides a local SQLite scholarship
 catalogue through SQLAlchemy 2.0, an explicit curated-JSON importer, and read-only
-search/detail endpoints. The initial dataset contains two real, officially
+search/detail endpoints. Phase 3 adds stateless, deterministic eligibility
+checks and grouped profile matching. The initial dataset contains two real, officially
 verified programme records; it is not a list of guaranteed or currently open
 opportunities.
 
-AI agents, Ollama/Qwen, eligibility matching, applicant profiles, and a catalogue
-frontend remain future work. No database server, paid API, cloud account,
+AI agents, Ollama/Qwen, stored applicant accounts, and a catalogue frontend
+remain future work. No database server, paid API, cloud account,
 credentials, or personal student data is required. All application data stays
 in a local SQLite file. Development servers bind to `127.0.0.1` only.
 
@@ -176,8 +177,192 @@ overlong filters, unsupported funding values, invalid IDs, and unknown query
 parameters return **422** with FastAPI's standard `detail` validation errors.
 An absent positive ID returns **404** with `{"detail": "Scholarship not found"}`.
 Detail responses return a scholarship object with explicit nullable fields,
-official source URL, and verification date. No write endpoints are exposed.
+official source URL, and verification date. No catalogue write endpoints are exposed.
 The health endpoint retains its original JSON contract.
+
+## Eligibility API
+
+`POST /api/eligibility/check` accepts a scholarship ID and a student profile.
+Use an ID returned by the catalogue. Profiles are evaluated in memory; they are
+not saved to SQLite or logged by the application. Do not send names, contact
+details, documents, or credentials. Extra input fields are rejected.
+
+```powershell
+$request = @{
+  scholarship_id = 2
+  profile = @{
+    nationality = 'Kazakhstan'
+    degree_level = 'bachelor'
+    degree_completed = $true
+    field_of_study = 'Computer Science'
+    gpa = 3.5
+    gpa_scale = 4.0
+    ielts_overall = 7.0
+    intended_start_year = 2027
+    funding_preference = 'fully_funded'
+  }
+} | ConvertTo-Json -Depth 4
+Invoke-RestMethod 'http://127.0.0.1:8000/api/eligibility/check' -Method Post -ContentType 'application/json' -Body $request
+```
+
+Nationality, degree level, field, start year, and funding preference are required.
+Degree levels are `high_school`, `associate`, `bachelor`, `master`, `doctorate`,
+and `other`. `degree_completed` is optional: omitting it does not prove completion.
+GPA and scale may both be omitted (unknown), but must otherwise be supplied
+together as finite numbers, with `0 <= gpa <= gpa_scale` and a positive scale.
+IELTS overall is optional and must be a finite number between 0 and 9.
+Funding preference is `fully_funded` or `any_funding` (full or partial acceptable).
+Years are integer calendar years (1900–2200); a past start year fails the current
+intake check. Invalid input returns 422; an absent scholarship returns 404.
+
+The response includes the following fields (this is an illustrative **excerpt**
+for an incompletely reviewed record, not a promise about any programme):
+
+```json
+{
+  "scholarship_id": 2,
+  "status": "needs_verification",
+  "admission_status": "needs_verification",
+  "funding_status": "needs_verification",
+  "application_status": "needs_verification",
+  "requirements": [
+    {
+      "requirement": "language",
+      "scope": "admission",
+      "status": "unknown",
+      "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+      "suggestion": "Verify language evidence, exemptions, and required component scores."
+    }
+  ],
+  "unknown_requirements": ["language"]
+}
+```
+
+Full responses also contain the scholarship name, matched/failed/unknown
+requirement names, deduplicated suggestions, an overall explanation, official
+source URL, catalogue verification date, applicable rule sources and review date,
+server evaluation date, and a disclaimer. Individual results are `met`, `failed`,
+or `unknown`; the full requirement list is authoritative, while the name lists
+are convenient summaries.
+
+### Decision rules
+
+- `eligible`: every modeled mandatory condition is positively verified.
+- `ineligible`: at least one confirmed condition fails for this record and the
+  supplied funding preference. Failures take precedence over unknowns.
+- `needs_verification`: no confirmed failure exists, but at least one mandatory
+  condition is unknown.
+
+Admission, funding, and application statuses are calculated separately. Partial
+funding can fail a full-funding preference while admission conditions still pass.
+Neither admission checks nor advertised funding imply selection or an award.
+
+Nationality and fields use normalized **exact** matches (Unicode, whitespace and
+case normalization). Related fields, aliases, and grade equivalences are not
+guessed. Nonmatching values are failures only when a curator has explicitly
+verified an exhaustive restriction list. A catalogue `Worldwide` scope is
+recognized. Other missing or non-exhaustive scopes require verification.
+
+The awarded `degree_level` must be master; accepted **prior** qualifications are
+a separate reviewed rule. An unfinished matching degree needs confirmation of
+completion timing. GPA is compared only on exactly matching scales, without
+ratio conversions. An absent GPA threshold is unknown unless an explicit
+no-minimum rule is reviewed.
+
+IELTS comparisons are decisive only for a reviewed unconditional IELTS-only
+route. Conditional routes, alternatives, exemptions, and missing required
+component scores remain unknown. A low overall score cannot disqualify a student
+when another language route may apply. Suggestions are limited to documented
+gaps and further verification, not promises of approval.
+
+Deadline checks use the **server's UTC calendar date**. A passed deadline fails
+for that record; it is never rolled forward to another year. Deadline-today is
+unknown because time and timezone are not stored. A future deadline does not
+prove a call is open. Intake years come from explicit reviewed rules, never from
+parsing a descriptive application-cycle label. Opening status and funding
+availability must be reviewed separately.
+
+### Curator-reviewed rules
+
+Phase 2 records remain valid and unchanged. Their free-text notes are not parsed
+into executable conditions. The two current real records have no complete
+structured review and therefore cannot receive an overall `eligible` result
+until unresolved requirements are verified. Confirmed failures can still apply.
+
+Curators can optionally add `eligibility_rules` to a record in the existing
+JSON import format. For example, the following describes **fictional test
+conditions only**, and must never be copied onto a real programme without evidence:
+
+```json
+{
+  "source_urls": ["https://example.org/fictional-engineering"],
+  "verified_at": "2026-01-01",
+  "nationality_scope": "listed_only",
+  "field_scope": "listed_only",
+  "accepted_prior_degrees": ["bachelor", "master"],
+  "gpa_requirement": "minimum",
+  "language_requirement": "ielts_only",
+  "minimum_ielts_component": null,
+  "intake_year": 2027,
+  "call_open": true,
+  "funding_available": true,
+  "no_additional_admission_requirements": true,
+  "no_additional_funding_requirements": true
+}
+```
+
+All unprovided rule conditions default to unknown/unreviewed. Nationality and
+field scope may be `listed_only`, `any`, or `unknown`; listed-only rules use the
+catalogue's nonempty lists. GPA requirement is `minimum`, `none`, or `unknown`.
+Language requirement is `ielts_only`, `none`, `conditional`, or `unknown`.
+Minimum rules require corresponding catalogue thresholds. Explicit waivers
+cannot contradict numeric thresholds. A component minimum prevents an overall
+IELTS score alone from satisfying the language condition.
+
+The two `no_additional_*_requirements` assertions mean **no unmodelled mandatory
+student conditions remain**, not merely that the page has been read. Experience,
+prior awards, degree equivalence, component scores, or separate admission
+requirements that are not represented in the profile must remain unresolved.
+Opening and availability flags refer to applying for a published opportunity,
+not to approval of an individual student's award.
+
+Rules are stored in an additive `scholarship_eligibility_policies` table created
+at initialization/startup; existing scholarship columns are unchanged. Foreign
+keys are enforced. Each policy is bound to a fingerprint of all catalogue facts.
+Changes invalidate a mismatched policy. Complete snapshot imports replace rules;
+omitting rules removes the old policy. Policy-only updates are counted as updates,
+and older facts or rule reviews cannot overwrite newer ones. All changes remain
+in the same atomic import transaction.
+
+Rule review dates must be non-future and on/after the catalogue verification date.
+Only matching policies reviewed within **30 days** of evaluation are used. This
+is a conservative review window, not a guarantee that a source has not changed.
+Expired or invalid policies cannot prove eligibility; ask the provider to
+reconfirm even within the window. No student request can supply rules, a review
+date, or an evaluation-date override. The fictional example above is intentionally
+historical and is not valid current evidence.
+
+### Profile matching and ranking
+
+`POST /api/eligibility/matches` takes `{ "profile": { ... }, "page": 1,
+"page_size": 20 }` using the same profile contract. It returns separate
+`eligible`, `needs_verification`, and `ineligible` arrays, plus global `counts`,
+`total`, `page`, and `page_size`. Each item contains its complete `assessment`
+and human-readable `ranking_reasons`.
+
+All records are assessed before global pagination. Group order is eligible,
+needs verification, then ineligible. Within a group, published full funding
+precedes partial funding and unknown funding, then exact field matches precede
+unmatched fields; record ID breaks ties. Confirmed preference failures stay in
+the ineligible group. No eligibility percentages or admission probabilities are
+generated. Counts cover all results, not only the page. Page bounds match the
+catalogue API, and an empty database yields empty groups.
+
+This simple matcher scans the local catalogue and is intended for the small
+course-project dataset. It does not perform fuzzy matching, infer unstructured
+restrictions, convert GPA scales, process alternative test documents, or assess
+conditions absent from the profile. Additional profile fields and structured
+rules require further design before those conditions can be automated safely.
 
 ## Tests and checks
 

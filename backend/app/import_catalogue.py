@@ -11,7 +11,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from backend.app.database import create_database_engine, initialize_database
-from backend.app.models import Scholarship
+from backend.app.eligibility import catalogue_fingerprint
+from backend.app.eligibility_rules import EligibilityRules
+from backend.app.models import Scholarship, ScholarshipEligibilityPolicy
 from backend.app.schemas import CatalogueImport, ImportResult
 
 
@@ -30,7 +32,7 @@ def import_catalogue(
     unique = {}
     for record in catalogue.scholarships:
         key = record.identity_key
-        if key in unique and unique[key].database_values() != record.database_values():
+        if key in unique and unique[key].model_dump() != record.model_dump():
             raise ValueError("Conflicting duplicate records in the same import")
         unique[key] = record
 
@@ -41,12 +43,44 @@ def import_catalogue(
             current = session.scalar(
                 select(Scholarship).where(Scholarship.identity_key == key)
             )
+            policy = session.get(ScholarshipEligibilityPolicy, key)
+            incoming_rules = record.eligibility_rules
+            stored_rules = None
+            if policy is not None:
+                try:
+                    stored_rules = EligibilityRules.model_validate(policy.rules)
+                except ValidationError:
+                    # A valid import may repair corrupt local policy metadata.
+                    pass
+            policy_values = (
+                None
+                if incoming_rules is None
+                else {
+                    "catalogue_fingerprint": catalogue_fingerprint(record),
+                    "rules": incoming_rules.model_dump(mode="json"),
+                }
+            )
             if current is not None:
                 if current.last_verified_at > record.last_verified_at:
                     result.skipped_older += 1
                     continue
+                if (
+                    stored_rules is not None
+                    and incoming_rules is not None
+                    and incoming_rules.verified_at < stored_rules.verified_at
+                ):
+                    result.skipped_older += 1
+                    continue
                 if all(
                     getattr(current, field) == value for field, value in values.items()
+                ) and (
+                    policy is None
+                    and policy_values is None
+                    or policy is not None
+                    and policy_values is not None
+                    and policy.rules == policy_values["rules"]
+                    and policy.catalogue_fingerprint
+                    == policy_values["catalogue_fingerprint"]
                 ):
                     result.unchanged += 1
                     continue
@@ -67,6 +101,16 @@ def import_catalogue(
                     <= statement.excluded.last_verified_at,
                 )
             )
+            if policy_values is None:
+                if policy is not None:
+                    session.delete(policy)
+            elif policy is None:
+                session.add(
+                    ScholarshipEligibilityPolicy(identity_key=key, **policy_values)
+                )
+            else:
+                policy.rules = policy_values["rules"]
+                policy.catalogue_fingerprint = policy_values["catalogue_fingerprint"]
     return result
 
 
