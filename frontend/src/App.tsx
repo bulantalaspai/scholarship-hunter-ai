@@ -9,6 +9,7 @@ import {
   ScholarshipDetails,
 } from './pages'
 import ProfileForm from './components/ProfileForm'
+import AgentRecommendations from './components/AgentRecommendations'
 import { EmptyState } from './components/ui'
 
 function validId(value: string | null) {
@@ -24,6 +25,7 @@ export default function App() {
   const path = pathname || '/'
   const params = new URLSearchParams(query)
   const scholarship = validId(params.get('scholarship'))
+  const aiMode = params.get('mode') === 'ai'
   const detail = /^\/scholarships\/(\d+)$/.exec(path)
   const result = /^\/results\/(\d+)$/.exec(path)
   const id = validId(detail?.[1] ?? result?.[1] ?? null)
@@ -53,27 +55,39 @@ export default function App() {
               / My profile
             </p>
             <h1>
-              {scholarship ? 'Check your eligibility' : 'Your student profile'}
+              {aiMode
+                ? 'Your profile for local AI'
+                : scholarship
+                  ? 'Check your eligibility'
+                  : 'Your student profile'}
             </h1>
             <p>
-              {scholarship
-                ? 'Compare your background with this scholarship’s documented requirements.'
-                : 'Tell us about your studies to find and understand your matches.'}
+              {aiMode
+                ? 'Add your academic background, then choose a request for the local AI. No model call starts when you submit this form.'
+                : scholarship
+                  ? 'Compare your background with this scholarship’s documented requirements.'
+                  : 'Tell us about your studies to find and understand your matches.'}
             </p>
           </div>
         </div>
         <div className="profile-layout">
           <ProfileForm
-            key={`${scholarship ?? 'matches'}:${profile ? 'saved' : 'empty'}`}
+            key={`${aiMode ? 'ai' : (scholarship ?? 'matches')}:${profile ? 'saved' : 'empty'}`}
             initialProfile={profile}
             submitLabel={
-              scholarship ? 'Check my eligibility' : 'Find my matches'
+              aiMode
+                ? 'Continue to local AI'
+                : scholarship
+                  ? 'Check my eligibility'
+                  : 'Find my matches'
             }
             onSubmit={(value) => {
               setProfile(value)
-              window.location.hash = scholarship
-                ? `/results/${scholarship}`
-                : '/matches'
+              window.location.hash = aiMode
+                ? '/agent'
+                : scholarship
+                  ? `/results/${scholarship}`
+                  : '/matches'
             }}
           />
           <aside className="profile-aside">
@@ -92,7 +106,9 @@ export default function App() {
                 className="button-secondary"
                 onClick={() => {
                   setProfile(undefined)
-                  window.location.hash = '/profile'
+                  window.location.hash = aiMode
+                    ? '/profile?mode=ai'
+                    : '/profile'
                 }}
               >
                 Clear profile
@@ -101,6 +117,23 @@ export default function App() {
           </aside>
         </div>
       </>
+    )
+  else if (path === '/agent')
+    content = profile ? (
+      <AgentRecommendations key={JSON.stringify(profile)} profile={profile} />
+    ) : (
+      <EmptyState title="Add your profile for local AI">
+        <p>
+          Your academic profile is kept only in memory. Add it first, then
+          explicitly request local AI recommendations.
+        </p>
+        <a className="button" href="#/profile?mode=ai">
+          Add student profile
+        </a>
+        <p>
+          <a href="#/explore">Or browse scholarships without a profile</a>
+        </p>
+      </EmptyState>
     )
   else if (
     (result && id) ||
@@ -189,6 +222,12 @@ export default function App() {
                 My matches
               </a>
             )}
+            <a
+              href="#/agent"
+              aria-current={path === '/agent' ? 'page' : undefined}
+            >
+              Local AI
+            </a>
           </nav>
         </div>
       </header>

@@ -7,6 +7,7 @@ from typing import Literal
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from backend.app.agent_api import router as agent_router
 from backend.app.database import create_database_engine, initialize_database
 from backend.app.eligibility_api import router as eligibility_router
 from backend.app.scholarships import router
@@ -34,13 +35,14 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
             engine.dispose()
 
     application = FastAPI(
-        title="Scholarship Hunter AI", version="0.3.0", lifespan=lifespan
+        title="Scholarship Hunter AI", version="0.5.0", lifespan=lifespan
     )
     application.add_api_route(
         "/api/health", health, response_model=HealthResponse, tags=["Health"]
     )
     application.include_router(router)
     application.include_router(eligibility_router)
+    application.include_router(agent_router)
     return application
 
 

@@ -29,8 +29,43 @@ a:hover {
 }
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 110px;
+  padding: 12px;
+  resize: vertical;
+  border: 1px solid #9cb3c7;
+  border-radius: 5px;
+  background: white;
+  color: var(--navy);
+  line-height: 1.55;
+}
+textarea[aria-invalid='true'] {
+  border-color: #a03434;
+}
+.agent-form {
+  max-width: 82ch;
+}
+.agent-output {
+  margin-top: 32px;
+}
+.agent-warnings {
+  margin-block: 24px;
+}
+.agent-trace ol {
+  padding-left: 24px;
+}
+.agent-trace li {
+  padding-left: 5px;
+  margin-bottom: 22px;
+  overflow-wrap: anywhere;
 }
 button,
 a,
