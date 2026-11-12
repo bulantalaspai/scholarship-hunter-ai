@@ -3,6 +3,7 @@ import type { Page } from '@playwright/test'
 import type { AgentResponse } from '../src/agent'
 import type {
   EligibilityResult,
+  MatchResult,
   ScholarshipPage,
   StudentProfile,
 } from '../src/types'
@@ -169,6 +170,11 @@ test('requests local AI explicitly and renders a mocked plan with a real determi
 test('keeps real deterministic matching available during a simulated Ollama outage', async ({
   page,
 }) => {
+  const matchingResponse = await page.request.post('/api/eligibility/matches', {
+    data: { profile, page_size: 10 },
+  })
+  expect(matchingResponse.ok()).toBe(true)
+  const matches: MatchResult = await matchingResponse.json()
   await page.route('**/api/agent/recommend', (route) =>
     route.fulfill({
       status: 503,
@@ -196,7 +202,10 @@ test('keeps real deterministic matching available during a simulated Ollama outa
     }),
   ).toBeVisible()
   await expect(
-    page.getByRole('heading', { name: /^Needs verification \(2\)/ }),
+    page.getByRole('heading', {
+      name: `Needs verification (${matches.counts.needs_verification})`,
+      exact: true,
+    }),
   ).toBeVisible()
   await expect(
     page.getByRole('link', {

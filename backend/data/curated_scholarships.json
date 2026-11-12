@@ -41,6 +41,618 @@
       "last_verified_at": "2026-11-11",
       "additional_requirements": "Engineering/science bachelor's background; some other degrees considered individually. IELTS route requires 6.5 overall and 5.5 per element; alternatives and exemptions exist. Prior EMJM recipients cannot receive another EMJM award. Selection depends on competition, mobility paths and funds.",
       "notes": "International mobility is compulsory. IELTS is one evidence route, not universally mandatory. Scholarship deadline for the 2027-2029 edition: https://www.smaccs.eu/admissions/deadlines/ . Admission conditions: https://www.smaccs.eu/admissions/admission-criteria/ . Destinations: https://www.smaccs.eu/ . The homepage's 2026 closure notice concerns an older edition; current application opening status was not independently established."
+    },
+    {
+      "scholarship_name": "EDISS Erasmus Mundus Scholarships - Engineering of Data-intensive Intelligent Software Systems",
+      "university_or_provider": "EDISS consortium",
+      "destination_country": [
+        "Finland",
+        "Sweden",
+        "Italy",
+        "Spain"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Computer Science",
+        "Software Engineering"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "EMJM recipients receive a waiver of participation costs, including tuition and insurance.",
+      "living_stipend": "EUR 1400 per month for up to 24 months.",
+      "application_deadline": "2027-01-12",
+      "application_cycle": "2027-2029 (intake 7)",
+      "official_source_url": "https://www.master-ediss.eu/scholarship/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: accredited bachelor's equivalent to at least 180 ECTS; relevant computing and mathematics coursework. IELTS Academic route: 6.5 overall and 6 per component; TOEFL and specified education/partner-university exemptions exist. Online IELTS and TOEFL Home Edition are rejected. Scholarship: competitive selection; previous Erasmus Mundus award and concurrent EU funding restrictions apply.",
+      "notes": "EMJM award only; lower EDISS allowances and tuition-only awards are different schemes. Scholarship round opens 16 November 2026 and closes 12 January 2027 at 15:00 Helsinki time: https://www.master-ediss.eu/upcoming-application-rounds-ediss-intake-7/ . Admissions: https://www.master-ediss.eu/admission-requirements/ . Destinations: https://www.master-ediss.eu/faq/ . No numeric minimum GPA was verified; incomplete degrees require final documents by 30 July 2027. No complete rule policy is asserted."
+    },
+    {
+      "scholarship_name": "DEAI Full Scholarship - Data Engineering and Artificial Intelligence",
+      "university_or_provider": "DEAI consortium",
+      "destination_country": [
+        "Belgium",
+        "Spain",
+        "Austria",
+        "France",
+        "Italy"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Computer Science"
+      ],
+      "eligible_nationalities": null,
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "The full scholarship pays all participation fees and programme insurance.",
+      "living_stipend": "EUR 1400 monthly for the programme duration, up to 24 months.",
+      "application_deadline": "2027-01-11",
+      "application_cycle": "2027-2029",
+      "official_source_url": "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: recognized bachelor's equivalent to 180 ECTS, with computing background; final-year applicants may apply. English at CEFR B2, with IELTS Academic 5.5, TOEFL or other recognized equivalents listed as routes. Scholarship: ranking and nationality balance apply; previous EMJM recipients cannot receive the full award.",
+      "notes": "This record describes the full award, not the tuition-only partial scholarship. Grant deadline 11 January 2027 at 12:00 GMT; reference letters due 18 January: https://deai.ulb.be/home/students/admission/ . Partner countries and subject: https://deai.ulb.be/ . The official homepage reports the application system offline for security maintenance on 21 October 2026, so current portal availability needs confirmation. No exhaustive nationality list or numeric GPA threshold was verified."
+    },
+    {
+      "scholarship_name": "CYBERSURE Erasmus Mundus Scholarships - Cybersecurity and Assurance",
+      "university_or_provider": "CYBERSURE consortium",
+      "destination_country": [
+        "Norway",
+        "Finland",
+        "Sweden",
+        "Denmark",
+        "Estonia",
+        "France",
+        "Austria"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Computer Science",
+        "Information Technology"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "Full scholarships cover tuition, travel and insurance; tuition-only partial scholarships are separate.",
+      "living_stipend": "Monthly living allowance. Published 2026 grant rate is EUR 16800 per year; the 2027 rate is unconfirmed.",
+      "application_deadline": "2027-01-04",
+      "application_cycle": "2027 intake",
+      "official_source_url": "https://www.cybersure-master.eu/scholarships-and-fees",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: recognized relevant bachelor's equivalent to 180 ECTS; applicants outside EU/EEA must provide final degree documents by the application deadline. IELTS Academic 6.5 overall with writing 6.0 is one route; TOEFL/Cambridge and specified education exemptions also apply. Scholarship: academic merit selection and prior EMJM award restriction.",
+      "notes": "2027 applications are scheduled for 16 November 2026 to 4 January 2027 at 23:59 GMT+1; English results have a separate 18 January deadline: https://www.cybersure-master.eu/admission . Full coverage and mobility destinations: https://www.cybersure-master.eu/faq . Funding page still labels its amounts and scholarship counts as 2026; do not transfer these counts or rate to 2027 without confirmation. Numeric GPA minimum and all applicant-specific conditions remain unresolved."
+    },
+    {
+      "scholarship_name": "CyberMACS Erasmus Mundus Scholarships - Applied Cybersecurity",
+      "university_or_provider": "CyberMACS consortium",
+      "destination_country": [
+        "Turkey",
+        "Germany",
+        "North Macedonia"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Computer Science",
+        "Computer Engineering",
+        "Electrical Engineering",
+        "Electronics Engineering",
+        "Information Technology",
+        "Management Information Systems",
+        "Physics",
+        "Mathematics"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "EMJM scholarship holders are exempt from registration and tuition; programme insurance is included.",
+      "living_stipend": "EUR 1400 monthly for 24 months for scholarship holders, subject to agreement conditions.",
+      "application_deadline": null,
+      "application_cycle": "Published scholarship scheme; next intake unconfirmed",
+      "official_source_url": "https://cybermacs.eu/scholarships/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: recognized relevant bachelor's with adequate mathematics, programming, algorithms and other computing foundations. Current admissions page lists TOEFL, Cambridge and PTE routes plus specified residence-based exemptions; it does not establish an IELTS route. Scholarship: best-ranked admitted applicants are selected competitively.",
+      "notes": "Homepage says application details will be announced at the end of November 2026: https://cybermacs.eu/ . Scholarship page includes historical 2023 counts, and admission text includes older 2024/2026 conditions; no new intake deadline, seat count or current unconditional language rule is inferred. Admission: https://cybermacs.eu/admission-requirements-and-documents/ . Fields: https://cybermacs.eu/selection-process/ . Countries: https://cybermacs.eu/about/ . No numerical GPA cutoff was verified."
+    },
+    {
+      "scholarship_name": "IMLEX Erasmus Mundus Scholarships - Imaging and Light in Extended Reality",
+      "university_or_provider": "IMLEX consortium",
+      "destination_country": [
+        "Finland",
+        "Japan",
+        "France",
+        "Belgium"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Information Technology",
+        "Computer Science",
+        "Physics",
+        "Mathematics",
+        "Electrical Engineering",
+        "Photonics"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "Participation fees, mandatory academic costs and insurance are covered for EMJM recipients.",
+      "living_stipend": "EUR 1400 per month for the study period, up to 24 months.",
+      "application_deadline": "2027-01-13",
+      "application_cycle": "2027 intake",
+      "official_source_url": "https://www.imlex.org/fees-and-scholarships/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: relevant recognized bachelor's and strong relevant studies. IELTS Academic 6.5 is one route; TOEFL, PTE and Cambridge tests and specified English-taught degree routes are alternatives. Conditional graduates must provide final documents by 30 July 2027. Scholarship: competitive award; prior Erasmus Mundus award and concurrent Community grant restrictions apply.",
+      "notes": "Application period 2 December 2026 to 13 January 2027 at 23:59 UTC+2: https://www.imlex.org/how-to-apply/admission-criteria/ . 2027 full scholarships confirmed: https://www.imlex.org/how-to-apply/ . Consortium countries and worldwide scope: https://www.imlex.org/ . Other related fields may be considered; this list is not an exhaustive restriction. No numeric GPA threshold or complete eligibility policy was verified."
+    },
+    {
+      "scholarship_name": "DENSYS 2.0 Erasmus Mundus Scholarships - Decentralised Smart Energy Systems",
+      "university_or_provider": "DENSYS consortium",
+      "destination_country": [
+        "France",
+        "Sweden",
+        "Italy",
+        "Spain"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Engineering",
+        "Mechanical Engineering",
+        "Aeronautical Engineering",
+        "Chemical Engineering",
+        "Electrical Engineering",
+        "Energy Engineering"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "EMJM recipients' participation costs, including institutional tuition and insurance, are fully funded.",
+      "living_stipend": "EUR 1400 per month throughout the two-year master's programme.",
+      "application_deadline": "2027-01-27",
+      "application_cycle": "2027-2029",
+      "official_source_url": "https://densys.univ-lorraine.fr/fees-and-scholarships/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: science/engineering bachelor's with required thermodynamics, heat transfer, fluid dynamics, mathematics and numerical methods. The provider says CGPA below 3.0/4.0 may mean subject requirements are not fulfilled; this conditional statement is not encoded as an unconditional GPA cutoff. IELTS 6.5 with writing 5.5, TOEFL, Cambridge and specified education exemptions are alternative routes. Scholarship: previous EMJM recipients cannot receive another award.",
+      "notes": "Homepage publishes the 2027-2029 deadline as 27 January 2027, 18:00 CEST (timezone label as published): https://densys.univ-lorraine.fr/ . The admissions page retains a 2025-2026 calendar; use it for requirements, not the current deadline: https://densys.univ-lorraine.fr/application/ . Worldwide scholarships are stated; Kazakhstan is explicitly named in a targeted-region list dated 2023, whose current extra allocation needs confirmation. Countries are core study destinations; a short Belgium activity is additional. Partial participation-cost reductions are a different award."
+    },
+    {
+      "scholarship_name": "EMIMEP European Master for Industry in Microwave Electronics and Photonics - Erasmus Mundus Scholarships",
+      "university_or_provider": "EMIMEP consortium / University of Limoges",
+      "destination_country": [
+        "France",
+        "Italy",
+        "Spain",
+        "Germany"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Electrical Engineering",
+        "Electronics",
+        "Telecommunication Engineering",
+        "Computer Science",
+        "Photonics",
+        "Physics"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "Erasmus Mundus award recipients pay no tuition during the funded programme; health and travel insurance is also provided.",
+      "living_stipend": "EUR 1400 per month for at most 24 months; this supports living, travel and visa costs.",
+      "application_deadline": "2027-03-12",
+      "application_cycle": "Scholarship call closing March 2027; intake year unconfirmed",
+      "official_source_url": "https://www.erasmus-mundus.emimep.eu/admission-applications/erasmus-scholarships/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: a relevant 180-ECTS bachelor's completed by application, English evidence (published CEFR B1), certified records, motivation, CV and three references. TOEFL, IELTS and PTE are examples; a numeric IELTS threshold was not verified. Scholarship: merit assessment and English-language interview determine ranking; prior Erasmus Mundus awards exclude a second award under the stated policy. Proof of stable home-country residence is requested before enrolment.",
+      "notes": "The application page explicitly lists the recorded eligible prior-degree fields. Partners and mobility: https://www.erasmus-mundus.emimep.eu/ . The application page body lists opening 16 November 2026 and closing 12 March 2027 at 23:59 Paris time, while its title retains 2024-2026; confirm the applicable intake and dates with the provider: https://www.erasmus-mundus.emimep.eu/admission-applications/https-www-erasmus-mundus-emimep-eu-admission-applications-erasmus-mundus-application/ . The funding page says worldwide and explicitly lists Kazakhstan; targeted-region rules and current availability still need review. No current-open claim is made."
+    },
+    {
+      "scholarship_name": "EMSSE European Master in Sustainable Systems Engineering - Erasmus Mundus Scholarships",
+      "university_or_provider": "EMSSE consortium / Universite de technologie de Compiegne",
+      "destination_country": [
+        "France",
+        "Italy",
+        "Spain",
+        "Albania"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Computer Engineering",
+        "Electronic Engineering",
+        "Control Engineering",
+        "Management Engineering",
+        "Biomedical Engineering",
+        "Computer Science"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "Erasmus Mundus awards cover participation charges, including tuition, health insurance and compulsory course-participation costs.",
+      "living_stipend": "EUR 1400 monthly throughout both academic years.",
+      "application_deadline": "2027-02-15",
+      "application_cycle": "2027-2029",
+      "official_source_url": "https://emsse.eu/admission-and-scholarships/scholarships/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: relevant three-year/180-ECTS degree; adequacy is reviewed for each study path. Several other engineering and applied-mathematics backgrounds can be considered individually. IELTS Academic 6.5 is one route; TOEFL and Cambridge alternatives are published, and specified GRE results may demonstrate English. Scholarship: applicants worldwide can compete subject to academic requirements and the provider's exceptions; multiple listed funding options cannot be combined. A published fully funded option is not an individual award decision.",
+      "notes": "Programme, four destination countries and scholarship recruitment window 15 November 2026 to 15 February 2027 for the 2027-2029 intake: https://emsse.eu/ . The general admission-and-scholarships landing page retains older 2025 dates; the newer homepage dates are recorded here. Admission and English alternatives: https://emsse.eu/admission-and-scholarships/admission/ . The scholarship page explicitly includes Kazakhstan among additional targeted-region countries. Exact GPA threshold, all grant exceptions and current opening status require confirmation."
+    },
+    {
+      "scholarship_name": "CoDaS Communications Engineering and Data Science - Erasmus Mundus Scholarships",
+      "university_or_provider": "CoDaS consortium / Aalto University",
+      "destination_country": [
+        "Finland",
+        "France",
+        "Portugal",
+        "Germany",
+        "Spain"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Communications Engineering",
+        "Computer Science",
+        "Electrical Engineering",
+        "Software Engineering"
+      ],
+      "eligible_nationalities": null,
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "EMJM recipients receive a waiver of the EUR 8000 annual programme fee for the normal two academic years.",
+      "living_stipend": "EUR 1400 per month for programme subsistence, for at most 24 months.",
+      "application_deadline": "2027-01-05",
+      "application_cycle": "2027 admission (two-year programme)",
+      "official_source_url": "https://www.unite-codas-master.eu/scholarship.html",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: a recognized bachelor's equivalent to 180 ECTS and relevant communications/computing prerequisites; host-specific course-credit requirements also apply. IELTS Academic requires 6.5 overall and 6.0 writing; TOEFL, PTE, Cambridge and narrowly defined degree/consortium exemptions are alternatives. Country-dependent GPA expectations are published; Kazakhstan has no verified fixed threshold and is reviewed individually. Scholarship: previous EMJM recipients cannot receive another EMJM award; simultaneous EU funding and nationality quotas restrict allocation.",
+      "notes": "This record describes the EMJM award, not the separate CoDaS tuition-only or Premium awards. The latter have different living support. Application window 1 December 2026 to 5 January 2027: https://www.unite-codas-master.eu/ . Admission details, conditional graduation, English evidence deadlines and country-specific GPA expectations: https://www.unite-codas-master.eu/admission.html . Worldwide scholarship access has not been treated as a complete nationality review, so nationality remains null. Destinations are the five listed consortium institutions; allocation and additional host prerequisites need review."
+    },
+    {
+      "scholarship_name": "AMASE Advanced Materials Science and Engineering - Full Erasmus Mundus Scholarships",
+      "university_or_provider": "AMASE consortium / EUSMAT, Saarland University",
+      "destination_country": [
+        "Germany",
+        "Sweden",
+        "Spain",
+        "France",
+        "Austria",
+        "Italy"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Materials Science and Engineering",
+        "Physics",
+        "Chemistry"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "The full EM award covers four semesters of participation/tuition charges and basic European health insurance; extra semesters are not covered.",
+      "living_stipend": "EUR 1400 monthly for 24 months. Visa, accommodation and travel are to be paid from this allowance, with residence/mobility restrictions on payment.",
+      "application_deadline": null,
+      "application_cycle": "2027/2028 intake",
+      "official_source_url": "https://www.eusmat.net/international-studies/master/amase/application/fees-and-scholarships/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: at least a three-year bachelor's in materials science/engineering, physics, chemistry or a relevant related discipline. Language requirements depend on the selected universities: English B2 or required German, French or Spanish routes; test alternatives and exemptions vary, so no single IELTS threshold is stored. Scholarship: completed applications by the route-specific deadline are considered; prior EMJM funding, residence and mobility can restrict support. This record covers the full award, not the separate partial tuition waiver.",
+      "notes": "There is no single scholarship deadline: Lulea entrance closes 15 January 2027; the other five entrance universities close 15 February 2027, so the scalar deadline is null. Official dates: https://www.eusmat.net/international-studies/master/amase/application/deadlines/ . Admission: https://www.eusmat.net/international-studies/master/amase/application/application-requirements/ . Programme countries, provider and degree: https://www.eusmat.net/international-studies/master/amase/about-amase/team-consortium/ . Application and nationality scope: https://www.eusmat.net/international-studies/master/amase/application/ . Eligibility and selected mobility require individual confirmation."
+    },
+    {
+      "scholarship_name": "E-PiCo+ Electric Vehicle Propulsion and Control - Erasmus Mundus Scholarships",
+      "university_or_provider": "E-PiCo+ consortium / Centrale Nantes",
+      "destination_country": [
+        "France",
+        "Germany",
+        "Mexico",
+        "Italy",
+        "Romania"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Control Systems",
+        "Electrical Engineering",
+        "Mechatronics"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "EMJM award recipients are exempt from the programme tuition charges.",
+      "living_stipend": "EUR 1400 monthly throughout 24 months, contributing to living, installation, travel and visa expenses.",
+      "application_deadline": "2027-01-31",
+      "application_cycle": "2027-2029",
+      "official_source_url": "https://master-epico.ec-nantes.fr/english-version/admission/fees-scholarships-1",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: relevant BSc equivalent to 180 ECTS with at least three study years. Published graduation limits differ for European and non-European applicants. IELTS 6.5 is one English route; TOEFL, Cambridge and TOEIC alternatives and an English-medium study exemption are listed. Scholarship: previous EMJM awards and concurrent EU support are restricted; awards are ranked competitively. Residency affects the provider's country categories. Separate consortium tuition waivers do not carry the full EMJM benefits.",
+      "notes": "Scholarship deadline 31 January 2027 at 23:59 GMT+1; 2027-2029 applications open 1 November 2026: https://master-epico.ec-nantes.fr/english-version/admission/deadlines . Admission: https://master-epico.ec-nantes.fr/english-version/admission/who-can-apply . Full partner destinations, including Mexico: https://master-epico.ec-nantes.fr/english-version/partners . Kazakhstan is explicitly listed in the funding page's Central Asia category. A published call is not a guarantee of admission, a grant, or sufficient funds for every personal expense."
+    },
+    {
+      "scholarship_name": "EU-CORE European Master on Control of Renewable Energy Systems - Erasmus Mundus Scholarships",
+      "university_or_provider": "EU-CORE consortium / Centrale Nantes",
+      "destination_country": [
+        "France",
+        "Germany",
+        "Croatia"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Mechanical Engineering",
+        "Electrical Engineering",
+        "Process Engineering"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "EMJM scholarship holders do not pay the listed programme tuition fees.",
+      "living_stipend": "EUR 1400 monthly for the 24-month course, contributing to travel, visa, installation and living expenses.",
+      "application_deadline": "2027-01-31",
+      "application_cycle": "2027-2029",
+      "official_source_url": "https://master-eu-core.ec-nantes.fr/admission/students/fees-scholarships",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: a relevant three-year/180-ECTS BSc and mandatory automatic-control knowledge; graduation by 31 July. IELTS 6.5 is one option alongside TOEFL, Cambridge and TOEIC. English-medium studies may qualify for an exemption; accepted certification or exemption proof remains mandatory. Scholarship: earlier EMJM support and concurrent EU funding are restricted, and the published country/residency categories need individual review. Consortium fee reductions are separate from the full EMJM award.",
+      "notes": "The homepage advertises scholarship applications from 1 November 2026 to 31 January 2027: https://master-eu-core.ec-nantes.fr/ . Admission and language alternatives: https://master-eu-core.ec-nantes.fr/admission/students/who-can-apply . Full partners and countries: https://master-eu-core.ec-nantes.fr/en/partners . The funding table identifies the third edition as 2027-2029 and explicitly lists Kazakhstan in the Central Asia category. Complete award conditions and application status should be reconfirmed."
+    },
+    {
+      "scholarship_name": "JEMARO Japan-Europe Master on Advanced Robotics - Consortium Scholarships",
+      "university_or_provider": "JEMARO consortium / Centrale Nantes and Keio University",
+      "destination_country": [
+        "France",
+        "Japan"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Mechatronics",
+        "Automatic Control",
+        "Electrical Engineering",
+        "Mechanical Engineering",
+        "System Engineering",
+        "Applied Mathematics",
+        "Computer Science"
+      ],
+      "eligible_nationalities": null,
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "funding_type": "partially_funded",
+      "tuition_coverage": "Limited consortium awards reduce tuition; the award amounts for the 2027 intake are not yet specified.",
+      "living_stipend": null,
+      "application_deadline": null,
+      "application_cycle": "2027 intake (consortium partial tuition awards)",
+      "official_source_url": "https://jemaro.ec-nantes.fr/english-version/admission/jemaro-fees-and-scholarships",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: relevant robotics-related degree equivalent to at least 180 ECTS; multidisciplinary robotics preparation matters, and graduation deadlines depend on applicant category. IELTS 6.5 is one route; TOEFL, Cambridge, TOEIC or an official English-medium study exemption may be used. Scholarship: timely applications are considered for limited merit-ranked consortium tuition reductions without a separate form. Complete nationality restrictions and living support are not verified.",
+      "notes": "Erasmus Mundus funding ended in 2025; 2027 is advertised as self-funded with possible consortium partial waivers, not a fully funded EMJM call. Current programme and France/Japan coordinators: https://www.ec-nantes.fr/study/erasmus-mundus-joint-master-degrees/japan-europe-master-on-advanced-robotics-jemaro . Only these two destination countries are independently confirmed here; additional European routes need review. Admission: https://jemaro.ec-nantes.fr/english-version/admission/who-can-apply . The fee page's illustrative Brazilian reduction is not stored as a promised grant amount. Tuition, award amounts, application deadline and opening remain unconfirmed."
+    },
+    {
+      "scholarship_name": "IFRoS Intelligent Field Robotic Systems - Consortium Excellence Grants",
+      "university_or_provider": "IFRoS consortium / Universitat de Girona",
+      "destination_country": [
+        "Spain",
+        "Croatia",
+        "Hungary"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Engineering"
+      ],
+      "eligible_nationalities": [
+        "Worldwide"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "funding_type": "partially_funded",
+      "tuition_coverage": "For the published 2026-2028 grant, tuition reduction is EUR 14500 for partner-country students or EUR 8500 for programme-country students. Recipients must pay the remaining EUR 500.",
+      "living_stipend": "The Consortium Excellence Grant does not provide a living allowance or travel funding.",
+      "application_deadline": null,
+      "application_cycle": "2026-2028 (published Consortium Excellence Grant)",
+      "official_source_url": "https://ifrosmaster.org/ifros-applicants/fees-grants",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: technical engineering background with mathematics, computing and strong Python/programming skills; undergraduate completion is required for enrolment. IELTS 6.5 is one English route; other tests and documented English-medium degree exemptions are listed. Scholarship: 14 merit-based tuition-reduction awards are described for the 2026-2028 intake; the EUR 500 student payment is compulsory. Financial resources for visas and personal living costs remain the student's responsibility.",
+      "notes": "This is not a fully funded Erasmus Mundus award. The applicants page now states that 2027-2029 applications are not open and funding/dates are to be announced, so the 2026-2028 grant terms are not projected onto 2027: https://ifrosmaster.org/ifros-applicants . The scalar deadline remains null. Programme degree, destinations, worldwide admission scope, technical background and English alternatives: https://ifrosmaster.org/ifros-applicants/faqs . Specific grant nationality quotas, all admission conditions and future grant availability require further review."
+    },
+    {
+      "scholarship_name": "EMINENT Embedded Intelligence Nanosystems Engineering - Erasmus Mundus Scholarships",
+      "university_or_provider": "EMINENT consortium / University of Siegen",
+      "destination_country": [
+        "Greece",
+        "Germany",
+        "France",
+        "Lithuania",
+        "Portugal"
+      ],
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Electrical and Electronic Engineering",
+        "Mechanical Engineering",
+        "Physics",
+        "Material Science",
+        "Computer Engineering"
+      ],
+      "eligible_nationalities": null,
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "funding_type": "fully_funded",
+      "tuition_coverage": "No programme tuition is charged. Local semester/registration charges may remain; the consortium covers the Vilnius registration fee for scholarship holders.",
+      "living_stipend": "EUR 1400 per month for up to two years to support living and travel costs; continuation depends on academic performance.",
+      "application_deadline": "2027-03-01",
+      "application_cycle": "2027 admission",
+      "official_source_url": "https://eminent-master.eu/scholarships/",
+      "last_verified_at": "2026-11-12",
+      "additional_requirements": "Admission: relevant 180-ECTS bachelor's; the converted German grade must be no worse than 2.7. This inverse grading criterion cannot be represented safely as a higher-is-better minimum GPA, so numeric GPA fields remain null. IELTS Academic 6.5 with each component at least 6.0 is one route; recognized tests and limited country/English-medium exemptions apply. Scholarship: selection also considers geographic balance, and retaining funding requires passing the first two semesters with the published German-grade average. All conditions remain subject to provider assessment.",
+      "notes": "The 2027 application window is 1 November 2026 to 1 March 2027: https://eminent-master.eu/important-dates/ . Admission criteria and accepted alternatives: https://eminent-master.eu/application-requirement/ . Fee limits and exemption conditions: https://eminent-master.eu/faqs/ . Partners and mobility: https://eminent-master.eu/partner-institutions/ and https://eminent-master.eu/curriculum-degree/ . The monthly scholarship and tuition exemption support the fully funded classification; it does not mean every ancillary fee is reimbursed. A complete nationality review has not been established."
+    },
+    {
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Mathematics",
+        "Computer Science",
+        "Natural Sciences",
+        "Engineering"
+      ],
+      "eligible_nationalities": null,
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "application_deadline": null,
+      "application_cycle": "Winter semester 2027/2028",
+      "last_verified_at": "2026-11-12",
+      "scholarship_name": "Study scholarships for STEM disciplines",
+      "university_or_provider": "DAAD",
+      "destination_country": [
+        "Germany"
+      ],
+      "funding_type": "partially_funded",
+      "tuition_coverage": "DAAD does not pay tuition; only tuition-free programmes qualify.",
+      "living_stipend": "EUR 992 monthly for 10-24 months; continuation reviewed after year one.",
+      "official_source_url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=57742130",
+      "additional_requirements": "Admission: recognised first degree and host admission; programme-specific language conditions. Scholarship: developing/emerging-country scope, above-average results, no completed master's, residence and degree-age limits. DAAD requires at least B1 language evidence; IELTS is one of several accepted certificates, not a universal threshold.",
+      "notes": "Kazakhstan-specific nationality and deadline not established. Separate from DAAD's general all-disciplines award. Partial classification is conservative because tuition is not paid."
+    },
+    {
+      "degree_level": "master",
+      "eligible_study_fields": null,
+      "eligible_nationalities": [
+        "Kazakhstan"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "application_deadline": "2026-01-15",
+      "application_cycle": "2026/2027 (closed published call)",
+      "last_verified_at": "2026-11-12",
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "university_or_provider": "Tempus Public Foundation / Hungarian Government",
+      "destination_country": [
+        "Hungary"
+      ],
+      "funding_type": "partially_funded",
+      "tuition_coverage": "Tuition waived.",
+      "living_stipend": "HUF 43,700 monthly; dormitory place or HUF 40,000 monthly housing contribution. Provider warns this does not cover all living costs.",
+      "official_source_url": "https://stipendiumhungaricum.hu/about/",
+      "additional_requirements": "Admission: requirements and language evidence depend on the chosen host programme. Scholarship: Kazakhstan sending-partner nomination and the applicable call conditions require separate checking.",
+      "notes": "Historical deadline: 14:00 CET on 15 January 2026; September 2026 start. Do not roll forward to 2027/2028. Kazakhstan master's options in any field: https://stipendiumhungaricum.hu/partners/?partner=kazakhstan . Call: https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/ . No exhaustive field list or universal scores inferred."
+    },
+    {
+      "degree_level": "master",
+      "eligible_study_fields": null,
+      "eligible_nationalities": [
+        "Kazakhstan"
+      ],
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": null,
+      "application_deadline": "2026-05-29",
+      "application_cycle": "2027 embassy recommendation (Kazakhstan; closed)",
+      "last_verified_at": "2026-11-12",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "university_or_provider": "Japan Ministry of Education, Culture, Sports, Science and Technology (MEXT)",
+      "destination_country": [
+        "Japan"
+      ],
+      "funding_type": "fully_funded",
+      "tuition_coverage": "Entrance examination, matriculation and tuition waived; unsuccessful progression can leave examination costs payable.",
+      "living_stipend": "JPY 144,000 monthly for regular master's students; preparatory/non-regular research students receive JPY 143,000. Budget-dependent.",
+      "official_source_url": "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html",
+      "additional_requirements": "Admission: bachelor's-equivalent background and research in the prior or a related field; university admission is separate. Scholarship: age, nationality, health, visa and prior-award restrictions apply; willingness to learn Japanese. Non-regular research placement does not guarantee master's admission or extension.",
+      "notes": "Kazakhstan deadline was 17:00 Astana time, 29 May 2026, for April/September-October 2027 arrival. Fees, allowance and travel terms: https://www.studyinjapan.go.jp/en/_mt/2026/04/01-2027_Research_Guidelines_E.pdf . Country route is not a worldwide nationality assertion; no universal GPA/IELTS threshold established."
+    },
+    {
+      "degree_level": "master",
+      "eligible_study_fields": null,
+      "eligible_nationalities": null,
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "application_deadline": null,
+      "application_cycle": null,
+      "last_verified_at": "2026-11-12",
+      "scholarship_name": "KAIST Global Presidential Scholarship (KGPS) - master's route",
+      "university_or_provider": "Korea Advanced Institute of Science and Technology (KAIST)",
+      "destination_country": [
+        "South Korea"
+      ],
+      "funding_type": "fully_funded",
+      "tuition_coverage": "Full tuition for selected KGPS recipients.",
+      "living_stipend": "KRW 1,000,000 monthly for four regular semesters.",
+      "official_source_url": "https://admission.kaist.ac.kr/intl-graduate/FinancialSupport/Scholarship/KAISTScholarship/",
+      "additional_requirements": "Admission: bachelor's-equivalent qualification; non-Korean citizenship with additional rules for Korean descent. IELTS Academic 6.5 is one route; TOEFL, TOEIC, TEPS and specified waivers also exist. Scholarship: select KAIST scholarship during application; highly competitive departmental recommendation, not automatic award. GDI-GTIP excluded.",
+      "notes": "Scheme-level record; specific intake, deadline and eligible prior-field list unverified. Full applicant nationality list not encoded. Admission and changing waiver rules: https://admission.kaist.ac.kr/intl-graduate/Admission/Eligibility . Do not treat IELTS as mandatory for every applicant."
+    },
+    {
+      "degree_level": "master",
+      "eligible_study_fields": [
+        "Electrical Engineering and Computer Science",
+        "Materials Science and Engineering",
+        "Mechanical and Robotics Engineering",
+        "Environment and Energy Engineering",
+        "Life Sciences",
+        "Physics and Photon Science",
+        "Chemistry",
+        "Biomedical Science and Engineering",
+        "Artificial Intelligence",
+        "Semiconductor Engineering",
+        "AI Policy and Strategy",
+        "Integrative Neuroscience and Physiology",
+        "Mathematical Sciences"
+      ],
+      "eligible_nationalities": null,
+      "minimum_gpa": null,
+      "gpa_scale": null,
+      "minimum_ielts": 6.5,
+      "application_deadline": null,
+      "application_cycle": null,
+      "last_verified_at": "2026-11-12",
+      "scholarship_name": "GIST Scholarships - international master's students",
+      "university_or_provider": "Gwangju Institute of Science and Technology (GIST)",
+      "destination_country": [
+        "South Korea"
+      ],
+      "funding_type": "partially_funded",
+      "tuition_coverage": "Tuition fully supported; one-time KRW 680,000 matriculation fee charged unless separately exempted.",
+      "living_stipend": "M.S. student allowance KRW 140,000/month and meal allowance about KRW 100,000/month subject to previous-semester credits; KRW 120,000/month international allowance subject to previous-semester GPA.",
+      "official_source_url": "https://www.gist.ac.kr/iadm/html/sub04/0401.html",
+      "additional_requirements": "Admission: IELTS 6.5 is one route alongside TOEFL, TOEIC, TEPS, exemptions and conditional admission. Funding: student/meal allowance requires nine prior-semester credits; international allowance requires prior-semester GPA 3.0/4.5, a continuation condition rather than an entry GPA minimum.",
+      "notes": "Scheme-level record; current intake/deadline unverified. FAQ: https://www.gist.ac.kr/iadm/html/sub05/0503.html . Funded subject areas, not exhaustive prior-degree restrictions: https://www.gist.ac.kr/iadm/html/sub03/0301.html . Partial classification: matriculation fee, conditional allowances and uncovered costs. Research assistantship averages are historical and are not guaranteed stipends."
     }
   ]
 }
