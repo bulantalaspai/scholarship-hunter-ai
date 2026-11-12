@@ -1,67 +1,218 @@
 import { useEffect, useState } from 'react'
-import { getHealth } from './api'
+import type { StudentProfile } from './types'
+import { useHashRoute } from './hooks'
+import {
+  EligibilityPage,
+  Explorer,
+  Home,
+  MatchesPage,
+  ScholarshipDetails,
+} from './pages'
+import ProfileForm from './components/ProfileForm'
+import { EmptyState } from './components/ui'
 
-type ConnectionState = 'checking' | 'connected' | 'error'
+function validId(value: string | null) {
+  if (!value || !/^\d+$/.test(value)) return null
+  const number = Number(value)
+  return Number.isSafeInteger(number) && number > 0 ? number : null
+}
 
 export default function App() {
-  const [connection, setConnection] = useState<ConnectionState>('checking')
-  const [attempt, setAttempt] = useState(0)
+  const hash = useHashRoute()
+  const [profile, setProfile] = useState<StudentProfile>()
+  const [pathname, query = ''] = hash.slice(1).split('?')
+  const path = pathname || '/'
+  const params = new URLSearchParams(query)
+  const scholarship = validId(params.get('scholarship'))
+  const detail = /^\/scholarships\/(\d+)$/.exec(path)
+  const result = /^\/results\/(\d+)$/.exec(path)
+  const id = validId(detail?.[1] ?? result?.[1] ?? null)
+  const matchPage = Number(params.get('page') ?? 1)
 
   useEffect(() => {
-    const controller = new AbortController()
+    document.getElementById('main-content')?.focus()
+  }, [hash])
 
-    getHealth(controller.signal)
-      .then(() => {
-        if (!controller.signal.aborted) setConnection('connected')
-      })
-      .catch(() => {
-        if (!controller.signal.aborted) setConnection('error')
-      })
-
-    return () => controller.abort()
-  }, [attempt])
-
-  function checkAgain() {
-    setConnection('checking')
-    setAttempt((previous) => previous + 1)
-  }
+  let content
+  if (path === '/') content = <Home />
+  else if (path === '/explore') content = <Explorer key={query} query={query} />
+  else if (detail && id) content = <ScholarshipDetails id={id} />
+  else if (path === '/profile' && (!params.has('scholarship') || scholarship))
+    content = (
+      <>
+        <div className="page-heading">
+          <div>
+            <p className="breadcrumb">
+              <a
+                href={
+                  scholarship ? `#/scholarships/${scholarship}` : '#/explore'
+                }
+              >
+                {scholarship ? 'Scholarship details' : 'Scholarship explorer'}
+              </a>{' '}
+              / My profile
+            </p>
+            <h1>
+              {scholarship ? 'Check your eligibility' : 'Your student profile'}
+            </h1>
+            <p>
+              {scholarship
+                ? 'Compare your background with this scholarship’s documented requirements.'
+                : 'Tell us about your studies to find and understand your matches.'}
+            </p>
+          </div>
+        </div>
+        <div className="profile-layout">
+          <ProfileForm
+            key={`${scholarship ?? 'matches'}:${profile ? 'saved' : 'empty'}`}
+            initialProfile={profile}
+            submitLabel={
+              scholarship ? 'Check my eligibility' : 'Find my matches'
+            }
+            onSubmit={(value) => {
+              setProfile(value)
+              window.location.hash = scholarship
+                ? `/results/${scholarship}`
+                : '/matches'
+            }}
+          />
+          <aside className="profile-aside">
+            <h2>Only what’s needed.</h2>
+            <p>
+              No name, email, account, or documents. Your profile is held in
+              this browser tab’s memory and sent only to the local application
+              when you request a check.
+            </p>
+            <p>
+              Leave optional scores blank when you don’t have them. Missing
+              information stays unknown.
+            </p>
+            {profile && (
+              <button
+                className="button-secondary"
+                onClick={() => {
+                  setProfile(undefined)
+                  window.location.hash = '/profile'
+                }}
+              >
+                Clear profile
+              </button>
+            )}
+          </aside>
+        </div>
+      </>
+    )
+  else if (
+    (result && id) ||
+    (path === '/matches' &&
+      Number.isInteger(matchPage) &&
+      matchPage >= 1 &&
+      matchPage <= 1_000_000)
+  ) {
+    content = !profile ? (
+      <EmptyState title="Add your profile to continue">
+        <p>
+          Your profile is kept only in memory, so refreshing the page clears it.
+          Add your study details to request a new comparison.
+        </p>
+        <a
+          className="button"
+          href={id ? `#/profile?scholarship=${id}` : '#/profile'}
+        >
+          Add student profile
+        </a>
+      </EmptyState>
+    ) : result && id ? (
+      <EligibilityPage id={id} profile={profile} />
+    ) : (
+      <MatchesPage profile={profile} page={matchPage} />
+    )
+  } else
+    content = (
+      <EmptyState title="Page not found">
+        <p>
+          This link may be incomplete. Return to the catalogue to find a
+          scholarship.
+        </p>
+        <a className="button" href="#/explore">
+          Explore scholarships
+        </a>
+      </EmptyState>
+    )
 
   return (
-    <div className="page">
-      <header className="page-header">
-        <span className="brand-mark" aria-hidden="true">SH</span>
-        <p>A project for students in Kazakhstan</p>
+    <div className="app-shell">
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(event) => {
+          event.preventDefault()
+          document.getElementById('main-content')?.focus()
+        }}
+      >
+        Skip to content
+      </a>
+      <header className="site-header">
+        <div className="header-inner">
+          <a
+            className="brand"
+            href="#/"
+            aria-label="Scholarship Hunter AI home"
+          >
+            <span className="brand-mark" aria-hidden="true">
+              SH
+            </span>
+            <span>
+              Scholarship Hunter<span className="brand-ai">AI</span>
+            </span>
+          </a>
+          <nav aria-label="Main navigation">
+            <a
+              href="#/explore"
+              aria-current={path === '/explore' || detail ? 'page' : undefined}
+            >
+              Explore scholarships
+            </a>
+            <a
+              href="#/profile"
+              aria-current={path === '/profile' ? 'page' : undefined}
+            >
+              My profile
+            </a>
+            {profile && (
+              <a
+                href="#/matches"
+                aria-current={
+                  path === '/matches' || result ? 'page' : undefined
+                }
+              >
+                My matches
+              </a>
+            )}
+          </nav>
+        </div>
       </header>
-
-      <main>
-        <section className="introduction" aria-labelledby="project-title">
-          <h1 id="project-title">Scholarship Hunter AI</h1>
-          <p className="lead">A clearer path to a funded master’s.</p>
-          <p>
-            We’re building a way to discover scholarships abroad, understand
-            eligibility, and compare opportunities using official sources.
-          </p>
-          <p className="scope-note">
-            This first version establishes the application foundation.
-            Scholarship search and recommendations will follow in later phases.
-          </p>
-        </section>
-
-        <section className="connection-panel" aria-labelledby="connection-title">
-          <h2 id="connection-title">Connection check</h2>
-          <p className="connection-status" data-state={connection} role="status" aria-atomic="true">
-            <span className="status-dot" aria-hidden="true" />
-            {connection === 'checking' && 'Checking the API connection…'}
-            {connection === 'connected' && 'API connected. The application foundation is ready.'}
-            {connection === 'error' && 'Connection check failed. Make sure the backend is running, then try again.'}
-          </p>
-          <button type="button" onClick={checkAgain} disabled={connection === 'checking'}>
-            {connection === 'checking' ? 'Checking…' : 'Check again'}
-          </button>
-        </section>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className={`main-content ${path === '/' ? 'home-page' : ''}`}
+      >
+        {content}
       </main>
-
-      <footer>Built with care for the next chapter of your education.</footer>
+      <footer className="site-footer">
+        <div>
+          <a className="footer-brand" href="#/">
+            Scholarship Hunter AI
+          </a>
+          <p>A clearer next step for students in Kazakhstan.</p>
+        </div>
+        <p>
+          Official sources. Transparent checks.
+          <br />
+          No guarantee of admission or funding.
+        </p>
+        <a href="#/explore">Explore the catalogue</a>
+      </footer>
     </div>
   )
 }
