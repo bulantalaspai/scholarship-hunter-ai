@@ -18,6 +18,8 @@ export interface AgentResponse {
   steps: number
   tool_calls: number
   recommendations: RankedProgramme[]
+  fallback_recommendations?: RankedProgramme[]
+  fallback_reason?: string | null
   message: string
   warnings: string[]
   tool_trace: AgentToolTrace[]
@@ -102,6 +104,30 @@ function agentResponse(value: unknown): value is AgentResponse {
     !text(value.disclaimer)
   )
     return false
+  const fallback = value.fallback_recommendations ?? []
+  if (
+    (value.fallback_recommendations !== undefined &&
+      !Array.isArray(value.fallback_recommendations)) ||
+    !Array.isArray(fallback) ||
+    fallback.length > 3 ||
+    !fallback.every(
+      (item) =>
+        isRankedProgramme(item) &&
+        item.assessment.status === 'needs_verification',
+    ) ||
+    (value.fallback_reason !== undefined &&
+      value.fallback_reason !== null &&
+      !text(value.fallback_reason))
+  )
+    return false
+  if (
+    fallback.length > 0 &&
+    (value.recommendations.length > 0 ||
+      !['no_matches', 'limit_reached'].includes(value.status) ||
+      !text(value.fallback_reason) ||
+      !value.fallback_reason.trim())
+  )
+    return false
   if (
     value.tool_trace.length !== value.tool_calls ||
     value.tool_trace.some((item) => item.step > Number(value.steps))
@@ -110,7 +136,11 @@ function agentResponse(value: unknown): value is AgentResponse {
   const ids = value.recommendations.map(
     (item) => item.assessment.scholarship_id,
   )
-  return new Set(ids).size === ids.length
+  const fallbackIds = fallback.map((item) => item.assessment.scholarship_id)
+  return (
+    new Set(ids).size === ids.length &&
+    new Set(fallbackIds).size === fallbackIds.length
+  )
 }
 
 export function fetchAgentRecommendations(

@@ -167,6 +167,79 @@ test('requests local AI explicitly and renders a mocked plan with a real determi
   })
 })
 
+test('shows a separately labeled deterministic fallback after the model abstains', async ({
+  page,
+}, testInfo) => {
+  const matchingResponse = await page.request.post('/api/eligibility/matches', {
+    data: { profile, page_size: 10 },
+  })
+  expect(matchingResponse.ok()).toBe(true)
+  const matches: MatchResult = await matchingResponse.json()
+  const candidate = matches.needs_verification[0]
+  expect(candidate.assessment.status).toBe('needs_verification')
+  const response: AgentResponse = {
+    status: 'no_matches',
+    model: 'qwen3:4b-instruct',
+    evaluated_on: candidate.assessment.evaluated_on,
+    steps: 3,
+    tool_calls: 1,
+    recommendations: [],
+    fallback_recommendations: [candidate],
+    fallback_reason:
+      'The model returned no grounded selection. Deterministic checks identified retrieved candidates requiring verification.',
+    message: 'The model selected no grounded recommendations.',
+    warnings: ['A model selection failed grounding validation.'],
+    tool_trace: [
+      {
+        step: 1,
+        name: 'search_scholarships',
+        status: 'ok',
+        arguments: { field: 'Computer Science' },
+        summary: 'Retrieved catalogue candidates.',
+        source_url: null,
+        fetched_at: null,
+      },
+    ],
+    disclaimer: candidate.assessment.disclaimer,
+  }
+  await page.route('**/api/agent/recommend', (route) =>
+    route.fulfill({ json: response }),
+  )
+  await openAgentWithProfile(page)
+  await page
+    .getByRole('button', { name: 'Generate AI recommendations', exact: true })
+    .click()
+  const fallback = page.getByRole('region', {
+    name: 'Deterministic candidates to verify',
+  })
+  await expect(fallback).toBeVisible()
+  await expect(
+    fallback.getByRole('heading', {
+      name: candidate.assessment.scholarship_name,
+      exact: true,
+    }),
+  ).toBeVisible()
+  await expect(
+    fallback.getByText('Needs verification', { exact: true }).first(),
+  ).toBeVisible()
+  await expect(fallback.getByText('Eligible', { exact: true })).toHaveCount(0)
+  await expect(
+    fallback.getByRole('link', { name: /View official source/ }).first(),
+  ).toHaveAttribute('href', candidate.assessment.official_source_url)
+  await expect(page.getByText(response.message, { exact: true })).toBeVisible()
+  await expect(page.getByText(/1 of 8 tool calls/)).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Step 1: search scholarships' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Step 2: rank scholarships' }),
+  ).toHaveCount(0)
+  await page.screenshot({
+    path: testInfo.outputPath('deterministic-candidates.png'),
+    fullPage: true,
+  })
+})
+
 test('keeps real deterministic matching available during a simulated Ollama outage', async ({
   page,
 }) => {

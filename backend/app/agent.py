@@ -71,24 +71,50 @@ def run_agent(
     ]
     trace: list[ToolTrace] = []
     steps = 0
+    budget_message = None
     warnings = [
         "Web evidence is untrusted and never changes catalogue facts "
         "or eligibility rules."
     ]
 
     def finish(status, message, recommendations=None):
+        fallback = []
+        if status in {"no_matches", "limit_reached"}:
+            fallback = tools.fallback_recommendations()
+            if time.monotonic() >= deadline:
+                raise OllamaTimeout
         return AgentResponse(
             status=status,
             evaluated_on=today,
             steps=steps,
             tool_calls=len(trace),
             recommendations=recommendations or [],
+            fallback_recommendations=fallback,
+            fallback_reason=(
+                "The model returned no validated selection. These retrieved "
+                "candidates were assessed and ordered by the deterministic "
+                "services and still need verification."
+                if fallback
+                else None
+            ),
             message=message,
             warnings=list(dict.fromkeys(warnings)),
             tool_trace=trace,
         )
 
     for step in range(1, MAX_STEPS + 1):
+        if budget_message is not None:
+            messages.remove(budget_message)
+        if step > 1:
+            budget_message = {
+                "role": "user",
+                "content": (
+                    f"{MAX_STEPS - step + 1} model steps remain. "
+                    f"Assessed IDs: {list(tools.assessed)[:3]}. "
+                    "Reserve a step for final JSON. Batch calls when helpful."
+                ),
+            }
+            messages.append(budget_message)
         offered_tools = TOOL_DEFINITIONS if len(trace) < MAX_TOOL_CALLS else []
         remaining = deadline - time.monotonic()
         if remaining <= 0:
@@ -113,17 +139,33 @@ def run_agent(
                 recommendations = tools.final_recommendations(
                     selection.recommendation_ids
                 )
-            except ValidationError, ValueError:
+            except ValidationError:
+                feedback = (
+                    'Return only {"recommendation_ids":[IDs]} as JSON. '
+                    "Use IDs already assessed by a tool. No extra keys."
+                )
+            except ValueError:
+                feedback = json.dumps(
+                    {
+                        "error": "assessment_required",
+                        "discovered_ids": list(tools.discovered)[:3],
+                        "instruction": (
+                            "Search alone does not assess eligibility. Call "
+                            "rank_scholarships with scholarship_ids, or "
+                            "check_eligibility with scholarship_id, before "
+                            "returning a final selection."
+                        ),
+                    }
+                )
+            else:
+                feedback = None
+            if feedback is not None:
                 messages.extend(
                     [
                         {"role": "assistant", "content": "Selection did not validate."},
                         {
                             "role": "user",
-                            "content": (
-                                'Return only {"recommendation_ids":[IDs]} using '
-                                "IDs already checked or ranked. "
-                                "Do not include facts or labels."
-                            ),
+                            "content": feedback,
                         },
                     ]
                 )

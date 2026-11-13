@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "annotation_method": "Agent-authored annotations prepared from independently opened official source pages before observing extraction-model outputs. The catalogue supplies entity names for joining, while source excerpts supply extraction labels. Each excerpt uses source-order fragments with [...] marking omissions and contains at most 25 quoted words per unique page. EUR normalizes explicit euro/€ units. A minimum IELTS value describes an accepted route; ielts_only_route is false only when an alternative appears in the excerpt. Omitted or null extraction slots are unobserved, and non-null predictions unsupported by the excerpt count as false positives. Citation checks audit entity identity and the specified funding claim using the reviewed official page and quoted evidence. Independent human/instructor review is pending.",
+  "examples": [
+    {
+      "id": "S01",
+      "source_url": "https://www.smaccs.eu/practical/scholarships/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "excerpt": "SMACCs [...] grant of 1400€ per month of study [...] consortium will not charge tuition fees to EMJM scholarship holders.",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "tuition_covered": true,
+        "stipend_amount": 1400,
+        "stipend_currency": "EUR",
+        "stipend_period": "month"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The quoted programme acronym and EMJM funding clauses establish the named award's tuition exemption and living grant. Selection and other award conditions remain outside this excerpt."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "supported",
+          "rationale": "The quoted programme acronym and EMJM funding clauses establish the named award's tuition exemption and living grant. Selection and other award conditions remain outside this excerpt."
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "source_url": "https://www.master-ediss.eu/scholarship/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "EDISS Erasmus Mundus Scholarships - Engineering of Data-intensive Intelligent Software Systems",
+      "excerpt": "EDISS [...] Participation costs [...] Tuition fees [...] EMJM scholarship [...] waiver of the participation costs [...] monthly contribution to subsistence costs (1400€ per month)",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "tuition_covered": true,
+        "stipend_amount": 1400,
+        "stipend_currency": "EUR",
+        "stipend_period": "month"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "EDISS Erasmus Mundus Scholarships - Engineering of Data-intensive Intelligent Software Systems",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The page defines tuition within participation costs and explicitly waives those costs for the EMJM award. Its lower EDISS and tuition-only schemes are separate."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "supported",
+          "rationale": "The page defines tuition within participation costs and explicitly waives those costs for the EMJM award. Its lower EDISS and tuition-only schemes are separate."
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "source_url": "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "DEAI Full Scholarship - Data Engineering and Artificial Intelligence",
+      "excerpt": "Full DEAI Scholarship [...] Full coverage of tuition fees [...] A monthly grant of €1,400 [...] up to 24 months",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "tuition_covered": true,
+        "stipend_amount": 1400,
+        "stipend_currency": "EUR",
+        "stipend_period": "month"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "DEAI Full Scholarship - Data Engineering and Artificial Intelligence",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. This excerpt specifies the full DEAI award and both tuition and monthly living support. It does not describe the page's tuition-only partial award."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "supported",
+          "rationale": "This excerpt specifies the full DEAI award and both tuition and monthly living support. It does not describe the page's tuition-only partial award."
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "source_url": "https://www.cybersure-master.eu/faq",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "CYBERSURE Erasmus Mundus Scholarships - Cybersecurity and Assurance",
+      "excerpt": "CYBERSURE [...] Full scholarships cover tuition fees, travel costs, insurance, and provide a monthly allowance for living expenses",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "tuition_covered": true,
+        "stipend_period": "month"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "CYBERSURE Erasmus Mundus Scholarships - Cybersecurity and Assurance",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The FAQ establishes full-award tuition and living coverage. This excerpt supplies no amount or currency, and the separate funding page's 2026 rate is not transferred to 2027."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "supported",
+          "rationale": "The FAQ establishes full-award tuition and living coverage. This excerpt supplies no amount or currency, and the separate funding page's 2026 rate is not transferred to 2027."
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "source_url": "https://cybermacs.eu/scholarships/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "CyberMACS Erasmus Mundus Scholarships - Applied Cybersecurity",
+      "excerpt": "CyberMACS [...] tuition fee waiver to every student [...] Scholarship Pathway: Exceptional students can be awarded a prestigious monthly scholarship of 1400 euros.",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "tuition_covered": true,
+        "stipend_amount": 1400,
+        "stipend_currency": "EUR",
+        "stipend_period": "month"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "CyberMACS Erasmus Mundus Scholarships - Applied Cybersecurity",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The quoted award pathway combines tuition waiver and monthly scholarship. The page includes several other admission schemes and historical counts, so this does not establish a current intake or award availability."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "supported",
+          "rationale": "The quoted award pathway combines tuition waiver and monthly scholarship. The page includes several other admission schemes and historical counts, so this does not establish a current intake or award availability."
+        }
+      ]
+    },
+    {
+      "id": "S06",
+      "source_url": "https://www.imlex.org/fees-and-scholarships/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "IMLEX Erasmus Mundus Scholarships - Imaging and Light in Extended Reality",
+      "excerpt": "IMLEX [...] participation costs (including the tuition fees, library and laboratory costs) [...] a monthly subsistence allowance [...] 1400 EUR/month.",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "tuition_covered": true,
+        "stipend_amount": 1400,
+        "stipend_currency": "EUR",
+        "stipend_period": "month"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "IMLEX Erasmus Mundus Scholarships - Imaging and Light in Extended Reality",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The excerpt is from the EMJM coverage list, which covers participation costs including tuition and monthly subsistence. It does not establish individual eligibility or selection."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "supported",
+          "rationale": "The excerpt is from the EMJM coverage list, which covers participation costs including tuition and monthly subsistence. It does not establish individual eligibility or selection."
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "source_url": "https://densys.univ-lorraine.fr/fees-and-scholarships/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "DENSYS 2.0 Erasmus Mundus Scholarships - Decentralised Smart Energy Systems",
+      "excerpt": "DENSYS [...] scholarship covers the participation costs and a monthly allowance (1,400 €/month) [...] The participation costs include [...] institutional tuition fees",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "tuition_covered": true,
+        "stipend_amount": 1400,
+        "stipend_currency": "EUR",
+        "stipend_period": "month"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "DENSYS 2.0 Erasmus Mundus Scholarships - Decentralised Smart Energy Systems",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The source defines covered participation costs to include institutional tuition and describes the EMJM monthly allowance. Its targeted-region table is dated 2023 and is not used here."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "supported",
+          "rationale": "The source defines covered participation costs to include institutional tuition and describes the EMJM monthly allowance. Its targeted-region table is dated 2023 and is not used here."
+        }
+      ]
+    },
+    {
+      "id": "S08",
+      "source_url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "excerpt": "Study Scholarships - Master Studies for All Academic Disciplines [...] Scholarship payments of 992 euros a month [...] DAAD does not cover tuition fees",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "tuition_covered": false,
+        "stipend_amount": 992,
+        "stipend_currency": "EUR",
+        "stipend_period": "month"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "Study Scholarships - Master Studies for All Academic Disciplines",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The official scheme title, monthly support and explicit tuition exclusion support this partial-funding classification. Nationality-specific deadlines and admission conditions are not determined here."
+        },
+        {
+          "field": "funding_type",
+          "value": "partially_funded",
+          "support": "supported",
+          "rationale": "The official scheme title, monthly support and explicit tuition exclusion support this partial-funding classification. Nationality-specific deadlines and admission conditions are not determined here."
+        }
+      ]
+    },
+    {
+      "id": "S09",
+      "source_url": "https://www.gist.ac.kr/iadm/html/sub05/0503.html",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "GIST Scholarships - international master's students",
+      "excerpt": "GIST [...] applicants must meet minimum score requirements: TOEFL iBT 80, PBT 550 IELTS 6.5 TOEIC 750 NEW TEPS 285",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "minimum_ielts_overall": 6.5,
+        "ielts_only_route": false
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "GIST Scholarships - international master's students",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. This language excerpt establishes an IELTS route alongside alternative tests. The quoted language evidence alone cannot establish complete scholarship coverage, and it supplies no GPA threshold."
+        },
+        {
+          "field": "funding_type",
+          "value": "partially_funded",
+          "support": "unresolved",
+          "rationale": "This language excerpt establishes an IELTS route alongside alternative tests. The quoted language evidence alone cannot establish complete scholarship coverage, and it supplies no GPA threshold."
+        }
+      ]
+    },
+    {
+      "id": "S10",
+      "source_url": "https://eminent-master.eu/application-requirement/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "EMINENT Embedded Intelligence Nanosystems Engineering - Erasmus Mundus Scholarships",
+      "excerpt": "EMINENT [...] TOEFL iBT [...] IELTS Academic (minimum score 6.5 with no individual score under 6), PTE Academic",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "minimum_ielts_overall": 6.5,
+        "minimum_ielts_component": 6,
+        "ielts_only_route": false
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "EMINENT Embedded Intelligence Nanosystems Engineering - Erasmus Mundus Scholarships",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The excerpt establishes IELTS overall/component minima and alternative tests. It supplies no funding terms. The full page's German grading criterion is deliberately outside this higher-is-better GPA extraction example."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "unresolved",
+          "rationale": "The excerpt establishes IELTS overall/component minima and alternative tests. It supplies no funding terms. The full page's German grading criterion is deliberately outside this higher-is-better GPA extraction example."
+        }
+      ]
+    },
+    {
+      "id": "S11",
+      "source_url": "https://www.imlex.org/how-to-apply/admission-criteria/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "IMLEX Erasmus Mundus Scholarships - Imaging and Light in Extended Reality",
+      "excerpt": "IMLEX Admission Requirements 2027 [...] The application period opens on 2 December 2026 and closes on 13 January 2027",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "deadline": "2027-01-13"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "IMLEX Erasmus Mundus Scholarships - Imaging and Light in Extended Reality",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. This independently dated admission excerpt gives the 2027 application close date. Timezone and cutoff time are omitted, so only the calendar date is annotated. The excerpt gives no funding coverage."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "unresolved",
+          "rationale": "This independently dated admission excerpt gives the 2027 application close date. Timezone and cutoff time are omitted, so only the calendar date is annotated. The excerpt gives no funding coverage."
+        }
+      ]
+    },
+    {
+      "id": "S12",
+      "source_url": "https://www.unite-codas-master.eu/",
+      "accessed_at": "2026-11-12",
+      "scholarship_name": "CoDaS Communications Engineering and Data Science - Erasmus Mundus Scholarships",
+      "excerpt": "CoDaS [...] Open for applications from [...] 1 Dec 2026 - 5 January 2027",
+      "annotation_status": "source_checked",
+      "expected_fields": {
+        "deadline": "2027-01-05"
+      },
+      "claims": [
+        {
+          "field": "scholarship_name",
+          "value": "CoDaS Communications Engineering and Data Science - Erasmus Mundus Scholarships",
+          "support": "supported",
+          "rationale": "The reviewed official page and quoted programme name/acronym identify the catalogue entity. Descriptive catalogue suffixes are identity mappings. The programme homepage identifies CoDaS and the current application range ending in January 2027. This excerpt alone does not establish scholarship funding or a universally applicable language/GPA requirement."
+        },
+        {
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "unresolved",
+          "rationale": "The programme homepage identifies CoDaS and the current application range ending in January 2027. This excerpt alone does not establish scholarship funding or a universally applicable language/GPA requirement."
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "This small source-checked set is an agent-authored draft. It has no independent human adjudication or inter-annotator agreement measurement.",
+    "Eight funding excerpts emphasize explicit tuition/living terms. They do not provide a representative test of every programme, condition, nationality or intake.",
+    "Language and deadline excerpts deliberately leave funding support unresolved. A valid official URL does not establish every claim made beside it.",
+    "The extraction input is a bounded excerpt. Missing fields must remain unobserved even if the complete source page or catalogue contains additional facts.",
+    "Programme-name claims evaluate identity mapping through the official name/acronym and page context rather than verbatim equality to descriptive catalogue record titles.",
+    "Funding classifications describe the cited award scheme and do not establish current scholarship availability, application opening or individual eligibility.",
+    "The excerpted source text is frozen at access date 2026-11-12. Live pages can change, and current output claims outside the annotated names/funding values require separate review."
+  ]
+}
