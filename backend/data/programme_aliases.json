@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "description": "Local lookup aliases derived from the existing catalogue names and named providers. Shared umbrella aliases intentionally remain ambiguous. Source dates describe the unchanged catalogue snapshot.",
+  "programmes": [
+    {
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "aliases": [
+        "DAAD",
+        "DAAD Master Studies",
+        "Master Studies for All Academic Disciplines"
+      ],
+      "official_source_url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200",
+      "catalogue_verified_at": "2026-11-11",
+      "basis": "catalogue_name_and_provider"
+    },
+    {
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "aliases": [
+        "SMACCs",
+        "SMACCs Erasmus Mundus",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://www.smaccs.eu/practical/scholarships/",
+      "catalogue_verified_at": "2026-11-11",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "EDISS Erasmus Mundus Scholarships - Engineering of Data-intensive Intelligent Software Systems",
+      "aliases": [
+        "EDISS",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://www.master-ediss.eu/scholarship/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "DEAI Full Scholarship - Data Engineering and Artificial Intelligence",
+      "aliases": [
+        "DEAI"
+      ],
+      "official_source_url": "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "CYBERSURE Erasmus Mundus Scholarships - Cybersecurity and Assurance",
+      "aliases": [
+        "CYBERSURE",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://www.cybersure-master.eu/scholarships-and-fees",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "CyberMACS Erasmus Mundus Scholarships - Applied Cybersecurity",
+      "aliases": [
+        "CyberMACS",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://cybermacs.eu/scholarships/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "IMLEX Erasmus Mundus Scholarships - Imaging and Light in Extended Reality",
+      "aliases": [
+        "IMLEX",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://www.imlex.org/fees-and-scholarships/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "DENSYS 2.0 Erasmus Mundus Scholarships - Decentralised Smart Energy Systems",
+      "aliases": [
+        "DENSYS",
+        "DENSYS 2.0",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://densys.univ-lorraine.fr/fees-and-scholarships/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "EMIMEP European Master for Industry in Microwave Electronics and Photonics - Erasmus Mundus Scholarships",
+      "aliases": [
+        "EMIMEP",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://www.erasmus-mundus.emimep.eu/admission-applications/erasmus-scholarships/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "EMSSE European Master in Sustainable Systems Engineering - Erasmus Mundus Scholarships",
+      "aliases": [
+        "EMSSE",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://emsse.eu/admission-and-scholarships/scholarships/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "CoDaS Communications Engineering and Data Science - Erasmus Mundus Scholarships",
+      "aliases": [
+        "CoDaS",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://www.unite-codas-master.eu/scholarship.html",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "AMASE Advanced Materials Science and Engineering - Full Erasmus Mundus Scholarships",
+      "aliases": [
+        "AMASE",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://www.eusmat.net/international-studies/master/amase/application/fees-and-scholarships/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "E-PiCo+ Electric Vehicle Propulsion and Control - Erasmus Mundus Scholarships",
+      "aliases": [
+        "E-PiCo+",
+        "EPiCo+",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://master-epico.ec-nantes.fr/english-version/admission/fees-scholarships-1",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "EU-CORE European Master on Control of Renewable Energy Systems - Erasmus Mundus Scholarships",
+      "aliases": [
+        "EU-CORE",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://master-eu-core.ec-nantes.fr/admission/students/fees-scholarships",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "JEMARO Japan-Europe Master on Advanced Robotics - Consortium Scholarships",
+      "aliases": [
+        "JEMARO"
+      ],
+      "official_source_url": "https://jemaro.ec-nantes.fr/english-version/admission/jemaro-fees-and-scholarships",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "IFRoS Intelligent Field Robotic Systems - Consortium Excellence Grants",
+      "aliases": [
+        "IFRoS"
+      ],
+      "official_source_url": "https://ifrosmaster.org/ifros-applicants/fees-grants",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "EMINENT Embedded Intelligence Nanosystems Engineering - Erasmus Mundus Scholarships",
+      "aliases": [
+        "EMINENT",
+        "Erasmus Mundus"
+      ],
+      "official_source_url": "https://eminent-master.eu/scholarships/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "Study scholarships for STEM disciplines",
+      "aliases": [
+        "DAAD",
+        "DAAD STEM",
+        "STEM disciplines"
+      ],
+      "official_source_url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=57742130",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name_and_provider"
+    },
+    {
+      "scholarship_name": "Stipendium Hungaricum - master's scholarships (Kazakhstan route)",
+      "aliases": [
+        "Stipendium Hungaricum"
+      ],
+      "official_source_url": "https://stipendiumhungaricum.hu/about/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "aliases": [
+        "MEXT",
+        "MEXT Research Students"
+      ],
+      "official_source_url": "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "KAIST Global Presidential Scholarship (KGPS) - master's route",
+      "aliases": [
+        "KGPS",
+        "KAIST",
+        "KAIST KGPS"
+      ],
+      "official_source_url": "https://admission.kaist.ac.kr/intl-graduate/FinancialSupport/Scholarship/KAISTScholarship/",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    },
+    {
+      "scholarship_name": "GIST Scholarships - international master's students",
+      "aliases": [
+        "GIST"
+      ],
+      "official_source_url": "https://www.gist.ac.kr/iadm/html/sub04/0401.html",
+      "catalogue_verified_at": "2026-11-12",
+      "basis": "catalogue_name"
+    }
+  ]
+}

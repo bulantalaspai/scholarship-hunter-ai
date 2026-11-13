@@ -14,7 +14,7 @@ from backend.app.agent_schemas import (
     FinalSelection,
     ToolTrace,
 )
-from backend.app.agent_tools import TOOL_DEFINITIONS, AgentTools
+from backend.app.agent_tools import AgentTools
 from backend.app.ollama_client import (
     OllamaClient,
     OllamaProtocolError,
@@ -38,6 +38,9 @@ Return only {"recommendation_ids":[IDs],"explanations":[{"scholarship_id":ID,
 "requirements":["key"]}]} using at most 3 IDs assessed through rank/check.
 Choose up to 4 actual failed/unknown requirement keys per explanation. The server
 renders their verified text. Empty selection is allowed. No prose or extra keys."""
+NAMED_GUIDANCE = """For named_target return the assessed target ID even when ineligible.
+Explain its failed requirements. Named searches retain the target over filters.
+Choose at most 3 requirement keys per explanation, prioritizing failures."""
 
 
 def discovery_fields(tools: AgentTools) -> dict:
@@ -48,13 +51,61 @@ def discovery_fields(tools: AgentTools) -> dict:
         "discovery_scope": "named_target"
         if discovery and discovery.named_target
         else "catalogue",
+        "name_resolution": discovery.resolution if discovery else None,
     }
+
+
+def name_lookup_response(tools: AgentTools, today: date) -> AgentResponse | None:
+    resolution = tools.discovery.resolution if tools.discovery else None
+    if resolution is None or resolution.status not in {"ambiguous", "not_found"}:
+        return None
+    return AgentResponse(
+        status="ambiguous_match" if resolution.status == "ambiguous" else "no_matches",
+        evaluated_on=today,
+        steps=0,
+        tool_calls=0,
+        recommendations=[],
+        message=resolution.message,
+        warnings=[],
+        tool_trace=[],
+        **discovery_fields(tools),
+    )
+
+
+def selection_issues(error: ValidationError) -> list[dict]:
+    """Expose structural validation diagnostics without model text or input values."""
+    fields = {"recommendation_ids", "explanations", "scholarship_id", "requirements"}
+    issues = []
+    for item in error.errors(include_url=False, include_input=False)[:4]:
+        issue = {
+            "type": item["type"],
+            "path": [
+                part if isinstance(part, int) or part in fields else "<extra>"
+                for part in item["loc"]
+            ],
+        }
+        context = item.get("ctx", {})
+        if "max_length" in context:
+            issue["max_length"] = context["max_length"]
+        reason = str(context.get("error", ""))
+        if reason in {
+            "Duplicate IDs are not allowed",
+            "Duplicate explanation IDs are not allowed",
+            "Explanations must refer to selected IDs",
+            "Duplicate requirement keys are not allowed",
+        }:
+            issue["reason"] = reason
+        issues.append(issue)
+    return issues
 
 
 def busy_response(
     request: AgentRequest, tools: AgentTools, today: date
 ) -> AgentResponse:
     tools.prepare(request.goal)
+    lookup = name_lookup_response(tools, today)
+    if lookup:
+        return lookup
     fallback = tools.fallback_recommendations()
     return AgentResponse(
         status="model_error",
@@ -92,8 +143,15 @@ def run_agent(
 ) -> AgentResponse:
     deadline = time.monotonic() + AGENT_TIMEOUT_SECONDS
     tools.prepare(request.goal)
+    lookup = name_lookup_response(tools, today)
+    if lookup:
+        return lookup
     messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {
+            "role": "system",
+            "content": SYSTEM_PROMPT
+            + ("\n" + NAMED_GUIDANCE if tools.discovery.named_target else ""),
+        },
         {
             "role": "user",
             "content": json.dumps(
@@ -170,7 +228,7 @@ def run_agent(
                     ),
                 }
                 messages.append(budget_message)
-            offered_tools = TOOL_DEFINITIONS if len(trace) < MAX_TOOL_CALLS else []
+            offered_tools = tools.definitions() if len(trace) < MAX_TOOL_CALLS else []
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 raise OllamaTimeout
@@ -198,16 +256,27 @@ def run_agent(
                         selection.recommendation_ids
                     )
                     explanations = tools.grounded_explanations(selection)
-                except ValidationError:
-                    feedback = (
-                        '{"recommendation_ids":[IDs],"explanations":[]} required. '
-                        "Use assessed IDs and actual requirement keys."
+                except ValidationError as error:
+                    feedback = json.dumps(
+                        {
+                            "error": "invalid_final_selection",
+                            "issues": selection_issues(error),
+                            "instruction": (
+                                "Final keys are recommendation_ids and explanations. "
+                                "Each explanation has only scholarship_id and "
+                                "requirements. Its ID must be selected. "
+                                "Use at most 4 unique keys per explanation."
+                            ),
+                        }
                     )
                 except ValueError:
                     feedback = json.dumps(
                         {
                             "error": "assessment_required",
-                            "discovered_ids": list(tools.discovered)[:3],
+                            "discovered_ids": tools.discovery.candidate_ids
+                            if tools.discovery and tools.discovery.named_target
+                            else list(tools.discovered)[:3],
+                            "assessed_ids": list(tools.assessed)[:3],
                             "instruction": (
                                 "Use the named target IDs when supplied. Call "
                                 "rank_scholarships with scholarship_ids, or "
@@ -290,7 +359,9 @@ def run_agent(
                     {
                         "role": "tool",
                         "tool_name": call.function.name,
-                        "content": json.dumps(data, ensure_ascii=False),
+                        "content": json.dumps(
+                            data, ensure_ascii=False, separators=(",", ":")
+                        ),
                     }
                 )
             if len(calls) > len(allowed_calls):
