@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "assessment_date": "2026-11-12",
+  "prepared_for_phase": "06C",
+  "annotation_origin": "AI-generated provisional annotations copied or referenced from frozen Phase 6B inputs. Independent human review is pending.",
+  "team_reviewers": [
+    "Talaspay Bulan",
+    "Sayat Nuradil",
+    "Tursbekov Darkhan"
+  ],
+  "human_reviewed_items": 0,
+  "human_review_template": {
+    "reviewer": null,
+    "reviewed_at": null,
+    "decision": null,
+    "reviewed_value": null,
+    "rationale": null,
+    "evidence": [
+      {
+        "source_url": null,
+        "accessed_at": null,
+        "passage_or_section": null,
+        "claim_supported": null,
+        "scope_and_limitations": null
+      }
+    ]
+  },
+  "allowed_decisions": ["accept", "revise", "unresolved"],
+  "items": [
+    {
+      "id": "R01-MEXT-CLOSED",
+      "category": "eligibility_negative",
+      "status": "ai_generated_provisional",
+      "references": [
+        "evaluation/data/profiles.json#/profiles/0",
+        "evaluation/data/eligibility_cases.json#/cases/0",
+        "evaluation/data/README.md#e-mext-closed"
+      ],
+      "ai_annotation": {
+        "case_id": "P01-MEXT-CLOSED",
+        "legacy_label_status": "verified_gold",
+        "expected_status": "ineligible",
+        "condition_scope": "The specific Kazakhstan embassy 2027 call has a published deadline before the fixed assessment date."
+      },
+      "source_urls": [
+        "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+      ],
+      "questions": [
+        "Does the official call identify the scholarship route and intake of the catalogue record?",
+        "Does its deadline establish that this call was closed on 2026-11-12?",
+        "Does the rationale preserve the distinction between this historical call and other MEXT routes or future calls?"
+      ],
+      "human_reviews": []
+    },
+    {
+      "id": "R02-DAAD-FUNDING",
+      "category": "funding_preference_negative",
+      "status": "ai_generated_provisional",
+      "references": [
+        "evaluation/data/profiles.json#/profiles/0",
+        "evaluation/data/eligibility_cases.json#/cases/2",
+        "evaluation/data/source_annotations.json#/examples/7",
+        "evaluation/data/README.md#e-daad-tuition"
+      ],
+      "ai_annotation": {
+        "case_id": "P01-DAAD-FUNDING",
+        "legacy_label_status": "verified_gold",
+        "expected_status": "ineligible",
+        "condition_scope": "Official tuition exclusion conflicts with P01's full-funding preference under the application's funding convention. Admission remains unresolved."
+      },
+      "source_urls": [
+        "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+      ],
+      "questions": [
+        "Does the source explicitly exclude tuition coverage for this award scheme?",
+        "Does P01 request fully_funded, and is the negative label restricted to that preference convention?",
+        "Are university admission and other scholarship requirements left unresolved?"
+      ],
+      "human_reviews": []
+    },
+    {
+      "id": "R03-SMACCS-UNKNOWN",
+      "category": "eligibility_uncertainty",
+      "status": "ai_generated_provisional",
+      "references": [
+        "evaluation/data/profiles.json#/profiles/0",
+        "evaluation/data/eligibility_cases.json#/cases/1",
+        "evaluation/data/README.md#e-smaccs-review"
+      ],
+      "ai_annotation": {
+        "case_id": "P01-SMACCS-REVIEW",
+        "legacy_label_status": "provisional",
+        "expected_status": "needs_verification",
+        "condition_scope": "The synthetic profile cannot establish every admission, language-route, document and award condition."
+      },
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/",
+        "https://www.smaccs.eu/admissions/deadlines/"
+      ],
+      "questions": [
+        "Which published conditions can the supplied profile establish, and which require additional evidence?",
+        "Does an accepted overall IELTS score leave component scores or alternative-route conditions unresolved?",
+        "Does the assessment preserve uncertainty about award selection and the applicable application cycle?"
+      ],
+      "human_reviews": []
+    },
+    {
+      "id": "R04-EXTRACTION-BOOLEAN",
+      "category": "requirement_extraction",
+      "status": "ai_generated_provisional",
+      "references": [
+        "evaluation/data/source_annotations.json#/examples/0",
+        "evaluation/data/source_annotations.json#/examples/8",
+        "evaluation/results/native_2026-11-12.json#/extraction/0"
+      ],
+      "ai_annotation": {
+        "example_ids": ["S01", "S09"],
+        "expected_values": {
+          "S01.ielts_only_route": null,
+          "S09.ielts_only_route": false
+        },
+        "condition_scope": "S01's funding excerpt supplies no IELTS-route evidence. S09's language excerpt names alternative tests. Missing evidence remains unobserved."
+      },
+      "source_urls": [
+        "https://www.smaccs.eu/practical/scholarships/",
+        "https://www.gist.ac.kr/iadm/html/sub05/0503.html"
+      ],
+      "questions": [
+        "Does each frozen excerpt explicitly establish a language-route assertion?",
+        "Should an absent language fact remain omitted or null in this excerpt-only task?",
+        "Does the S09 excerpt support false for IELTS exclusivity through its named alternatives?"
+      ],
+      "human_reviews": []
+    },
+    {
+      "id": "R05-EXTRACTION-PERIOD",
+      "category": "requirement_extraction",
+      "status": "ai_generated_provisional",
+      "references": [
+        "evaluation/data/source_annotations.json#/examples/2",
+        "evaluation/data/source_annotations.json#/examples/4",
+        "evaluation/results/native_2026-11-12.json#/extraction/2",
+        "evaluation/results/native_2026-11-12.json#/extraction/4"
+      ],
+      "ai_annotation": {
+        "example_ids": ["S03", "S05"],
+        "expected_values": {
+          "S03.stipend_period": "month",
+          "S05.stipend_period": "month"
+        },
+        "condition_scope": "The extraction contract normalizes a monthly payment period to month. Maximum support duration has a separate meaning."
+      },
+      "source_urls": [
+        "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+        "https://cybermacs.eu/scholarships/"
+      ],
+      "questions": [
+        "Does S03 distinguish a monthly payment interval from the maximum 24-month duration?",
+        "Does month accurately normalize the explicit monthly interval in both excerpts?",
+        "Should the review record separate a semantic extraction error from the exact-value normalization mismatch monthly versus month?"
+      ],
+      "human_reviews": []
+    },
+    {
+      "id": "R06-RELEVANCE-UNRESOLVED",
+      "category": "recommendation_relevance",
+      "status": "unresolved",
+      "references": [
+        "evaluation/data/profiles.json#/profiles/0",
+        "evaluation/data/relevance_judgments.json#/judgments/3",
+        "evaluation/data/README.md#interpretation-and-sampling-limits"
+      ],
+      "ai_annotation": {
+        "profile_id": "P01",
+        "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+        "legacy_label_status": "unresolved",
+        "relevant": null,
+        "condition_scope": "Topic similarity and a needs_verification engine classification cannot establish independently verified eligibility and relevance."
+      },
+      "source_urls": [
+        "https://www.smaccs.eu/admissions/admission-criteria/"
+      ],
+      "questions": [
+        "Is enough independent evidence available to establish both eligibility and relevance for P01?",
+        "Which missing conditions prevent a positive judgment?",
+        "Can three independently verified eligible and relevant opportunities be documented for any benchmark profile? If evidence is insufficient, retain null and NOT EVALUABLE Precision@3."
+      ],
+      "human_reviews": []
+    },
+    {
+      "id": "R07-CITATION-SUPPORT",
+      "category": "citation_support",
+      "status": "unresolved",
+      "references": [
+        "evaluation/data/source_annotations.json#/examples/9/claims/1",
+        "evaluation/data/source_annotations.json#/examples/0/claims/1"
+      ],
+      "ai_annotation": {
+        "unresolved_claim": {
+          "example_id": "S10",
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "unresolved"
+        },
+        "provisional_supported_comparison": {
+          "example_id": "S01",
+          "field": "funding_type",
+          "value": "fully_funded",
+          "support": "supported"
+        },
+        "condition_scope": "Claim support is assessed against the specific cited evidence. A valid official link and language conditions alone cannot establish funding coverage."
+      },
+      "source_urls": [
+        "https://eminent-master.eu/application-requirement/",
+        "https://www.smaccs.eu/practical/scholarships/"
+      ],
+      "questions": [
+        "Does the S10 language excerpt support this funding claim?",
+        "Does the S01 evidence establish the award's tuition exemption and living grant while leaving individual award eligibility unresolved?",
+        "Are claim-level support, link presence and completeness of the overall citation audit reported separately?"
+      ],
+      "human_reviews": []
+    }
+  ]
+}

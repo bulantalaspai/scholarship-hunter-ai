@@ -264,13 +264,16 @@ def test_search_only_does_not_authorize_unchecked_recommendations(tools, agent_r
     assert result.recommendations == [] and result.status == "limit_reached"
 
 
-def test_empty_search_can_finish_without_fake_fallback(tools, agent_request):
+def test_empty_model_search_retains_deterministic_candidates(tools, agent_request):
     model = ScriptedModel(
         calls(("search_scholarships", {"country": "NoSuchCountry"})), final([])
     )
     result = run_agent(agent_request, tools, model, today=TODAY)
     assert result.status == "no_matches" and result.recommendations == []
     assert result.tool_calls == 1
+    assert result.discovery_candidate_ids == [1, 2, 3]
+    assert result.fallback_recommendations == result.discovery_candidates
+    assert tools.assessed == {}
 
 
 def test_eight_call_limit_counts_invalid_attempts_and_never_dispatches_ninth(
@@ -328,8 +331,12 @@ def test_global_deadline_also_covers_tools_and_final_assessment(
         ),
         final([1]),
     )
-    with pytest.raises(OllamaTimeout):
-        run_agent(agent_request, tools, model, today=TODAY)
+    result = run_agent(agent_request, tools, model, today=TODAY)
+    assert result.status == "model_error" and result.model_error == "timeout"
+    assert result.recommendations == []
+    assert result.fallback_recommendations == result.discovery_candidates
+    assert len(model.requests) == (1 if operation == "dispatch" else 2)
+    assert result.tool_calls == (1 if operation == "dispatch" else 2)
 
 
 def test_tool_failure_and_result_validation_do_not_become_evidence(tools):
@@ -395,19 +402,32 @@ def test_typed_agent_endpoint_uses_actual_services(agent_client, agent_request):
 
 
 @pytest.mark.parametrize(
-    ("error", "status"),
-    [(OllamaUnavailable(), 503), (OllamaTimeout(), 504), (OllamaProtocolError(), 502)],
+    ("error", "kind"),
+    [
+        (OllamaUnavailable(), "unavailable"),
+        (OllamaTimeout(), "timeout"),
+        (OllamaProtocolError(), "invalid_response"),
+    ],
 )
 def test_outage_timeout_and_protocol_errors_preserve_non_ai_endpoints(
-    agent_client, agent_request, error, status
+    agent_client, agent_request, error, kind
 ):
     client, application = agent_client
     application.dependency_overrides[get_ollama_client] = lambda: ScriptedModel(error)
-    assert (
-        client.post(
-            "/api/agent/recommend", json=agent_request.model_dump(mode="json")
-        ).status_code
-        == status
+    response = client.post(
+        "/api/agent/recommend", json=agent_request.model_dump(mode="json")
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "model_error" and data["model_error"] == kind
+    assert data["recommendations"] == [] and data["tool_calls"] == 0
+    assert data["discovery_candidate_ids"] == [1, 2, 3]
+    assert data["fallback_recommendations"] == data["discovery_candidates"]
+    assert all(
+        item["assessment"]["status"] == "needs_verification"
+        and item["assessment"]["official_source_url"]
+        and item["assessment"]["last_verified_at"]
+        for item in data["discovery_candidates"]
     )
     assert client.get("/api/health").json()["status"] == "ok"
     assert client.get("/api/scholarships").status_code == 200
@@ -424,15 +444,22 @@ def test_outage_timeout_and_protocol_errors_preserve_non_ai_endpoints(
 
 
 def test_agent_busy_does_not_queue_more_gpu_requests(agent_client, agent_request):
-    client, _ = agent_client
+    client, application = agent_client
+    model = Mock()
+    application.dependency_overrides[get_ollama_client] = lambda: model
     assert agent_api._agent_gate.acquire(blocking=False)
     try:
-        assert (
-            client.post(
-                "/api/agent/recommend", json=agent_request.model_dump(mode="json")
-            ).status_code
-            == 503
+        response = client.post(
+            "/api/agent/recommend", json=agent_request.model_dump(mode="json")
         )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "model_error" and data["model_error"] == "busy"
+        assert data["steps"] == data["tool_calls"] == 0
+        assert data["tool_trace"] == [] and data["recommendations"] == []
+        assert data["discovery_candidate_ids"] == [1, 2, 3]
+        assert data["fallback_recommendations"] == data["discovery_candidates"]
+        model.chat.assert_not_called()
     finally:
         agent_api._agent_gate.release()
 

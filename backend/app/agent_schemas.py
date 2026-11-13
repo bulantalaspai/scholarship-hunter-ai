@@ -5,7 +5,11 @@ from typing import Annotated, Any, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
 
-from backend.app.eligibility_schemas import RankedProgramme, StudentProfile
+from backend.app.eligibility_schemas import (
+    RankedProgramme,
+    RequirementResult,
+    StudentProfile,
+)
 from backend.app.schemas import FundingType, SearchText
 
 MODEL = "qwen3:4b-instruct"
@@ -43,8 +47,15 @@ class ToolTrace(BaseModel):
     fetched_at: datetime | None = None
 
 
+class GroundedExplanation(BaseModel):
+    scholarship_id: ScholarshipId
+    requirements: list[RequirementResult] = Field(min_length=1, max_length=4)
+
+
 class AgentResponse(BaseModel):
-    status: Literal["completed", "needs_verification", "limit_reached", "no_matches"]
+    status: Literal[
+        "completed", "needs_verification", "limit_reached", "no_matches", "model_error"
+    ]
     model: Literal["qwen3:4b-instruct"] = MODEL
     evaluated_on: date
     steps: int = Field(ge=0, le=MAX_STEPS)
@@ -54,6 +65,17 @@ class AgentResponse(BaseModel):
         default_factory=list, max_length=MAX_IDS
     )
     fallback_reason: str | None = None
+    discovery_candidates: list[RankedProgramme] = Field(
+        default_factory=list, max_length=MAX_IDS
+    )
+    discovery_candidate_ids: list[ScholarshipId] = Field(default_factory=list)
+    discovery_scope: Literal["catalogue", "named_target"] = "catalogue"
+    model_error: (
+        Literal["unavailable", "timeout", "invalid_response", "busy"] | None
+    ) = None
+    model_explanations: list[GroundedExplanation] = Field(
+        default_factory=list, max_length=MAX_IDS
+    )
     message: str
     warnings: list[str]
     tool_trace: list[ToolTrace] = Field(max_length=MAX_TOOL_CALLS)
@@ -91,11 +113,32 @@ class RankArguments(ToolArguments):
         return self
 
 
+class ExplanationSelection(ToolArguments):
+    scholarship_id: ScholarshipId
+    requirements: list[
+        Annotated[str, StringConstraints(min_length=1, max_length=100)]
+    ] = Field(min_length=1, max_length=4)
+
+    @model_validator(mode="after")
+    def unique_requirements(self) -> Self:
+        if len(set(self.requirements)) != len(self.requirements):
+            raise ValueError("Duplicate requirement keys are not allowed")
+        return self
+
+
 class FinalSelection(ToolArguments):
     recommendation_ids: list[ScholarshipId] = Field(max_length=MAX_IDS)
+    explanations: list[ExplanationSelection] = Field(
+        default_factory=list, max_length=MAX_IDS
+    )
 
     @model_validator(mode="after")
     def unique_ids(self) -> Self:
         if len(set(self.recommendation_ids)) != len(self.recommendation_ids):
             raise ValueError("Duplicate IDs are not allowed")
+        explanation_ids = [item.scholarship_id for item in self.explanations]
+        if len(set(explanation_ids)) != len(explanation_ids):
+            raise ValueError("Duplicate explanation IDs are not allowed")
+        if not set(explanation_ids).issubset(self.recommendation_ids):
+            raise ValueError("Explanations must refer to selected IDs")
         return self

@@ -81,7 +81,10 @@ def main():
             "response": response.json(),
         }
         print(json.dumps(report, ensure_ascii=False, indent=2))
-        if response.status_code != 200:
+        if (
+            response.status_code != 200
+            or response.json().get("status") == "model_error"
+        ):
             raise SystemExit(1)
         if response.json()["status"] == "limit_reached":
             raise SystemExit(2)

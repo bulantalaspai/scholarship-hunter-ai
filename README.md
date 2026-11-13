@@ -501,21 +501,32 @@ Invoke-RestMethod http://127.0.0.1:8000/api/agent/recommend -Method Post -Conten
 The typed response contains `status`, `model`, `evaluated_on`, `steps`,
 `tool_calls`, `recommendations`, `message`, `warnings`, `tool_trace` and
 `disclaimer`, plus `fallback_recommendations` and `fallback_reason`.
+`discovery_candidates` retains the first three deterministic assessments and
+`discovery_candidate_ids` records the complete retained candidate pool.
+`discovery_scope` identifies catalogue discovery or an exact full-name target.
+`model_explanations` contains model-selected requirement keys rendered as the
+existing canonical requirement results.
 Each recommendation uses the existing `RankedProgramme` contract with a full
 deterministic `assessment` and `ranking_reasons`, including official
 source links, catalogue/rule review dates, unknowns and individual checks.
-Statuses are `completed`, `needs_verification`, `no_matches` or `limit_reached`.
+Statuses are `completed`, `needs_verification`, `no_matches`, `limit_reached`
+or `model_error`.
 The overall agent status does not replace individual eligibility classifications;
 confirmed failures still take precedence over unknown requirements.
 
-When a completed model run has no grounded selection or reaches its budget,
-the server can reassess its retrieved records and return up to three
-`needs_verification` candidates in `fallback_recommendations`. The UI labels
-these **Deterministic candidates to verify** and shows the reason, rule checks,
-official links and dates. The model's status, recommendations and attempted-tool
-trace retain their original values. Fallback assessment preserves the IDs
-previously assessed by model-requested tools. Ollama transport/protocol errors use
-the documented HTTP error responses and the ordinary matches link.
+Before inference, the existing matching service discovers the full catalogue's
+candidates and seeds up to three IDs for model-directed tools. Discovery remains
+visible across empty, partial and failed model responses. An explicit normalized
+full programme name retains that target's assessment, including disqualifications.
+General discovery retains candidates without confirmed failures. Natural-language
+destinations and abbreviations currently rely on Qwen's optional search tool.
+
+Empty selections, budget stops and model errors can include up to three cached
+`needs_verification` assessments in `fallback_recommendations`. Canonical discovery
+also retains eligible or ineligible named-target results with their classifications.
+The UI displays each programme once and identifies the source of its selection.
+Only successful model-requested eligibility/ranking work authorizes raw
+`recommendations`. Bootstrap and fallback assessments receive separate attribution.
 
 Trace entries expose validated tool arguments, a safe summary and outcome;
 successful page reads also include their source and retrieval timestamp.
@@ -524,15 +535,16 @@ not included in the trace. The application does not log or persist profiles,
 prompts, traces or agent results. Only the local Ollama service receives the
 profile; outbound source requests contain no profile or goal.
 
-Validation errors return **422**, unavailable/busy Ollama **503**, inference
-timeouts **504**, and invalid/truncated/oversized model responses **502**.
-The frontend offers ordinary deterministic matching after errors. One AI request
-per backend process is admitted at a time to avoid a GPU inference queue.
+Validation errors return **422**. Handled Ollama failures return **200** with
+`status: "model_error"`, a `model_error` value of `unavailable`, `busy`, `timeout`
+or `invalid_response`, and retained deterministic assessments. Clients should
+inspect the typed status. One inference request per backend process is admitted
+at a time. Busy responses perform local discovery without starting model work.
 
 ### Tools, grounding and limits
 
-Qwen chooses tool calls and arguments from live results; there is no scripted
-retrieve/check/rank sequence or automatic fallback pretending to be AI.
+Qwen chooses tool calls and arguments from the supplied candidate context and
+live results. Deterministic discovery and recovery are labeled separately.
 
 - `search_scholarships(country?, field?, funding_type?)`: the existing SQLite
   filters, with at most three candidates per search. Country means destination,
@@ -550,7 +562,7 @@ retrieve/check/rank sequence or automatic fallback pretending to be AI.
 
 Every argument and service result is validated. Model-selected recommendations
 require IDs discovered and assessed through model-requested tools. The model selects
-IDs only; server services attach all facts and determine the displayed order.
+IDs and requirement keys. Server services render factual text and determine order.
 Model-written claims, invented IDs and attempted classification/profile overrides
 are rejected. Web excerpts are explicitly untrusted; they cannot update catalogue
 facts, review dates or eligibility rules. Reading a page is not verification by
@@ -562,8 +574,8 @@ attempts count), **90 seconds overall**, **45 seconds per model call**, and
 to 3,200 UTF-8 bytes; page text is further reduced to 600 characters. A conservative
 input-size heuristic stops oversized conversations before inference; reported
 Ollama prompt-token counts are checked too. The heuristic is not a tokenizer.
-Budget exhaustion returns an explicit model status. A separately labeled
-deterministic fallback can accompany that response using retrieved records.
+Budget exhaustion returns an explicit model status. Deterministic discovery
+provides cached recovery assessments within the same resource limits.
 
 The 4B model may choose poor filters or miss candidates. This is a small curated
 catalogue assistant, not an exhaustive scholarship search or a new eligibility
@@ -585,7 +597,7 @@ a temporary database seeded from the unchanged curated catalogue:
 The command prints HTTP status, timing, actual per-round prompt-token counts,
 requested tools, the complete response and execution trace. It never writes to
 the application database or pulls a model. Exit codes: 0 for a completed response
-(including no matches), 1 for an HTTP error, 2 for a step/context budget stop.
+(including no matches), 1 for HTTP/model errors, 2 for a step/context budget stop.
 See [the recorded Phase 5 live example](docs/AGENT_SMOKE.md) for measured behavior
 against the original two-record catalogue. The expanded catalogue can produce
 different candidates and model-selected plans; normal limits still apply.
@@ -630,6 +642,27 @@ presence and audited source support have defined sample scopes. Proposal-level
 targets remain **NOT EVALUABLE** where gold classes, independently verified
 positive relevance or complete claim audits are missing. Ordinary test commands
 below use mocked inference and source transport.
+
+### Retrieval reliability comparison
+
+The Phase 6C comparison retains the same profiles, cases, source annotations,
+catalogue and fixed assessment date. Raw Qwen selections, deterministic discovery,
+fallback assistance and model errors have separate measurements. Read the methods,
+executed results and limitations in [RELIABILITY_REPORT.md](docs/RELIABILITY_REPORT.md).
+The [review package](evaluation/review/README.md) contains seven annotation items
+for Talaspay Bulan, Sayat Nuradil and Tursbekov Darkhan. Human adjudication is pending.
+
+After running the evaluation command above with a fresh output path, compare it
+against the recorded Phase 6B results.
+
+```powershell
+.\.venv\Scripts\python.exe -m backend.evaluation.reliability --before evaluation/results/native_2026-11-12.json --after "$env:TEMP\scholarship-evaluation.json" --fresh-before evaluation/results/reliability_before_2026-11-13.json --output "$env:TEMP\scholarship-reliability-comparison.json"
+```
+
+The comparator checks identical input hashes, dates and request populations.
+Retention recall measures preservation of the deterministic candidate pool.
+Independent relevance and complete three-class eligibility accuracy require
+human-reviewed evidence and positive cases before proposal targets can be scored.
 
 ## Tests and checks
 

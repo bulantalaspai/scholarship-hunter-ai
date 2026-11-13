@@ -52,6 +52,7 @@ IMPLEMENTATION_FILES = sorted((ROOT / "backend" / "app").glob("*.py")) + [
     Path(__file__),
     Path(__file__).with_name("extract.py"),
     Path(__file__).with_name("metrics.py"),
+    Path(__file__).with_name("reliability.py"),
 ]
 
 
@@ -133,14 +134,30 @@ class ObservedClient(OllamaClient):
                     event["final_validation"] = "invalid_schema"
                 else:
                     event["final_ids"] = final.recommendation_ids
-                    event["final_validation"] = (
-                        "unassessed_ids"
-                        if any(
-                            identifier not in self.agent_tools.assessed
-                            for identifier in final.recommendation_ids
+                    event["final_explanation_keys"] = [
+                        item.model_dump(mode="json") for item in final.explanations
+                    ]
+                    discovery = self.agent_tools.discovery
+                    if any(
+                        identifier not in self.agent_tools.assessed
+                        for identifier in final.recommendation_ids
+                    ):
+                        event["final_validation"] = "unassessed_ids"
+                    elif (
+                        discovery
+                        and discovery.named_target
+                        and not set(final.recommendation_ids).issubset(
+                            discovery.candidate_ids
                         )
-                        else "grounded"
-                    )
+                    ):
+                        event["final_validation"] = "outside_named_target"
+                    else:
+                        try:
+                            self.agent_tools.grounded_explanations(final)
+                        except ValueError:
+                            event["final_validation"] = "invalid_explanation_reference"
+                        else:
+                            event["final_validation"] = "grounded"
             return reply
         finally:
             event["seconds"] = round(time.perf_counter() - started, 6)
@@ -191,6 +208,11 @@ def agent_run(item: dict, goal: str, session: Session, today: date) -> dict:
         "error": None,
         "recommendations": [],
         "fallback_recommendations": [],
+        "discovery_candidates": [],
+        "discovery_candidate_ids": [],
+        "discovery_scope": None,
+        "model_error": None,
+        "model_explanations": [],
         "warnings": [],
     }
     try:
@@ -202,6 +224,15 @@ def agent_run(item: dict, goal: str, session: Session, today: date) -> dict:
                 recommendation_summary(x) for x in result.fallback_recommendations
             ],
             warnings=result.warnings,
+            discovery_candidates=[
+                recommendation_summary(x) for x in result.discovery_candidates
+            ],
+            discovery_candidate_ids=result.discovery_candidate_ids,
+            discovery_scope=result.discovery_scope,
+            model_error=result.model_error,
+            model_explanations=[
+                item.model_dump(mode="json") for item in result.model_explanations
+            ],
         )
     except (OllamaUnavailable, OllamaTimeout, OllamaProtocolError) as error:
         output["error"] = type(error).__name__

@@ -115,7 +115,8 @@ def test_ninth_attempt_in_a_later_step_never_reaches_dispatch(
     assert result.status == "limit_reached" and result.recommendations == []
     assert result.tool_calls == dispatch.call_count == 8
     assert len(model.requests) == 3 and model.requests[-1][1] == []
-    assert tools.discovered == {}
+    assert list(tools.discovered) == result.discovery_candidate_ids == [1, 2, 3]
+    assert tools.assessed == {}
 
 
 def test_invalid_final_can_be_repaired_without_retaining_model_claims(
@@ -262,8 +263,10 @@ def test_global_deadline_is_checked_after_model_returns_before_tool_dispatch(
 
     dispatch = Mock(wraps=tools.dispatch)
     tools.dispatch = dispatch
-    with pytest.raises(OllamaTimeout):
-        run_agent(request_data, tools, LateModel(), today=TODAY)
+    result = run_agent(request_data, tools, LateModel(), today=TODAY)
+    assert result.status == "model_error" and result.model_error == "timeout"
+    assert result.tool_calls == 0 and result.tool_trace == []
+    assert result.fallback_recommendations == result.discovery_candidates
     dispatch.assert_not_called()
 
 
