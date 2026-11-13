@@ -1,0 +1,1308 @@
+{
+  "requested_cases": 60,
+  "missed_targets": 34,
+  "observed_nonexclusive_flag_counts": {
+    "budget_stop": 18,
+    "incorrect_search_filters": 34,
+    "invalid_final_schema": 4,
+    "missing_target_assessment": 34,
+    "outside_named_target": 17,
+    "wrong_requested_ids": 21
+  },
+  "aliases_and_abbreviations": {
+    "status": "NOT_ASSESSED",
+    "reason": "Frozen case goals use complete canonical programme names"
+  },
+  "scope": "Observed co-occurrences in missed target assessments. Filter exclusions use the existing catalogue query rules. A filter exclusion does not establish ineligibility. Raw invalid model prose was not retained. Blocked attempts without recorded IDs cannot identify the attempted ID.",
+  "cases": [
+    {
+      "case_id": "P01-MEXT-CLOSED",
+      "profile_id": "P01",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": true,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Computer Science",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7
+      ],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "invalid_schema": 1,
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P01-DAAD-FUNDING",
+      "profile_id": "P01",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Computer Science"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        6,
+        9,
+        11
+      ],
+      "wrong_final_ids": [
+        6,
+        9,
+        11
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 2
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P02-DAAD-FUNDING",
+      "profile_id": "P02",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Artificial Intelligence"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P03-SMACCS-REVIEW",
+      "profile_id": "P03",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "target_id": 2,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Belgium",
+            "field": "Data Science",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P03-DAAD-FUNDING",
+      "profile_id": "P03",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Data Science"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P04-DAAD-FUNDING",
+      "profile_id": "P04",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Software Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        11
+      ],
+      "wrong_final_ids": [
+        11
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P05-MEXT-CLOSED",
+      "profile_id": "P05",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Electrical Engineering",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7
+      ],
+      "wrong_final_ids": [
+        7
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P05-SMACCS-REVIEW",
+      "profile_id": "P05",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "target_id": 2,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Belgium",
+            "field": "Electrical Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7
+      ],
+      "wrong_final_ids": [
+        7
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P05-DAAD-FUNDING",
+      "profile_id": "P05",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Electrical Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        6,
+        9,
+        11
+      ],
+      "wrong_final_ids": [
+        6,
+        9,
+        11
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 2
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P06-MEXT-CLOSED",
+      "profile_id": "P06",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Mechanical Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        15
+      ],
+      "wrong_final_ids": [
+        15
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P06-DAAD-FUNDING",
+      "profile_id": "P06",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Mechanical Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        14,
+        17
+      ],
+      "wrong_final_ids": [
+        14,
+        17
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 2
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P07-MEXT-CLOSED",
+      "profile_id": "P07",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Physics",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7
+      ],
+      "wrong_final_ids": [
+        7
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P07-DAAD-FUNDING",
+      "profile_id": "P07",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Physics",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field",
+            "funding_type"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        6,
+        9,
+        12
+      ],
+      "wrong_final_ids": [
+        6,
+        9,
+        12
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 2
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P08-MEXT-CLOSED",
+      "profile_id": "P08",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Mathematics",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7
+      ],
+      "wrong_final_ids": [
+        7
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P08-DAAD-FUNDING",
+      "profile_id": "P08",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Mathematics"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        6,
+        18
+      ],
+      "wrong_final_ids": [
+        6,
+        18
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 2
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P09-DAAD-FUNDING",
+      "profile_id": "P09",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Chemistry"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        12
+      ],
+      "wrong_final_ids": [
+        12
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P10-DAAD-FUNDING",
+      "profile_id": "P10",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Environmental Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P11-SMACCS-REVIEW",
+      "profile_id": "P11",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "target_id": 2,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Belgium",
+            "field": "Robotics",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P11-DAAD-FUNDING",
+      "profile_id": "P11",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Robotics"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P12-DAAD-FUNDING",
+      "profile_id": "P12",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Cybersecurity"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P13-SMACCS-REVIEW",
+      "profile_id": "P13",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "target_id": 2,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Belgium",
+            "field": "Business",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P13-DAAD-FUNDING",
+      "profile_id": "P13",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Business",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field",
+            "funding_type"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P14-DAAD-FUNDING",
+      "profile_id": "P14",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Arts"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P15-MEXT-CLOSED",
+      "profile_id": "P15",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": true,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Computer Science",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7
+      ],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "invalid_schema": 1,
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P15-DAAD-FUNDING",
+      "profile_id": "P15",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Computer Science"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        6,
+        9,
+        11
+      ],
+      "wrong_final_ids": [
+        6,
+        9,
+        11
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 2
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P16-MEXT-CLOSED",
+      "profile_id": "P16",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Engineering",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7
+      ],
+      "wrong_final_ids": [
+        7
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P16-DAAD-FUNDING",
+      "profile_id": "P16",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        6,
+        9,
+        11
+      ],
+      "wrong_final_ids": [
+        6,
+        9,
+        11
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 2
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P17-MEXT-CLOSED",
+      "profile_id": "P17",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Computer Science",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7
+      ],
+      "wrong_final_ids": [
+        7
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 1
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P17-DAAD-FUNDING",
+      "profile_id": "P17",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": false,
+        "outside_named_target": true,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Computer Science"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        6,
+        9,
+        11
+      ],
+      "wrong_final_ids": [
+        6,
+        9,
+        11
+      ],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "outside_named_target": 2
+      },
+      "status": "limit_reached"
+    },
+    {
+      "case_id": "P18-SMACCS-REVIEW",
+      "profile_id": "P18",
+      "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+      "target_id": 2,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Belgium",
+            "field": "Data Science",
+            "funding_type": "fully_funded"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P18-DAAD-FUNDING",
+      "profile_id": "P18",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Data Science"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P19-DAAD-FUNDING",
+      "profile_id": "P19",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": false,
+        "invalid_final_schema": false,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Biomedical Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 1,
+      "final_validation_counts": {
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P20-MEXT-CLOSED",
+      "profile_id": "P20",
+      "scholarship_name": "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+      "target_id": 20,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": true,
+        "outside_named_target": false,
+        "budget_stop": false
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Japan",
+            "field": "Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        7,
+        15
+      ],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "invalid_schema": 1,
+        "grounded": 1
+      },
+      "status": "no_matches"
+    },
+    {
+      "case_id": "P20-DAAD-FUNDING",
+      "profile_id": "P20",
+      "scholarship_name": "Study Scholarships - Master Studies for All Academic Disciplines",
+      "target_id": 1,
+      "target_preseeded": true,
+      "flags": {
+        "missing_target_assessment": true,
+        "name_matching_failure": false,
+        "incorrect_search_filters": true,
+        "wrong_requested_ids": true,
+        "invalid_final_schema": true,
+        "outside_named_target": false,
+        "budget_stop": true
+      },
+      "searches": [
+        {
+          "arguments": {
+            "country": "Germany",
+            "field": "Engineering"
+          },
+          "target_excluded_by": [
+            "field"
+          ]
+        }
+      ],
+      "wrong_requested_ids": [
+        6,
+        9,
+        11
+      ],
+      "wrong_final_ids": [],
+      "blocked_checks_without_recorded_id": 0,
+      "final_validation_counts": {
+        "invalid_schema": 2
+      },
+      "status": "limit_reached"
+    }
+  ],
+  "input_hashes": {
+    "backend/data/curated_scholarships.json": "6cf30b41a8f004e91932680efd3cbbe8833b052bb33d9906e2de6f8a175674b2",
+    "evaluation/data/eligibility_cases.json": "cd7166924df1651fafbf9e52517f2d7a15a842bd68f77122c6bd459c806757cc",
+    "evaluation/data/profiles.json": "3041b0a31aef3d2456db7af55f9496cb69451ee1758cb741de5795f674647566",
+    "evaluation/data/relevance_judgments.json": "476259384db1802d830d9257442df5edc4548d2dec46e944fecb8d2f139ab0e8",
+    "evaluation/data/source_annotations.json": "d8d2c278fc241fa0827d45d28611381c767ea46c9cc5bb62f2038ceeb2d6abe8"
+  },
+  "source_result": "evaluation/results/reliability_after_2026-11-13.json"
+}

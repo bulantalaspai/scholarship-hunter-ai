@@ -18,6 +18,7 @@ export interface AgentResponse {
     | 'limit_reached'
     | 'no_matches'
     | 'model_error'
+    | 'ambiguous_match'
   model: 'qwen3:4b-instruct'
   evaluated_on: string
   steps: number
@@ -29,11 +30,28 @@ export interface AgentResponse {
   discovery_candidates?: RankedProgramme[]
   discovery_candidate_ids?: number[]
   discovery_scope?: 'catalogue' | 'named_target'
+  name_resolution?: ProgrammeResolution | null
   model_explanations?: ModelExplanation[]
   message: string
   warnings: string[]
   tool_trace: AgentToolTrace[]
   disclaimer: string
+}
+
+export interface ProgrammeOption {
+  scholarship_id: number
+  scholarship_name: string
+  official_source_url: string
+  last_verified_at: string
+}
+
+export interface ProgrammeResolution {
+  status: 'not_requested' | 'matched' | 'ambiguous' | 'not_found'
+  query: string | null
+  method: 'exact' | 'alias' | 'fuzzy' | null
+  candidate_ids: number[]
+  options: ProgrammeOption[]
+  message: string
 }
 
 export interface ModelExplanation {
@@ -104,6 +122,7 @@ function agentResponse(value: unknown): value is AgentResponse {
       'limit_reached',
       'no_matches',
       'model_error',
+      'ambiguous_match',
     ].includes(value.status) ||
     value.model !== 'qwen3:4b-instruct' ||
     !date(value.evaluated_on) ||
@@ -173,7 +192,107 @@ function agentResponse(value: unknown): value is AgentResponse {
   )
     return false
   if (!discovery(value, value.recommendations)) return false
+  if (!nameResolution(value, value.recommendations)) return false
   return explanations(value.model_explanations, value.recommendations)
+}
+
+function programmeResolution(value: unknown): value is ProgrammeResolution {
+  if (
+    !object(value) ||
+    !text(value.status) ||
+    !['not_requested', 'matched', 'ambiguous', 'not_found'].includes(value.status) ||
+    !(
+      value.query === null ||
+      (text(value.query) &&
+        value.query.trim().length > 0 &&
+        value.query.length <= 300)
+    ) ||
+    !(
+      value.method === null ||
+      (text(value.method) && ['exact', 'alias', 'fuzzy'].includes(value.method))
+    ) ||
+    !Array.isArray(value.candidate_ids) ||
+    !value.candidate_ids.every((id) =>
+      boundedInteger(id, 1, Number.MAX_SAFE_INTEGER),
+    ) ||
+    !Array.isArray(value.options) ||
+    !text(value.message)
+  )
+    return false
+  const ids = value.candidate_ids
+  if (new Set(ids).size !== ids.length || ids.length !== value.options.length)
+    return false
+  if (
+    !value.options.every(
+      (option, index) =>
+        object(option) &&
+        option.scholarship_id === ids[index] &&
+        text(option.scholarship_name) &&
+        option.scholarship_name.trim().length > 0 &&
+        option.scholarship_name.length <= 300 &&
+        safeUrl(option.official_source_url) &&
+        date(option.last_verified_at),
+    )
+  )
+    return false
+  if (value.status === 'not_requested' || value.status === 'not_found')
+    return ids.length === 0 && value.method === null
+  return (
+    value.method !== null &&
+    (value.status === 'matched'
+      ? ids.length >= 1 && ids.length <= 3
+      : ids.length >= 2)
+  )
+}
+
+function nameResolution(
+  value: JsonObject,
+  recommendations: RankedProgramme[],
+): boolean {
+  const resolution = value.name_resolution
+  if (resolution === undefined || resolution === null)
+    return value.status !== 'ambiguous_match'
+  if (!programmeResolution(resolution)) return false
+  const candidates = value.discovery_candidates ?? []
+  const ids = value.discovery_candidate_ids ?? []
+  const fallback = value.fallback_recommendations ?? []
+  if (resolution.status === 'ambiguous' || resolution.status === 'not_found')
+    return (
+      value.status ===
+        (resolution.status === 'ambiguous' ? 'ambiguous_match' : 'no_matches') &&
+      value.steps === 0 &&
+      value.tool_calls === 0 &&
+      recommendations.length === 0 &&
+      Array.isArray(candidates) &&
+      candidates.length === 0 &&
+      Array.isArray(ids) &&
+      ids.length === 0 &&
+      Array.isArray(fallback) &&
+      fallback.length === 0
+    )
+  if (value.status === 'ambiguous_match') return false
+  if (resolution.status === 'not_requested') return true
+  if (
+    value.discovery_scope !== 'named_target' ||
+    !Array.isArray(ids) ||
+    ids.length !== resolution.candidate_ids.length ||
+    ids.some((id) => !resolution.candidate_ids.includes(id)) ||
+    !Array.isArray(candidates) ||
+    candidates.length !== resolution.options.length
+  )
+    return false
+  return candidates.every((candidate) => {
+    if (!isRankedProgramme(candidate)) return false
+    const option = resolution.options.find(
+      (item) => item.scholarship_id === candidate.assessment.scholarship_id,
+    )
+    return (
+      option !== undefined &&
+      option.scholarship_name === candidate.assessment.scholarship_name &&
+      option.official_source_url === candidate.assessment.official_source_url &&
+      option.last_verified_at === candidate.assessment.last_verified_at
+    )
+  })
 }
 
 function discovery(

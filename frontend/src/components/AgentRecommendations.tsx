@@ -11,6 +11,15 @@ type State =
   | { status: 'error'; message: string }
   | { status: 'ready'; response: AgentResponse }
 
+const responseHeadings: Record<AgentResponse['status'], string> = {
+  completed: 'Source-backed results',
+  needs_verification: 'Further verification needed',
+  limit_reached: 'Exploration limit reached',
+  no_matches: 'No recommendations selected',
+  model_error: 'Local AI could not finish',
+  ambiguous_match: 'Choose a programme',
+}
+
 export default function AgentRecommendations({
   profile,
 }: {
@@ -143,6 +152,9 @@ export default function AgentRecommendations({
 }
 
 function AgentOutput({ response }: { response: AgentResponse }) {
+  const resolution = response.name_resolution
+  const clarification =
+    resolution?.status === 'ambiguous' || resolution?.status === 'not_found'
   const selectedIds = new Set(
     response.recommendations.map((item) => item.assessment.scholarship_id),
   )
@@ -161,19 +173,42 @@ function AgentOutput({ response }: { response: AgentResponse }) {
     <section className="agent-output" aria-label="Local AI response">
       <div className="notice">
         <h2>
-          {response.status === 'model_error'
-            ? 'Local AI could not finish'
-            : response.status === 'completed'
-            ? 'Source-backed results'
-            : response.status === 'limit_reached'
-              ? 'Exploration limit reached'
-              : response.status === 'no_matches'
-                ? 'No recommendations selected'
-                : 'Further verification needed'}
+          {resolution?.status === 'not_found'
+            ? 'Programme not found'
+            : responseHeadings[response.status]}
         </h2>
         <p>{response.message}</p>
         <p>{response.disclaimer}</p>
       </div>
+      {resolution?.status === 'ambiguous' && (
+        <section
+          className="content-panel"
+          aria-labelledby="programme-choices-heading"
+        >
+          <h3 id="programme-choices-heading">Matching programmes</h3>
+          <p>Enter the full programme name in your request.</p>
+          <ul>
+            {resolution.options.map((option) => (
+              <li key={option.scholarship_id}>
+                <strong>{option.scholarship_name}</strong>
+                <p>
+                  <SourceLink
+                    url={option.official_source_url}
+                    label={`Official source for ${option.scholarship_name}`}
+                  />
+                  {' · Last verified '}
+                  {calendarDate(option.last_verified_at)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {resolution?.status === 'matched' && resolution.method !== 'exact' && (
+        <section className="notice" aria-label="Programme-name interpretation">
+          <p>{resolution.message}</p>
+        </section>
+      )}
       {response.warnings.length > 0 && (
         <section className="agent-warnings">
           <h3>Important limitations</h3>
@@ -199,7 +234,7 @@ function AgentOutput({ response }: { response: AgentResponse }) {
           ))}
         </section>
       )}
-      {response.recommendations.length === 0 && (
+      {response.recommendations.length === 0 && !clarification && (
         <p>
           No grounded recommendation was returned by the model. Try a simpler
           request or use{' '}

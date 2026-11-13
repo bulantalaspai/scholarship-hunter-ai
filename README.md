@@ -503,23 +503,28 @@ The typed response contains `status`, `model`, `evaluated_on`, `steps`,
 `disclaimer`, plus `fallback_recommendations` and `fallback_reason`.
 `discovery_candidates` retains the first three deterministic assessments and
 `discovery_candidate_ids` records the complete retained candidate pool.
-`discovery_scope` identifies catalogue discovery or an exact full-name target.
+`discovery_scope` identifies catalogue discovery or a resolved programme target.
+`name_resolution` records the normalized lookup outcome, matching method and
+official-source options.
 `model_explanations` contains model-selected requirement keys rendered as the
 existing canonical requirement results.
 Each recommendation uses the existing `RankedProgramme` contract with a full
 deterministic `assessment` and `ranking_reasons`, including official
 source links, catalogue/rule review dates, unknowns and individual checks.
-Statuses are `completed`, `needs_verification`, `no_matches`, `limit_reached`
-or `model_error`.
+Statuses are `completed`, `needs_verification`, `no_matches`, `limit_reached`,
+`ambiguous_match` or `model_error`.
 The overall agent status does not replace individual eligibility classifications;
 confirmed failures still take precedence over unknown requirements.
 
 Before inference, the existing matching service discovers the full catalogue's
 candidates and seeds up to three IDs for model-directed tools. Discovery remains
-visible across empty, partial and failed model responses. An explicit normalized
-full programme name retains that target's assessment, including disqualifications.
-General discovery retains candidates without confirmed failures. Natural-language
-destinations and abbreviations currently rely on Qwen's optional search tool.
+visible across empty, partial and failed model responses. A resolved programme
+name retains that target's assessment, including disqualifications. Unicode/case
+normalization, documented aliases and conservative long-name spelling matches
+support lookup. Ambiguous names return choices with official links. Unknown
+explicit names return a clear no-match response. Both outcomes use zero inference
+steps. Spelling interpretations appear in the response. General discovery retains
+candidates without confirmed failures. [Programme lookup rules](docs/PROGRAMME_ALIASES.md)
 
 Empty selections, budget stops and model errors can include up to three cached
 `needs_verification` assessments in `fallback_recommendations`. Canonical discovery
@@ -546,9 +551,13 @@ at a time. Busy responses perform local discovery without starting model work.
 Qwen chooses tool calls and arguments from the supplied candidate context and
 live results. Deterministic discovery and recovery are labeled separately.
 
-- `search_scholarships(country?, field?, funding_type?)`: the existing SQLite
-  filters, with at most three candidates per search. Country means destination,
-  not nationality. Omit filters to broaden the search.
+- `search_scholarships(programme_name?, country?, field?, funding_type?)` supports
+  names and aliases alongside existing SQLite discovery filters, returning at most
+  three candidates. An explicitly requested programme takes priority over optional
+  discovery filters. The tool reports `filters_ignored` and a notice in that case.
+  Funding preferences and disqualifications still pass through eligibility checks.
+  Country filters describe destinations. The model receives the programme-name
+  argument after a name has been resolved.
 - `fetch_official_page(url)`: reads only a discovered record's approved source.
   An additional exact URL allowlist covers the reviewed catalogue sources.
   HTTPS/443, public-IP checks on every hop, DNS-pinned TLS, at most two approved
@@ -663,6 +672,34 @@ The comparator checks identical input hashes, dates and request populations.
 Retention recall measures preservation of the deterministic candidate pool.
 Independent relevance and complete three-class eligibility accuracy require
 human-reviewed evidence and positive cases before proposal targets can be scored.
+
+### Final retrieval and independent human review
+
+Phase 6D compares the frozen Phase 6C result with a new run using the same
+20 profiles, 60 named-target cases and 12 extraction excerpts. The alias registry
+is recorded as implementation configuration. Original benchmark hashes stay
+separate from human-review evidence. Methods, measured results, remaining failures
+and academic measurement limits appear in [FINAL_EVALUATION.md](docs/FINAL_EVALUATION.md).
+
+The [human-review package](evaluation/human_review/README.md) contains 284 provisional
+items and 568 blank assignments across Talaspay Bulan, Sayat Nuradil and Tursbekov
+Darkhan. It includes the 60 eligibility cases, 120 extraction slots, 80 relevance
+judgments and 24 citation checks. Two assigned reviewers independently complete
+each item under the documented project protocol.
+
+```powershell
+.\.venv\Scripts\python.exe -m backend.evaluation.reviews validate --package evaluation/human_review
+.\.venv\Scripts\python.exe -m backend.evaluation.run --real-model --output "$env:TEMP\scholarship-final-run.json"
+.\.venv\Scripts\python.exe -m backend.evaluation.final --before evaluation/results/reliability_after_2026-11-13.json --after "$env:TEMP\scholarship-final-run.json" --review-package evaluation/human_review --output "$env:TEMP\scholarship-final-summary.json"
+```
+
+The final comparator validates the actual CSV sheets before scoring. An optional
+`--reviews` snapshot must match freshly validated sheets. Pending, partial,
+disputed and unresolved judgments supply no final labels. Human-reviewed
+`needs_verification` remains a valid eligibility class. Citation attestations must
+refer to the cited page, with section fragments allowed. Current human-label
+academic metrics remain **NOT EVALUABLE** until the required independent evidence
+is available.
 
 ## Tests and checks
 

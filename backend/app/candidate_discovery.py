@@ -1,10 +1,9 @@
 """Retain deterministic candidates independently of the model's search choices."""
 
-import re
-import unicodedata
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.app.agent_schemas import MAX_IDS
@@ -15,6 +14,9 @@ from backend.app.eligibility_schemas import (
     RankedProgramme,
     StudentProfile,
 )
+from backend.app.models import Scholarship
+from backend.app.programme_resolution import ProgrammeResolution, resolve_programme
+from backend.app.schemas import ScholarshipRead
 
 
 @dataclass(frozen=True)
@@ -22,11 +24,21 @@ class DiscoveryResult:
     candidates: list[RankedProgramme]
     candidate_ids: list[int]
     named_target: bool
+    resolution: ProgrammeResolution | None = None
+    records: list[ScholarshipRead] = field(default_factory=list)
 
 
-def _normalized_words(text: str) -> str:
-    normalized = unicodedata.normalize("NFKC", text).casefold()
-    return " ".join(re.findall(r"\w+", normalized))
+def _changed_catalogue(goal: str) -> DiscoveryResult:
+    return DiscoveryResult(
+        candidates=[],
+        candidate_ids=[],
+        named_target=False,
+        resolution=ProgrammeResolution(
+            status="not_found",
+            query=goal.strip() or None,
+            message="The catalogue changed during discovery. Retry the request.",
+        ),
+    )
 
 
 def discover_candidates(
@@ -34,10 +46,10 @@ def discover_candidates(
 ) -> DiscoveryResult:
     """Use the matching service's order and classifications without model filters.
 
-    A goal containing a catalogue programme's full name selects that target,
-    including confirmed failures. Other requests retain every candidate without
-    a confirmed failure. Only the first three complete assessments are exposed
-    to the bounded model context. All retained IDs remain available for auditing.
+    Resolved names retain the target, including confirmed failures. Ambiguous or
+    unknown explicit names require clarification. General discovery retains every
+    candidate without a confirmed failure. The first three complete assessments
+    enter the bounded model context. All retained IDs remain available for auditing.
     """
     ranked: list[RankedProgramme] = []
     page_number = 1
@@ -52,19 +64,48 @@ def discover_candidates(
             break
         page_number += 1
 
-    normalized_goal = f" {_normalized_words(goal)} "
+    records = [
+        ScholarshipRead.model_validate(record)
+        for record in session.scalars(select(Scholarship).order_by(Scholarship.id))
+    ]
+    by_id = {record.id: record for record in records}
+    if (
+        len(ranked) != len(records)
+        or {item.assessment.scholarship_id for item in ranked} != set(by_id)
+        or any(
+            item.assessment.scholarship_name
+            != by_id[item.assessment.scholarship_id].scholarship_name
+            or item.assessment.official_source_url
+            != by_id[item.assessment.scholarship_id].official_source_url
+            or item.assessment.last_verified_at
+            != by_id[item.assessment.scholarship_id].last_verified_at
+            for item in ranked
+        )
+    ):
+        return _changed_catalogue(goal)
+    resolution = resolve_programme(goal, records)
+    if resolution.status in {"ambiguous", "not_found"}:
+        return DiscoveryResult([], [], False, resolution)
     named = [
         item
         for item in ranked
-        if f" {_normalized_words(item.assessment.scholarship_name)} " in normalized_goal
+        if item.assessment.scholarship_id in resolution.candidate_ids
     ]
-    candidates = named or [
-        item
-        for item in ranked
-        if item.assessment.status != EligibilityStatus.INELIGIBLE
-    ]
+    if resolution.status == "matched":
+        if len(named) != len(resolution.candidate_ids):
+            return _changed_catalogue(goal)
+        candidates = named
+    else:
+        candidates = [
+            item
+            for item in ranked
+            if item.assessment.status != EligibilityStatus.INELIGIBLE
+        ]
+    retained = candidates[:MAX_IDS]
     return DiscoveryResult(
-        candidates=candidates[:MAX_IDS],
+        candidates=retained,
         candidate_ids=[item.assessment.scholarship_id for item in candidates],
         named_target=bool(named),
+        resolution=resolution,
+        records=[by_id[item.assessment.scholarship_id] for item in retained],
     )
