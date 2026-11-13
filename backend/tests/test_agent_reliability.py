@@ -2,9 +2,11 @@
 
 import json
 from datetime import date
+from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.app import agent as agent_module
@@ -12,7 +14,8 @@ from backend.app.agent import run_agent
 from backend.app.agent_schemas import AgentRequest
 from backend.app.agent_tools import AgentTools
 from backend.app.eligibility_schemas import FundingPreference
-from backend.app.import_catalogue import import_catalogue
+from backend.app.import_catalogue import import_catalogue, load_catalogue
+from backend.app.models import Scholarship
 from backend.app.ollama_client import OllamaReply, OllamaTimeout
 from backend.app.schemas import CatalogueImport
 
@@ -44,7 +47,10 @@ class Model:
 
     def chat(self, messages, tools, *, timeout):
         self.requests.append((json.loads(json.dumps(messages)), tools, timeout))
-        return next(self.replies)
+        response = next(self.replies)
+        if isinstance(response, Exception):
+            raise response
+        return response
 
 
 @pytest.fixture
@@ -128,9 +134,7 @@ def test_fallback_reassesses_without_replacing_existing_model_assessments(tools)
         tools.final_recommendations([2])
 
 
-def test_fallback_contains_only_candidates_from_actual_model_search(
-    tools, request_data
-):
+def test_fallback_retains_candidates_independently_of_model_search(tools, request_data):
     result = run_agent(
         request_data,
         tools,
@@ -139,10 +143,12 @@ def test_fallback_contains_only_candidates_from_actual_model_search(
         ),
         today=TODAY,
     )
-    assert list(tools.discovered) == [2]
+    assert list(tools.discovered) == [1, 2, 3]
     assert [
         item.assessment.scholarship_id for item in result.fallback_recommendations
-    ] == [2]
+    ] == [1, 2, 3]
+    assert result.discovery_candidate_ids == [1, 2, 3]
+    assert tools.assessed == {}
 
 
 def test_confirmed_funding_failure_is_excluded_without_promoting_unknowns(
@@ -173,13 +179,15 @@ def test_confirmed_funding_failure_is_excluded_without_promoting_unknowns(
 
 
 @pytest.mark.parametrize("search", [None, {"country": "NoSuchDestination"}])
-def test_no_candidates_produce_no_fallback(tools, request_data, search):
+def test_missing_model_candidates_cannot_erase_discovery(tools, request_data, search):
     replies = [reply(selection=[])]
     if search is not None:
         replies.insert(0, reply(("search_scholarships", search)))
     result = run_agent(request_data, tools, Model(*replies), today=TODAY)
-    assert result.recommendations == result.fallback_recommendations == []
-    assert result.fallback_reason is None
+    assert result.recommendations == []
+    assert result.fallback_recommendations == result.discovery_candidates
+    assert result.discovery_candidate_ids == [1, 2, 3]
+    assert result.fallback_reason
 
 
 def test_all_confirmed_failures_produce_no_fallback(tools, request_data):
@@ -295,8 +303,10 @@ def test_fallback_cannot_extend_the_total_request_deadline(
 
     monkeypatch.setattr(tools, "fallback_recommendations", slow_fallback)
     model = Model(reply(("search_scholarships", {})), reply(selection=[]))
-    with pytest.raises(OllamaTimeout):
-        run_agent(request_data, tools, model, today=TODAY)
+    result = run_agent(request_data, tools, model, today=TODAY)
+    assert result.status == "model_error" and result.model_error == "timeout"
+    assert result.recommendations == [] and result.fallback_recommendations
+    assert len(model.requests) == 2 and result.tool_calls == 1
 
 
 def test_reviewed_eligible_fixture_is_never_relabelled_as_an_unverified_fallback(
@@ -327,3 +337,279 @@ def test_reviewed_eligible_fixture_is_never_relabelled_as_an_unverified_fallback
         fallback = tools.fallback_recommendations()
         assert [item.assessment.scholarship_id for item in fallback] == [2, 3]
         assert tools.assessed == {}
+
+
+def test_bootstrap_discovery_cannot_authorize_model_selection(tools, request_data):
+    model = Model(*(reply(selection=[1]) for _ in range(4)))
+    result = run_agent(request_data, tools, model, today=TODAY)
+    assert result.status == "limit_reached"
+    assert result.recommendations == [] and result.tool_calls == 0
+    assert tools.assessed == {}
+    assert result.discovery_candidate_ids == [1, 2, 3]
+    assert result.fallback_recommendations == result.discovery_candidates
+    context = json.loads(model.requests[0][0][1]["content"])["discovery"]
+    assert [item["id"] for item in context["candidates"]] == [1, 2, 3]
+
+
+def test_model_can_choose_ranking_first_without_redundant_search(tools, request_data):
+    model = Model(
+        reply(("rank_scholarships", {"scholarship_ids": [3, 1, 2]})),
+        reply(selection=[1, 2, 3]),
+    )
+    result = run_agent(request_data, tools, model, today=TODAY)
+    assert result.steps == 2 and result.tool_calls == 1
+    assert [event.name for event in result.tool_trace] == ["rank_scholarships"]
+    assert [item.assessment.scholarship_id for item in result.recommendations] == [
+        1,
+        2,
+        3,
+    ]
+    assert set(tools.assessed) == {1, 2, 3}
+
+
+def test_model_subset_keeps_all_deterministic_candidates_visible(tools, request_data):
+    result = run_agent(
+        request_data,
+        tools,
+        Model(
+            reply(("check_eligibility", {"scholarship_id": 2})), reply(selection=[2])
+        ),
+        today=TODAY,
+    )
+    assert [item.assessment.scholarship_id for item in result.recommendations] == [2]
+    assert result.fallback_recommendations == []
+    assert result.discovery_candidate_ids == [1, 2, 3]
+    assert [item.assessment.scholarship_id for item in result.discovery_candidates] == [
+        1,
+        2,
+        3,
+    ]
+    assert all(
+        item.assessment.status == "needs_verification"
+        and item.assessment.unknown_requirements
+        for item in result.discovery_candidates
+    )
+
+
+@pytest.mark.parametrize(
+    ("name", "failed_requirement"),
+    [
+        (
+            "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+            "deadline",
+        ),
+        (
+            "Study Scholarships - Master Studies for All Academic Disciplines",
+            "funding_preference",
+        ),
+    ],
+)
+@pytest.mark.parametrize("model_substitutes_another_id", [False, True])
+def test_named_negative_targets_survive_model_abstention_or_substitution(
+    engine, request_data, name, failed_requirement, model_substitutes_another_id
+):
+    request_data.goal = f"Assess {name} for my profile."
+    request_data.profile.funding_preference = FundingPreference.FULLY_FUNDED
+    catalogue_path = Path(__file__).parents[1] / "data" / "curated_scholarships.json"
+    import_catalogue(engine, load_catalogue(catalogue_path))
+    if model_substitutes_another_id:
+        # ID 2 belongs to a different programme and can be genuinely assessed,
+        # yet it cannot replace the named negative target in a final selection.
+        model = Model(
+            reply(
+                ("search_scholarships", {}),
+                ("check_eligibility", {"scholarship_id": 2}),
+            ),
+            reply(selection=[2]),
+            reply(selection=[2]),
+            reply(selection=[2]),
+        )
+    else:
+        model = Model(reply(selection=[]))
+    with Session(engine) as session:
+        tools = AgentTools(session, request_data.profile, date(2026, 11, 12))
+        result = run_agent(request_data, tools, model, today=date(2026, 11, 12))
+    assert result.recommendations == [] and result.fallback_recommendations == []
+    assert result.discovery_scope == "named_target"
+    assert len(result.discovery_candidate_ids) == len(result.discovery_candidates) == 1
+    target = result.discovery_candidates[0].assessment
+    assert target.scholarship_name == name and target.status == "ineligible"
+    assert failed_requirement in target.failed_requirements
+    assert target.official_source_url and target.last_verified_at
+    assert any(
+        check.requirement == failed_requirement and check.status == "failed"
+        for check in target.requirements
+    )
+
+
+def test_timeout_uses_cached_discovery_without_extra_ranking_or_tools(
+    tools, request_data, monkeypatch
+):
+    prepare = tools.prepare
+
+    def prepare_once(goal):
+        prepare(goal)
+        monkeypatch.setattr(tools, "_rank", Mock(side_effect=AssertionError))
+
+    monkeypatch.setattr(tools, "prepare", prepare_once)
+    dispatch = Mock(wraps=tools.dispatch)
+    tools.dispatch = dispatch
+    model = Model(OllamaTimeout())
+    result = run_agent(request_data, tools, model, today=TODAY)
+    assert result.status == "model_error" and result.model_error == "timeout"
+    assert result.fallback_recommendations == result.discovery_candidates
+    assert result.tool_trace == [] and result.tool_calls == 0
+    assert len(model.requests) == 1
+    tools._rank.assert_not_called()
+    dispatch.assert_not_called()
+
+
+def test_deadline_expiry_during_finish_keeps_error_response_consistent(
+    tools, request_data, monkeypatch
+):
+    checks = [0]
+
+    def clock():
+        checks[0] += 1
+        # Expire inside finish, after the final-selection deadline check.
+        return 91.0 if checks[0] >= 9 else 0.0
+
+    monkeypatch.setattr(agent_module.time, "monotonic", clock)
+    result = run_agent(
+        request_data,
+        tools,
+        Model(
+            reply(("check_eligibility", {"scholarship_id": 1})),
+            reply(selection=[1]),
+        ),
+        today=TODAY,
+    )
+    assert result.status == "model_error" and result.model_error == "timeout"
+    assert result.recommendations == result.model_explanations == []
+    assert result.fallback_recommendations == result.discovery_candidates
+
+
+@pytest.mark.parametrize(
+    ("name", "failed_requirement"),
+    [
+        (
+            "MEXT Research Students Scholarship - master's route (Kazakhstan embassy)",
+            "deadline",
+        ),
+        (
+            "Study Scholarships - Master Studies for All Academic Disciplines",
+            "funding_preference",
+        ),
+    ],
+)
+def test_actual_model_requested_negative_check_preserves_disqualifying_requirement(
+    engine, request_data, name, failed_requirement
+):
+    request_data.goal = f"Assess {name} for my profile."
+    request_data.profile.funding_preference = FundingPreference.FULLY_FUNDED
+    catalogue_path = Path(__file__).parents[1] / "data" / "curated_scholarships.json"
+    import_catalogue(engine, load_catalogue(catalogue_path))
+    with Session(engine) as session:
+        target = session.scalar(
+            select(Scholarship).where(Scholarship.scholarship_name == name)
+        )
+        model = Model(
+            reply(("check_eligibility", {"scholarship_id": target.id})),
+            reply(
+                content=json.dumps(
+                    {
+                        "recommendation_ids": [target.id],
+                        "explanations": [
+                            {
+                                "scholarship_id": target.id,
+                                "requirements": [failed_requirement],
+                            }
+                        ],
+                    }
+                )
+            ),
+        )
+        tools = AgentTools(session, request_data.profile, date(2026, 11, 12))
+        result = run_agent(request_data, tools, model, today=date(2026, 11, 12))
+        assert set(tools.assessed) == {target.id}
+    assert [event.name for event in result.tool_trace] == ["check_eligibility"]
+    assert result.tool_trace[0].status == "ok"
+    assert len(result.recommendations) == 1
+    assessment = result.recommendations[0].assessment
+    assert assessment.status == "ineligible" and assessment.scholarship_name == name
+    assert failed_requirement in assessment.failed_requirements
+    assert assessment == result.discovery_candidates[0].assessment
+    explanation = result.model_explanations[0].requirements[0]
+    assert (
+        explanation.requirement == failed_requirement and explanation.status == "failed"
+    )
+    assert explanation in assessment.requirements
+
+
+def test_model_requirement_keys_render_canonical_explanations_and_metadata(
+    tools, request_data
+):
+    content = json.dumps(
+        {
+            "recommendation_ids": [1],
+            "explanations": [
+                {"scholarship_id": 1, "requirements": ["rule_evidence", "prior_degree"]}
+            ],
+        }
+    )
+    model = Model(
+        reply(("check_eligibility", {"scholarship_id": 1})),
+        reply(content=content),
+    )
+    result = run_agent(request_data, tools, model, today=TODAY)
+    assessment = result.recommendations[0].assessment
+    explanation = result.model_explanations[0]
+    canonical = {item.requirement: item for item in assessment.requirements}
+    assert explanation.scholarship_id == assessment.scholarship_id == 1
+    assert explanation.requirements == [
+        canonical["rule_evidence"],
+        canonical["prior_degree"],
+    ]
+    assert all(item.status == "unknown" for item in explanation.requirements)
+    assert assessment.last_verified_at == date(2026, 1, 1)
+    assert (
+        str(assessment.official_source_url)
+        == "https://example.org/fictional-engineering"
+    )
+
+
+@pytest.mark.parametrize(
+    "explanation",
+    [
+        {"scholarship_id": 1, "requirements": ["invented_guaranteed_award"]},
+        {"scholarship_id": 2, "requirements": ["rule_evidence"]},
+        {
+            "scholarship_id": 1,
+            "requirements": ["rule_evidence"],
+            "text": "Guaranteed award",
+        },
+        {"scholarship_id": 1, "requirements": ["rule_evidence", "rule_evidence"]},
+    ],
+)
+def test_invalid_explanation_references_or_prose_are_rejected(
+    tools, request_data, explanation
+):
+    invalid = reply(
+        content=json.dumps({"recommendation_ids": [1], "explanations": [explanation]})
+    )
+    result = run_agent(
+        request_data,
+        tools,
+        Model(
+            reply(("check_eligibility", {"scholarship_id": 1})),
+            invalid,
+            invalid,
+            invalid,
+        ),
+        today=TODAY,
+    )
+    assert result.status == "limit_reached"
+    assert result.recommendations == [] and result.model_explanations == []
+    assert "invented_guaranteed_award" not in result.model_dump_json()
+    assert "Guaranteed award" not in result.model_dump_json()
+    assert result.fallback_recommendations == result.discovery_candidates

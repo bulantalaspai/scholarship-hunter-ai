@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { fetchAgentRecommendations } from '../agent'
 import type { AgentResponse } from '../agent'
-import type { RankedProgramme, StudentProfile } from '../types'
+import type { RankedProgramme, RequirementResult, StudentProfile } from '../types'
 import { calendarDate } from '../display'
 import { Assessment, SourceLink } from './ui'
 
@@ -143,11 +143,27 @@ export default function AgentRecommendations({
 }
 
 function AgentOutput({ response }: { response: AgentResponse }) {
+  const selectedIds = new Set(
+    response.recommendations.map((item) => item.assessment.scholarship_id),
+  )
+  const discovery = response.discovery_candidates ?? []
+  const retained = discovery.filter(
+    (item) => !selectedIds.has(item.assessment.scholarship_id),
+  )
+  const displayedIds = new Set([
+    ...selectedIds,
+    ...discovery.map((item) => item.assessment.scholarship_id),
+  ])
+  const fallback = (response.fallback_recommendations ?? []).filter(
+    (item) => !displayedIds.has(item.assessment.scholarship_id),
+  )
   return (
     <section className="agent-output" aria-label="Local AI response">
       <div className="notice">
         <h2>
-          {response.status === 'completed'
+          {response.status === 'model_error'
+            ? 'Local AI could not finish'
+            : response.status === 'completed'
             ? 'Source-backed results'
             : response.status === 'limit_reached'
               ? 'Exploration limit reached'
@@ -168,20 +184,49 @@ function AgentOutput({ response }: { response: AgentResponse }) {
           </ul>
         </section>
       )}
-      {response.recommendations.map((item) => (
-        <ProgrammeResult item={item} key={item.assessment.scholarship_id} />
-      ))}
+      {response.recommendations.length > 0 && (
+        <section aria-labelledby="model-selections-heading">
+          <h2 id="model-selections-heading">Model selections</h2>
+          {response.recommendations.map((item) => (
+            <ProgrammeResult
+              item={item}
+              key={item.assessment.scholarship_id}
+              selectedRequirements={response.model_explanations?.find(
+                (entry) =>
+                  entry.scholarship_id === item.assessment.scholarship_id,
+              )?.requirements}
+            />
+          ))}
+        </section>
+      )}
       {response.recommendations.length === 0 && (
         <p>
-          No grounded recommendation was returned. Try a simpler request or use{' '}
+          No grounded recommendation was returned by the model. Try a simpler
+          request or use{' '}
           <a href="#/matches">deterministic matches</a>.
         </p>
       )}
-      {Boolean(response.fallback_recommendations?.length) && (
+      {retained.length > 0 && (
+        <section aria-labelledby="discovery-heading">
+          <h2 id="discovery-heading">
+            {response.discovery_scope === 'named_target'
+              ? 'Requested programme assessments'
+              : 'Deterministic discovery candidates'}
+          </h2>
+          <p>
+            These candidates are retained by catalogue matching. Review the
+            individual assessments and missing evidence below.
+          </p>
+          {retained.map((item) => (
+            <ProgrammeResult item={item} key={item.assessment.scholarship_id} />
+          ))}
+        </section>
+      )}
+      {fallback.length > 0 && (
         <section aria-labelledby="fallback-heading">
           <h2 id="fallback-heading">Deterministic candidates to verify</h2>
           <p>{response.fallback_reason}</p>
-          {response.fallback_recommendations?.map((item) => (
+          {fallback.map((item) => (
             <ProgrammeResult item={item} key={item.assessment.scholarship_id} />
           ))}
         </section>
@@ -228,10 +273,26 @@ function AgentOutput({ response }: { response: AgentResponse }) {
   )
 }
 
-function ProgrammeResult({ item }: { item: RankedProgramme }) {
+function ProgrammeResult({
+  item,
+  selectedRequirements = [],
+}: {
+  item: RankedProgramme
+  selectedRequirements?: RequirementResult[]
+}) {
   return (
     <article className="content-panel">
       <Assessment result={item.assessment} />
+      {selectedRequirements.length > 0 && (
+        <section aria-label="Model-selected explanation points">
+          <h3>Model-selected explanation points</h3>
+          <ul>
+            {selectedRequirements.map((requirement) => (
+              <li key={requirement.requirement}>{requirement.explanation}</li>
+            ))}
+          </ul>
+        </section>
+      )}
       <h3>Ranking explanation</h3>
       <ul>
         {item.ranking_reasons.map((reason, index) => (

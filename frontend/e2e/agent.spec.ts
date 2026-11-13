@@ -288,6 +288,129 @@ test('keeps real deterministic matching available during a simulated Ollama outa
   ).toBeVisible()
 })
 
+test('retains real catalogue candidates in a typed model outage response', async ({
+  page,
+}) => {
+  const matchingResponse = await page.request.post('/api/eligibility/matches', {
+    data: { profile, page_size: 100 },
+  })
+  expect(matchingResponse.ok()).toBe(true)
+  const matches: MatchResult = await matchingResponse.json()
+  const candidates = matches.needs_verification.slice(0, 3)
+  expect(candidates).toHaveLength(3)
+  const response: AgentResponse = {
+    status: 'model_error',
+    model_error: 'unavailable',
+    model: 'qwen3:4b-instruct',
+    evaluated_on: candidates[0].assessment.evaluated_on,
+    steps: 1,
+    tool_calls: 0,
+    recommendations: [],
+    discovery_candidates: candidates,
+    discovery_candidate_ids: matches.needs_verification.map(
+      (item) => item.assessment.scholarship_id,
+    ),
+    discovery_scope: 'catalogue',
+    model_explanations: [],
+    fallback_recommendations: candidates,
+    fallback_reason: 'These candidates require official verification.',
+    message: 'Local inference is unavailable. Deterministic discovery completed.',
+    warnings: [],
+    tool_trace: [],
+    disclaimer: candidates[0].assessment.disclaimer,
+  }
+  await page.route('**/api/agent/recommend', (route) =>
+    route.fulfill({ json: response }),
+  )
+  await openAgentWithProfile(page)
+  await page
+    .getByRole('button', { name: 'Generate AI recommendations', exact: true })
+    .click()
+  await expect(
+    page.getByRole('heading', { name: 'Local AI could not finish' }),
+  ).toBeVisible()
+  const retained = page.getByRole('region', {
+    name: 'Deterministic discovery candidates',
+  })
+  await expect(
+    retained.getByRole('region', { name: 'Eligibility assessment' }),
+  ).toHaveCount(3)
+  for (const candidate of candidates) {
+    await expect(
+      retained.getByRole('heading', {
+        name: candidate.assessment.scholarship_name,
+        exact: true,
+      }),
+    ).toBeVisible()
+  }
+  await expect(
+    page.getByRole('region', { name: 'Eligibility assessment' }),
+  ).toHaveCount(3)
+  await expect(page.getByText('No tool calls were executed.')).toBeVisible()
+})
+
+test('retains the named negative target and the actual deadline failure', async ({
+  page,
+}) => {
+  const catalogueResponse = await page.request.get(
+    '/api/scholarships?country=Japan',
+  )
+  expect(catalogueResponse.ok()).toBe(true)
+  const catalogue: ScholarshipPage = await catalogueResponse.json()
+  const target = catalogue.items.find((item) =>
+    item.scholarship_name.startsWith('MEXT Research Students'),
+  )!
+  expect(target).toBeDefined()
+  const checkResponse = await page.request.post('/api/eligibility/check', {
+    data: { scholarship_id: target.id, profile },
+  })
+  expect(checkResponse.ok()).toBe(true)
+  const assessment: EligibilityResult = await checkResponse.json()
+  expect(assessment.status).toBe('ineligible')
+  expect(assessment.failed_requirements).toContain('deadline')
+  const failure = assessment.requirements.find(
+    (item) => item.requirement === 'deadline',
+  )!
+  const response: AgentResponse = {
+    status: 'no_matches',
+    model: 'qwen3:4b-instruct',
+    evaluated_on: assessment.evaluated_on,
+    steps: 1,
+    tool_calls: 0,
+    recommendations: [],
+    discovery_candidates: [{ assessment, ranking_reasons: [] }],
+    discovery_candidate_ids: [target.id],
+    discovery_scope: 'named_target',
+    model_explanations: [],
+    message: 'The requested programme has a confirmed requirement failure.',
+    warnings: [],
+    tool_trace: [],
+    disclaimer: assessment.disclaimer,
+  }
+  await page.route('**/api/agent/recommend', (route) =>
+    route.fulfill({ json: response }),
+  )
+  await openAgentWithProfile(page)
+  await page.getByLabel('What would you like to find?').fill(
+    `Assess ${target.scholarship_name} for my profile.`,
+  )
+  await page
+    .getByRole('button', { name: 'Generate AI recommendations', exact: true })
+    .click()
+  const retained = page.getByRole('region', {
+    name: 'Requested programme assessments',
+  })
+  await expect(
+    retained.getByRole('heading', {
+      name: target.scholarship_name,
+      exact: true,
+    }),
+  ).toBeVisible()
+  await expect(retained.getByText(failure.explanation, { exact: true })).toBeVisible()
+  await expect(retained.getByText('Ineligible', { exact: true }).first()).toBeVisible()
+  await expect(retained.getByText('Eligible', { exact: true })).toHaveCount(0)
+})
+
 test('supports a mobile AI profile handoff and forgets the profile on refresh', async ({
   page,
 }, testInfo) => {

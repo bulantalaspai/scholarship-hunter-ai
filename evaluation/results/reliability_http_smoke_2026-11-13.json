@@ -1,0 +1,1067 @@
+{
+  "synthetic_profile": true,
+  "http_status": 200,
+  "seconds": 6.84,
+  "model_rounds": [
+    {
+      "seconds": 3.02,
+      "prompt_tokens": 845,
+      "requested_tools": [
+        "search_scholarships"
+      ]
+    },
+    {
+      "seconds": 0.99,
+      "prompt_tokens": 934,
+      "requested_tools": [
+        "rank_scholarships"
+      ]
+    },
+    {
+      "seconds": 2.76,
+      "prompt_tokens": 1192,
+      "requested_tools": []
+    }
+  ],
+  "response": {
+    "status": "needs_verification",
+    "model": "qwen3:4b-instruct",
+    "evaluated_on": "2026-11-13",
+    "steps": 3,
+    "tool_calls": 2,
+    "recommendations": [
+      {
+        "assessment": {
+          "scholarship_id": 2,
+          "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+          "status": "needs_verification",
+          "admission_status": "needs_verification",
+          "funding_status": "needs_verification",
+          "application_status": "needs_verification",
+          "requirements": [
+            {
+              "requirement": "rule_evidence",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Complete structured rules have not been reviewed.",
+              "suggestion": "Ask the provider or curator to verify the complete current rules."
+            },
+            {
+              "requirement": "nationality",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Nationality matches the published scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "programme_degree",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "The award is a master's; prior qualification is checked separately.",
+              "suggestion": null
+            },
+            {
+              "requirement": "prior_degree",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Accepted prior qualifications have not been structured and verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "study_field",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "Field matches a documented background or reviewed unrestricted scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "gpa",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "language",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+              "suggestion": "Verify language evidence, exemptions, and required component scores."
+            },
+            {
+              "requirement": "funding_preference",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Funding type matches the preference, without guaranteeing an award.",
+              "suggestion": null
+            },
+            {
+              "requirement": "funding_availability",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Funding availability for this cycle is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "deadline",
+              "scope": "application",
+              "status": "met",
+              "explanation": "Deadline is in the future; this alone does not prove the call is open.",
+              "suggestion": null
+            },
+            {
+              "requirement": "intake",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Intake year is unverified; a cycle label is not parsed into an intake.",
+              "suggestion": null
+            },
+            {
+              "requirement": "application_open",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Current opening status is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_admission_conditions",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_funding_conditions",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            }
+          ],
+          "matched_requirements": [
+            "nationality",
+            "programme_degree",
+            "study_field",
+            "funding_preference",
+            "deadline"
+          ],
+          "failed_requirements": [],
+          "unknown_requirements": [
+            "rule_evidence",
+            "prior_degree",
+            "gpa",
+            "language",
+            "funding_availability",
+            "intake",
+            "application_open",
+            "additional_admission_conditions",
+            "additional_funding_conditions"
+          ],
+          "suggestions": [
+            "Ask the provider or curator to verify the complete current rules.",
+            "Verify language evidence, exemptions, and required component scores."
+          ],
+          "explanation": "No confirmed failure was found, but mandatory conditions remain unverified.",
+          "official_source_url": "https://www.smaccs.eu/practical/scholarships/",
+          "last_verified_at": "2026-11-11",
+          "rule_source_urls": [],
+          "rules_verified_at": null,
+          "evaluated_on": "2026-11-13",
+          "disclaimer": "A rules-based assessment is not an admission decision or a scholarship award. Confirm all conditions with the official provider."
+        },
+        "ranking_reasons": [
+          "Eligibility group: needs_verification.",
+          "Published funding: fully_funded; award not guaranteed.",
+          "Exact documented study-field match."
+        ]
+      },
+      {
+        "assessment": {
+          "scholarship_id": 3,
+          "scholarship_name": "EDISS Erasmus Mundus Scholarships - Engineering of Data-intensive Intelligent Software Systems",
+          "status": "needs_verification",
+          "admission_status": "needs_verification",
+          "funding_status": "needs_verification",
+          "application_status": "needs_verification",
+          "requirements": [
+            {
+              "requirement": "rule_evidence",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Complete structured rules have not been reviewed.",
+              "suggestion": "Ask the provider or curator to verify the complete current rules."
+            },
+            {
+              "requirement": "nationality",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Nationality matches the published scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "programme_degree",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "The award is a master's; prior qualification is checked separately.",
+              "suggestion": null
+            },
+            {
+              "requirement": "prior_degree",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Accepted prior qualifications have not been structured and verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "study_field",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "Field matches a documented background or reviewed unrestricted scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "gpa",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "language",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+              "suggestion": "Verify language evidence, exemptions, and required component scores."
+            },
+            {
+              "requirement": "funding_preference",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Funding type matches the preference, without guaranteeing an award.",
+              "suggestion": null
+            },
+            {
+              "requirement": "funding_availability",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Funding availability for this cycle is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "deadline",
+              "scope": "application",
+              "status": "met",
+              "explanation": "Deadline is in the future; this alone does not prove the call is open.",
+              "suggestion": null
+            },
+            {
+              "requirement": "intake",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Intake year is unverified; a cycle label is not parsed into an intake.",
+              "suggestion": null
+            },
+            {
+              "requirement": "application_open",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Current opening status is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_admission_conditions",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_funding_conditions",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            }
+          ],
+          "matched_requirements": [
+            "nationality",
+            "programme_degree",
+            "study_field",
+            "funding_preference",
+            "deadline"
+          ],
+          "failed_requirements": [],
+          "unknown_requirements": [
+            "rule_evidence",
+            "prior_degree",
+            "gpa",
+            "language",
+            "funding_availability",
+            "intake",
+            "application_open",
+            "additional_admission_conditions",
+            "additional_funding_conditions"
+          ],
+          "suggestions": [
+            "Ask the provider or curator to verify the complete current rules.",
+            "Verify language evidence, exemptions, and required component scores."
+          ],
+          "explanation": "No confirmed failure was found, but mandatory conditions remain unverified.",
+          "official_source_url": "https://www.master-ediss.eu/scholarship/",
+          "last_verified_at": "2026-11-12",
+          "rule_source_urls": [],
+          "rules_verified_at": null,
+          "evaluated_on": "2026-11-13",
+          "disclaimer": "A rules-based assessment is not an admission decision or a scholarship award. Confirm all conditions with the official provider."
+        },
+        "ranking_reasons": [
+          "Eligibility group: needs_verification.",
+          "Published funding: fully_funded; award not guaranteed.",
+          "Exact documented study-field match."
+        ]
+      },
+      {
+        "assessment": {
+          "scholarship_id": 4,
+          "scholarship_name": "DEAI Full Scholarship - Data Engineering and Artificial Intelligence",
+          "status": "needs_verification",
+          "admission_status": "needs_verification",
+          "funding_status": "needs_verification",
+          "application_status": "needs_verification",
+          "requirements": [
+            {
+              "requirement": "rule_evidence",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Complete structured rules have not been reviewed.",
+              "suggestion": "Ask the provider or curator to verify the complete current rules."
+            },
+            {
+              "requirement": "nationality",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "No confirmed nationality match or exhaustive exclusion is documented.",
+              "suggestion": "Confirm nationality-specific funding eligibility."
+            },
+            {
+              "requirement": "programme_degree",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "The award is a master's; prior qualification is checked separately.",
+              "suggestion": null
+            },
+            {
+              "requirement": "prior_degree",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Accepted prior qualifications have not been structured and verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "study_field",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "Field matches a documented background or reviewed unrestricted scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "gpa",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "language",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+              "suggestion": "Verify language evidence, exemptions, and required component scores."
+            },
+            {
+              "requirement": "funding_preference",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Funding type matches the preference, without guaranteeing an award.",
+              "suggestion": null
+            },
+            {
+              "requirement": "funding_availability",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Funding availability for this cycle is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "deadline",
+              "scope": "application",
+              "status": "met",
+              "explanation": "Deadline is in the future; this alone does not prove the call is open.",
+              "suggestion": null
+            },
+            {
+              "requirement": "intake",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Intake year is unverified; a cycle label is not parsed into an intake.",
+              "suggestion": null
+            },
+            {
+              "requirement": "application_open",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Current opening status is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_admission_conditions",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_funding_conditions",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            }
+          ],
+          "matched_requirements": [
+            "programme_degree",
+            "study_field",
+            "funding_preference",
+            "deadline"
+          ],
+          "failed_requirements": [],
+          "unknown_requirements": [
+            "rule_evidence",
+            "nationality",
+            "prior_degree",
+            "gpa",
+            "language",
+            "funding_availability",
+            "intake",
+            "application_open",
+            "additional_admission_conditions",
+            "additional_funding_conditions"
+          ],
+          "suggestions": [
+            "Ask the provider or curator to verify the complete current rules.",
+            "Confirm nationality-specific funding eligibility.",
+            "Verify language evidence, exemptions, and required component scores."
+          ],
+          "explanation": "No confirmed failure was found, but mandatory conditions remain unverified.",
+          "official_source_url": "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+          "last_verified_at": "2026-11-12",
+          "rule_source_urls": [],
+          "rules_verified_at": null,
+          "evaluated_on": "2026-11-13",
+          "disclaimer": "A rules-based assessment is not an admission decision or a scholarship award. Confirm all conditions with the official provider."
+        },
+        "ranking_reasons": [
+          "Eligibility group: needs_verification.",
+          "Published funding: fully_funded; award not guaranteed.",
+          "Exact documented study-field match."
+        ]
+      }
+    ],
+    "fallback_recommendations": [],
+    "fallback_reason": null,
+    "discovery_candidates": [
+      {
+        "assessment": {
+          "scholarship_id": 2,
+          "scholarship_name": "SMACCs Erasmus Mundus Joint Master (EMJM) Scholarships",
+          "status": "needs_verification",
+          "admission_status": "needs_verification",
+          "funding_status": "needs_verification",
+          "application_status": "needs_verification",
+          "requirements": [
+            {
+              "requirement": "rule_evidence",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Complete structured rules have not been reviewed.",
+              "suggestion": "Ask the provider or curator to verify the complete current rules."
+            },
+            {
+              "requirement": "nationality",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Nationality matches the published scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "programme_degree",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "The award is a master's; prior qualification is checked separately.",
+              "suggestion": null
+            },
+            {
+              "requirement": "prior_degree",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Accepted prior qualifications have not been structured and verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "study_field",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "Field matches a documented background or reviewed unrestricted scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "gpa",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "language",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+              "suggestion": "Verify language evidence, exemptions, and required component scores."
+            },
+            {
+              "requirement": "funding_preference",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Funding type matches the preference, without guaranteeing an award.",
+              "suggestion": null
+            },
+            {
+              "requirement": "funding_availability",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Funding availability for this cycle is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "deadline",
+              "scope": "application",
+              "status": "met",
+              "explanation": "Deadline is in the future; this alone does not prove the call is open.",
+              "suggestion": null
+            },
+            {
+              "requirement": "intake",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Intake year is unverified; a cycle label is not parsed into an intake.",
+              "suggestion": null
+            },
+            {
+              "requirement": "application_open",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Current opening status is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_admission_conditions",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_funding_conditions",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            }
+          ],
+          "matched_requirements": [
+            "nationality",
+            "programme_degree",
+            "study_field",
+            "funding_preference",
+            "deadline"
+          ],
+          "failed_requirements": [],
+          "unknown_requirements": [
+            "rule_evidence",
+            "prior_degree",
+            "gpa",
+            "language",
+            "funding_availability",
+            "intake",
+            "application_open",
+            "additional_admission_conditions",
+            "additional_funding_conditions"
+          ],
+          "suggestions": [
+            "Ask the provider or curator to verify the complete current rules.",
+            "Verify language evidence, exemptions, and required component scores."
+          ],
+          "explanation": "No confirmed failure was found, but mandatory conditions remain unverified.",
+          "official_source_url": "https://www.smaccs.eu/practical/scholarships/",
+          "last_verified_at": "2026-11-11",
+          "rule_source_urls": [],
+          "rules_verified_at": null,
+          "evaluated_on": "2026-11-13",
+          "disclaimer": "A rules-based assessment is not an admission decision or a scholarship award. Confirm all conditions with the official provider."
+        },
+        "ranking_reasons": [
+          "Eligibility group: needs_verification.",
+          "Published funding: fully_funded; award not guaranteed.",
+          "Exact documented study-field match."
+        ]
+      },
+      {
+        "assessment": {
+          "scholarship_id": 3,
+          "scholarship_name": "EDISS Erasmus Mundus Scholarships - Engineering of Data-intensive Intelligent Software Systems",
+          "status": "needs_verification",
+          "admission_status": "needs_verification",
+          "funding_status": "needs_verification",
+          "application_status": "needs_verification",
+          "requirements": [
+            {
+              "requirement": "rule_evidence",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Complete structured rules have not been reviewed.",
+              "suggestion": "Ask the provider or curator to verify the complete current rules."
+            },
+            {
+              "requirement": "nationality",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Nationality matches the published scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "programme_degree",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "The award is a master's; prior qualification is checked separately.",
+              "suggestion": null
+            },
+            {
+              "requirement": "prior_degree",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Accepted prior qualifications have not been structured and verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "study_field",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "Field matches a documented background or reviewed unrestricted scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "gpa",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "language",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+              "suggestion": "Verify language evidence, exemptions, and required component scores."
+            },
+            {
+              "requirement": "funding_preference",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Funding type matches the preference, without guaranteeing an award.",
+              "suggestion": null
+            },
+            {
+              "requirement": "funding_availability",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Funding availability for this cycle is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "deadline",
+              "scope": "application",
+              "status": "met",
+              "explanation": "Deadline is in the future; this alone does not prove the call is open.",
+              "suggestion": null
+            },
+            {
+              "requirement": "intake",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Intake year is unverified; a cycle label is not parsed into an intake.",
+              "suggestion": null
+            },
+            {
+              "requirement": "application_open",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Current opening status is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_admission_conditions",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_funding_conditions",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            }
+          ],
+          "matched_requirements": [
+            "nationality",
+            "programme_degree",
+            "study_field",
+            "funding_preference",
+            "deadline"
+          ],
+          "failed_requirements": [],
+          "unknown_requirements": [
+            "rule_evidence",
+            "prior_degree",
+            "gpa",
+            "language",
+            "funding_availability",
+            "intake",
+            "application_open",
+            "additional_admission_conditions",
+            "additional_funding_conditions"
+          ],
+          "suggestions": [
+            "Ask the provider or curator to verify the complete current rules.",
+            "Verify language evidence, exemptions, and required component scores."
+          ],
+          "explanation": "No confirmed failure was found, but mandatory conditions remain unverified.",
+          "official_source_url": "https://www.master-ediss.eu/scholarship/",
+          "last_verified_at": "2026-11-12",
+          "rule_source_urls": [],
+          "rules_verified_at": null,
+          "evaluated_on": "2026-11-13",
+          "disclaimer": "A rules-based assessment is not an admission decision or a scholarship award. Confirm all conditions with the official provider."
+        },
+        "ranking_reasons": [
+          "Eligibility group: needs_verification.",
+          "Published funding: fully_funded; award not guaranteed.",
+          "Exact documented study-field match."
+        ]
+      },
+      {
+        "assessment": {
+          "scholarship_id": 4,
+          "scholarship_name": "DEAI Full Scholarship - Data Engineering and Artificial Intelligence",
+          "status": "needs_verification",
+          "admission_status": "needs_verification",
+          "funding_status": "needs_verification",
+          "application_status": "needs_verification",
+          "requirements": [
+            {
+              "requirement": "rule_evidence",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Complete structured rules have not been reviewed.",
+              "suggestion": "Ask the provider or curator to verify the complete current rules."
+            },
+            {
+              "requirement": "nationality",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "No confirmed nationality match or exhaustive exclusion is documented.",
+              "suggestion": "Confirm nationality-specific funding eligibility."
+            },
+            {
+              "requirement": "programme_degree",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "The award is a master's; prior qualification is checked separately.",
+              "suggestion": null
+            },
+            {
+              "requirement": "prior_degree",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Accepted prior qualifications have not been structured and verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "study_field",
+              "scope": "admission",
+              "status": "met",
+              "explanation": "Field matches a documented background or reviewed unrestricted scope.",
+              "suggestion": null
+            },
+            {
+              "requirement": "gpa",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "language",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+              "suggestion": "Verify language evidence, exemptions, and required component scores."
+            },
+            {
+              "requirement": "funding_preference",
+              "scope": "funding",
+              "status": "met",
+              "explanation": "Funding type matches the preference, without guaranteeing an award.",
+              "suggestion": null
+            },
+            {
+              "requirement": "funding_availability",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Funding availability for this cycle is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "deadline",
+              "scope": "application",
+              "status": "met",
+              "explanation": "Deadline is in the future; this alone does not prove the call is open.",
+              "suggestion": null
+            },
+            {
+              "requirement": "intake",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Intake year is unverified; a cycle label is not parsed into an intake.",
+              "suggestion": null
+            },
+            {
+              "requirement": "application_open",
+              "scope": "application",
+              "status": "unknown",
+              "explanation": "Current opening status is unverified.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_admission_conditions",
+              "scope": "admission",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            },
+            {
+              "requirement": "additional_funding_conditions",
+              "scope": "funding",
+              "status": "unknown",
+              "explanation": "Conditions such as admission, experience, prior awards, or language components need individual verification.",
+              "suggestion": null
+            }
+          ],
+          "matched_requirements": [
+            "programme_degree",
+            "study_field",
+            "funding_preference",
+            "deadline"
+          ],
+          "failed_requirements": [],
+          "unknown_requirements": [
+            "rule_evidence",
+            "nationality",
+            "prior_degree",
+            "gpa",
+            "language",
+            "funding_availability",
+            "intake",
+            "application_open",
+            "additional_admission_conditions",
+            "additional_funding_conditions"
+          ],
+          "suggestions": [
+            "Ask the provider or curator to verify the complete current rules.",
+            "Confirm nationality-specific funding eligibility.",
+            "Verify language evidence, exemptions, and required component scores."
+          ],
+          "explanation": "No confirmed failure was found, but mandatory conditions remain unverified.",
+          "official_source_url": "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+          "last_verified_at": "2026-11-12",
+          "rule_source_urls": [],
+          "rules_verified_at": null,
+          "evaluated_on": "2026-11-13",
+          "disclaimer": "A rules-based assessment is not an admission decision or a scholarship award. Confirm all conditions with the official provider."
+        },
+        "ranking_reasons": [
+          "Eligibility group: needs_verification.",
+          "Published funding: fully_funded; award not guaranteed.",
+          "Exact documented study-field match."
+        ]
+      }
+    ],
+    "discovery_candidate_ids": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      9,
+      10,
+      11,
+      8,
+      12,
+      13,
+      14,
+      17,
+      21
+    ],
+    "discovery_scope": "catalogue",
+    "model_error": null,
+    "model_explanations": [
+      {
+        "scholarship_id": 2,
+        "requirements": [
+          {
+            "requirement": "rule_evidence",
+            "scope": "application",
+            "status": "unknown",
+            "explanation": "Complete structured rules have not been reviewed.",
+            "suggestion": "Ask the provider or curator to verify the complete current rules."
+          },
+          {
+            "requirement": "prior_degree",
+            "scope": "admission",
+            "status": "unknown",
+            "explanation": "Accepted prior qualifications have not been structured and verified.",
+            "suggestion": null
+          },
+          {
+            "requirement": "gpa",
+            "scope": "admission",
+            "status": "unknown",
+            "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+            "suggestion": null
+          },
+          {
+            "requirement": "language",
+            "scope": "admission",
+            "status": "unknown",
+            "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+            "suggestion": "Verify language evidence, exemptions, and required component scores."
+          }
+        ]
+      },
+      {
+        "scholarship_id": 3,
+        "requirements": [
+          {
+            "requirement": "rule_evidence",
+            "scope": "application",
+            "status": "unknown",
+            "explanation": "Complete structured rules have not been reviewed.",
+            "suggestion": "Ask the provider or curator to verify the complete current rules."
+          },
+          {
+            "requirement": "prior_degree",
+            "scope": "admission",
+            "status": "unknown",
+            "explanation": "Accepted prior qualifications have not been structured and verified.",
+            "suggestion": null
+          },
+          {
+            "requirement": "gpa",
+            "scope": "admission",
+            "status": "unknown",
+            "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+            "suggestion": null
+          },
+          {
+            "requirement": "language",
+            "scope": "admission",
+            "status": "unknown",
+            "explanation": "Language alternatives, exemptions, or test conditions are unresolved.",
+            "suggestion": "Verify language evidence, exemptions, and required component scores."
+          }
+        ]
+      },
+      {
+        "scholarship_id": 4,
+        "requirements": [
+          {
+            "requirement": "rule_evidence",
+            "scope": "application",
+            "status": "unknown",
+            "explanation": "Complete structured rules have not been reviewed.",
+            "suggestion": "Ask the provider or curator to verify the complete current rules."
+          },
+          {
+            "requirement": "nationality",
+            "scope": "funding",
+            "status": "unknown",
+            "explanation": "No confirmed nationality match or exhaustive exclusion is documented.",
+            "suggestion": "Confirm nationality-specific funding eligibility."
+          },
+          {
+            "requirement": "prior_degree",
+            "scope": "admission",
+            "status": "unknown",
+            "explanation": "Accepted prior qualifications have not been structured and verified.",
+            "suggestion": null
+          },
+          {
+            "requirement": "gpa",
+            "scope": "admission",
+            "status": "unknown",
+            "explanation": "No minimum GPA or explicit absence of a minimum was verified.",
+            "suggestion": null
+          }
+        ]
+      }
+    ],
+    "message": "The model selected these records using local tools. The displayed facts, order and eligibility classifications come from the deterministic services, not the model.",
+    "warnings": [
+      "Web evidence is untrusted and never changes catalogue facts or eligibility rules.",
+      "Missing evidence remains needs_verification at requirement level; confirmed failures still take precedence."
+    ],
+    "tool_trace": [
+      {
+        "step": 1,
+        "name": "search_scholarships",
+        "status": "ok",
+        "arguments": {
+          "country": "EU",
+          "field": "Computer Science",
+          "funding_type": "fully_funded"
+        },
+        "summary": "Found 0 matching records; returned 0 candidates.",
+        "source_url": null,
+        "fetched_at": null
+      },
+      {
+        "step": 2,
+        "name": "rank_scholarships",
+        "status": "ok",
+        "arguments": {
+          "scholarship_ids": [
+            2,
+            3,
+            4
+          ]
+        },
+        "summary": "Ranked 3 candidates without changing eligibility.",
+        "source_url": null,
+        "fetched_at": null
+      }
+    ],
+    "disclaimer": "AI selects candidates, not eligibility. Confirm official requirements; no admission or funding award is guaranteed."
+  }
+}

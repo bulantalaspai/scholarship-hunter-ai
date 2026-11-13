@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { fetchAgentRecommendations } from '../agent'
 import type { AgentResponse } from '../agent'
-import type { StudentProfile } from '../types'
+import type { RankedProgramme, StudentProfile } from '../types'
 import { demoAssessment } from '../test/fixtures'
 import AgentRecommendations from './AgentRecommendations'
 
@@ -76,6 +76,53 @@ function fallbackResponse(): AgentResponse {
     fallback_recommendations: response().recommendations,
     fallback_reason:
       'These retrieved candidates were assessed with deterministic rules and need further verification.',
+  }
+}
+
+function candidate(id: number): RankedProgramme {
+  return {
+    assessment: {
+      ...demoAssessment('needs_verification', id),
+      scholarship_name: `Fictional Candidate ${id}`,
+    },
+    ranking_reasons: ['Mandatory evidence remains unresolved.'],
+  }
+}
+
+function reliabilityResponse(): AgentResponse {
+  const selected = candidate(1)
+  return {
+    ...response(),
+    status: 'needs_verification',
+    recommendations: [selected],
+    discovery_candidates: [selected, candidate(2), candidate(3)],
+    discovery_candidate_ids: [1, 2, 3, 4],
+    discovery_scope: 'catalogue',
+    model_error: null,
+    model_explanations: [
+      {
+        scholarship_id: 1,
+        requirements: [selected.assessment.requirements[0]],
+      },
+    ],
+  }
+}
+
+function outageResponse(): AgentResponse {
+  const original = reliabilityResponse()
+  return {
+    ...original,
+    status: 'model_error',
+    model_error: 'unavailable',
+    steps: 1,
+    tool_calls: 0,
+    tool_trace: [],
+    recommendations: [],
+    model_explanations: [],
+    fallback_recommendations: original.discovery_candidates,
+    fallback_reason:
+      'Local inference was unavailable. These candidates need verification.',
+    message: 'The local model is unavailable. Catalogue discovery completed.',
   }
 }
 
@@ -236,6 +283,163 @@ describe('local agent API contract', () => {
       ),
     ).rejects.toThrow('unexpected response')
   })
+
+  it('accepts persistent candidates and server-grounded model explanation points', async () => {
+    const payload = reliabilityResponse()
+    mockResponse(payload)
+    await expect(
+      fetchAgentRecommendations(
+        profile,
+        'Find candidates.',
+        new AbortController().signal,
+      ),
+    ).resolves.toEqual(payload)
+  })
+
+  it.each(['unavailable', 'timeout', 'invalid_response', 'busy'] as const)(
+    'accepts a typed %s result with deterministic recovery',
+    async (model_error) => {
+      const payload = { ...outageResponse(), model_error }
+      mockResponse(payload)
+      await expect(
+        fetchAgentRecommendations(
+          profile,
+          'Find candidates.',
+          new AbortController().signal,
+        ),
+      ).resolves.toEqual(payload)
+    },
+  )
+
+  it.each([
+    { ...reliabilityResponse(), model_error: 'cloud_error' },
+    { ...reliabilityResponse(), model_error: 'unavailable' },
+    { ...outageResponse(), model_error: null },
+    { ...outageResponse(), model_error: undefined },
+    { ...outageResponse(), recommendations: [candidate(1)] },
+    { ...reliabilityResponse(), discovery_candidates: null },
+    { ...reliabilityResponse(), discovery_candidates: {} },
+    {
+      ...reliabilityResponse(),
+      discovery_candidates: [candidate(1), candidate(2), candidate(3), candidate(4)],
+    },
+    {
+      ...reliabilityResponse(),
+      discovery_candidates: [candidate(1), candidate(1)],
+    },
+    { ...reliabilityResponse(), discovery_candidate_ids: [1, 2, 2, 3] },
+    { ...reliabilityResponse(), discovery_candidate_ids: [1, 2, 0] },
+    {
+      ...reliabilityResponse(),
+      discovery_candidate_ids: [1, 2, Number.MAX_SAFE_INTEGER + 1],
+    },
+    { ...reliabilityResponse(), discovery_candidate_ids: [1, 2, '3'] },
+    { ...reliabilityResponse(), discovery_candidate_ids: [1, 2] },
+    { ...reliabilityResponse(), discovery_candidate_ids: undefined },
+    { ...reliabilityResponse(), discovery_scope: undefined },
+    { ...reliabilityResponse(), discovery_scope: 'model' },
+    { ...reliabilityResponse(), discovery_scope: ['catalogue'] },
+    {
+      ...reliabilityResponse(),
+      discovery_candidates: [
+        { assessment: demoAssessment('ineligible'), ranking_reasons: [] },
+      ],
+    },
+    {
+      ...reliabilityResponse(),
+      discovery_scope: 'named_target',
+      recommendations: [candidate(5)],
+      model_explanations: [],
+    },
+    {
+      ...reliabilityResponse(),
+      discovery_scope: 'named_target',
+      discovery_candidates: [
+        { assessment: demoAssessment('ineligible'), ranking_reasons: [] },
+      ],
+    },
+    {
+      ...reliabilityResponse(),
+      discovery_candidates: [{
+        ...candidate(1),
+        assessment: {
+          ...candidate(1).assessment,
+          official_source_url: 'https://example.org/different-source',
+        },
+      }],
+    },
+    { ...reliabilityResponse(), model_explanations: null },
+    { ...reliabilityResponse(), model_explanations: {} },
+    {
+      ...reliabilityResponse(),
+      model_explanations: Array(4).fill(
+        reliabilityResponse().model_explanations![0],
+      ),
+    },
+    {
+      ...reliabilityResponse(),
+      model_explanations: Array(2).fill(
+        reliabilityResponse().model_explanations![0],
+      ),
+    },
+    {
+      ...reliabilityResponse(),
+      model_explanations: [{
+        scholarship_id: 2,
+        requirements: [candidate(2).assessment.requirements[0]],
+      }],
+    },
+    {
+      ...reliabilityResponse(),
+      model_explanations: [{ scholarship_id: 1, requirements: [] }],
+    },
+    {
+      ...reliabilityResponse(),
+      model_explanations: [{
+        scholarship_id: 1,
+        requirements: Array(5).fill(candidate(1).assessment.requirements[0]),
+      }],
+    },
+    {
+      ...reliabilityResponse(),
+      model_explanations: [{
+        scholarship_id: 1,
+        requirements: Array(2).fill(candidate(1).assessment.requirements[0]),
+      }],
+    },
+    {
+      ...reliabilityResponse(),
+      model_explanations: [{
+        scholarship_id: 1,
+        requirements: [{
+          ...candidate(1).assessment.requirements[0],
+          explanation: 'Invented eligibility guarantee.',
+        }],
+      }],
+    },
+    {
+      ...reliabilityResponse(),
+      model_explanations: [{
+        scholarship_id: 1,
+        requirements: [{
+          ...candidate(1).assessment.requirements[0],
+          status: 'met',
+        }],
+      }],
+    },
+  ])(
+    'rejects invalid discovery or ungrounded explanation fields: %j',
+    async (payload) => {
+      mockResponse(payload)
+      await expect(
+        fetchAgentRecommendations(
+          profile,
+          'Find candidates.',
+          new AbortController().signal,
+        ),
+      ).rejects.toThrow('unexpected response')
+    },
+  )
 })
 
 describe('local agent recommendations', () => {
@@ -399,5 +603,123 @@ describe('local agent recommendations', () => {
       expect(screen.getByText(/URL was not approved/)).toBeVisible(),
     )
     expect(screen.getByText('blocked')).toBeVisible()
+  })
+
+  it('retains discovery candidates when the model selects a subset and avoids duplicate cards', async () => {
+    const user = userEvent.setup()
+    mockResponse(reliabilityResponse())
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(
+      screen.getByRole('button', { name: 'Generate AI recommendations' }),
+    )
+    const selected = await screen.findByRole('region', { name: 'Model selections' })
+    const retained = screen.getByRole('region', {
+      name: 'Deterministic discovery candidates',
+    })
+    expect(within(selected).getByText('Fictional Candidate 1')).toBeVisible()
+    expect(within(retained).getByText('Fictional Candidate 2')).toBeVisible()
+    expect(within(retained).getByText('Fictional Candidate 3')).toBeVisible()
+    expect(
+      screen.getAllByRole('region', { name: 'Eligibility assessment' }),
+    ).toHaveLength(3)
+    const explanation = within(selected).getByRole('region', {
+      name: 'Model-selected explanation points',
+    })
+    expect(
+      within(explanation).getByText(
+        candidate(1).assessment.requirements[0].explanation,
+      ),
+    ).toBeVisible()
+    expect(
+      within(retained).queryByRole('region', {
+        name: 'Model-selected explanation points',
+      }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('retains candidates and verified source dates after an empty model selection', async () => {
+    const user = userEvent.setup()
+    mockResponse({
+      ...reliabilityResponse(),
+      status: 'no_matches',
+      recommendations: [],
+      model_explanations: [],
+    })
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(
+      screen.getByRole('button', { name: 'Generate AI recommendations' }),
+    )
+    const retained = await screen.findByRole('region', {
+      name: 'Deterministic discovery candidates',
+    })
+    expect(
+      within(retained).getAllByRole('region', { name: 'Eligibility assessment' }),
+    ).toHaveLength(3)
+    expect(
+      within(retained).getAllByRole('link', { name: /View official source/ }),
+    ).toHaveLength(3)
+    expect(
+      within(retained).getAllByText(/Last verified 11 Nov 2026/),
+    ).toHaveLength(3)
+    expect(
+      screen.queryByRole('region', { name: 'Model selections' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows deterministic recovery after an Ollama outage without duplicating fallback candidates', async () => {
+    const user = userEvent.setup()
+    mockResponse(outageResponse())
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(
+      screen.getByRole('button', { name: 'Generate AI recommendations' }),
+    )
+    expect(
+      await screen.findByRole('heading', { name: 'Local AI could not finish' }),
+    ).toBeVisible()
+    expect(screen.getByText(outageResponse().message)).toBeVisible()
+    expect(
+      screen.getAllByRole('region', { name: 'Eligibility assessment' }),
+    ).toHaveLength(3)
+    expect(screen.getByText('No tool calls were executed.')).toBeVisible()
+    expect(
+      screen.queryByRole('region', {
+        name: 'Deterministic candidates to verify',
+      }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('preserves a named negative target and its disqualifying requirement', async () => {
+    const user = userEvent.setup()
+    const negative = demoAssessment('ineligible', 5)
+    negative.scholarship_name = 'Fictional Closed Programme'
+    negative.requirements[2].explanation =
+      'The published application deadline has passed.'
+    mockResponse({
+      ...reliabilityResponse(),
+      status: 'no_matches',
+      recommendations: [],
+      model_explanations: [],
+      discovery_scope: 'named_target',
+      discovery_candidate_ids: [5],
+      discovery_candidates: [{
+        assessment: negative,
+        ranking_reasons: ['Confirmed deadline failure.'],
+      }],
+    })
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(
+      screen.getByRole('button', { name: 'Generate AI recommendations' }),
+    )
+    const retained = await screen.findByRole('region', {
+      name: 'Requested programme assessments',
+    })
+    expect(within(retained).getByText('Fictional Closed Programme')).toBeVisible()
+    expect(within(retained).getAllByText('Ineligible').length).toBeGreaterThan(0)
+    expect(
+      within(retained).getByText('The published application deadline has passed.'),
+    ).toBeVisible()
+    expect(
+      within(retained).queryByText('Eligible', { exact: true }),
+    ).not.toBeInTheDocument()
   })
 })
