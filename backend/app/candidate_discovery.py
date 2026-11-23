@@ -16,6 +16,12 @@ from backend.app.eligibility_schemas import (
 )
 from backend.app.models import Scholarship
 from backend.app.programme_resolution import ProgrammeResolution, resolve_programme
+from backend.app.request_preferences import (
+    PreferenceCheck,
+    RequestPreference,
+    check_preferences,
+    parse_preferences,
+)
 from backend.app.schemas import ScholarshipRead
 
 
@@ -26,6 +32,28 @@ class DiscoveryResult:
     named_target: bool
     resolution: ProgrammeResolution | None = None
     records: list[ScholarshipRead] = field(default_factory=list)
+    preferences: list[RequestPreference] = field(default_factory=list)
+    preference_checks: dict[int, list[PreferenceCheck]] = field(default_factory=dict)
+    scoped_records: list[ScholarshipRead] = field(default_factory=list)
+    no_match_message: str | None = None
+
+
+def rank_for_preferences(
+    candidates: list[RankedProgramme], checks: dict[int, list[PreferenceCheck]]
+) -> list[RankedProgramme]:
+    if not checks:
+        return candidates
+    priority = {"eligible": 0, "needs_verification": 1, "ineligible": 2}
+
+    def key(item: RankedProgramme) -> tuple[int, int]:
+        preferred = sum(
+            check.mode == "preferred" and check.status == "confirmed"
+            for check in checks[item.assessment.scholarship_id]
+        )
+        return priority[item.assessment.status], -preferred
+
+    # The stable sort preserves eligibility grouping and existing ranking ties.
+    return sorted(candidates, key=key)
 
 
 def _changed_catalogue(goal: str) -> DiscoveryResult:
@@ -44,12 +72,11 @@ def _changed_catalogue(goal: str) -> DiscoveryResult:
 def discover_candidates(
     session: Session, profile: StudentProfile, today: date, goal: str
 ) -> DiscoveryResult:
-    """Use the matching service's order and classifications without model filters.
+    """Scope the matching service's assessments using catalogue evidence.
 
     Resolved names retain the target, including confirmed failures. Ambiguous or
-    unknown explicit names require clarification. General discovery retains every
-    candidate without a confirmed failure. The first three complete assessments
-    enter the bounded model context. All retained IDs remain available for auditing.
+    unknown explicit names require clarification. Verified request constraints
+    apply before seeding the model or returning deterministic candidates.
     """
     ranked: list[RankedProgramme] = []
     page_number = 1
@@ -101,11 +128,39 @@ def discover_candidates(
             for item in ranked
             if item.assessment.status != EligibilityStatus.INELIGIBLE
         ]
-    retained = candidates[:MAX_IDS]
+    preferences = parse_preferences(goal, records)
+    checks = {}
+    if preferences:
+        checks = {
+            identifier: check_preferences(preferences, record)
+            for identifier, record in by_id.items()
+        }
+        candidates = [
+            item
+            for item in candidates
+            if all(
+                check.mode != "required" or check.status == "confirmed"
+                for check in checks[item.assessment.scholarship_id]
+            )
+        ]
+    ordered = rank_for_preferences(candidates, checks)
+    candidate_ids = [item.assessment.scholarship_id for item in ordered]
+    required = ", ".join(pref.label for pref in preferences if pref.mode == "required")
     return DiscoveryResult(
-        candidates=retained,
-        candidate_ids=[item.assessment.scholarship_id for item in candidates],
-        named_target=bool(named),
+        candidates=ordered[:MAX_IDS],
+        candidate_ids=candidate_ids,
+        named_target=resolution.status == "matched",
         resolution=resolution,
-        records=[by_id[item.assessment.scholarship_id] for item in retained],
+        records=[by_id[identifier] for identifier in candidate_ids[:MAX_IDS]],
+        preferences=preferences,
+        preference_checks=checks,
+        scoped_records=[by_id[identifier] for identifier in candidate_ids]
+        if preferences
+        else [],
+        no_match_message=(
+            f"No catalogue candidate with verified evidence for {required} "
+            "could be shortlisted with this profile. Review your request and profile."
+            if not candidates and required
+            else None
+        ),
     )

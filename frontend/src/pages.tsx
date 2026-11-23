@@ -8,7 +8,6 @@ import {
 } from './api'
 import { useResource } from './hooks'
 import type { FundingType, ScholarshipPage, StudentProfile } from './types'
-import ConnectionCheck from './components/ConnectionCheck'
 import { calendarDate, fundingLabels, statusLabels } from './display'
 import {
   Assessment,
@@ -19,104 +18,6 @@ import {
   SourceLink,
   StatusBadge,
 } from './components/ui'
-
-export function Home() {
-  const [field, setField] = useState('')
-  return (
-    <>
-      <ConnectionCheck />
-      <section className="home-hero">
-        <div className="hero-copy">
-          <h1>Scholarship Hunter AI</h1>
-          <p className="hero-title">A clearer path to a funded master’s.</p>
-          <p className="hero-description">
-            Discover opportunities abroad. Understand the requirements. Take
-            your next step with evidence you can check.
-          </p>
-          <form
-            className="home-search"
-            onSubmit={(event) => {
-              event.preventDefault()
-              window.location.hash = `/explore?${new URLSearchParams(field.trim() ? { field: field.trim() } : {})}`
-            }}
-          >
-            <label htmlFor="home-field">What would you like to study?</label>
-            <div>
-              <input
-                id="home-field"
-                value={field}
-                onChange={(event) => setField(event.target.value)}
-                maxLength={100}
-                placeholder="e.g. Engineering"
-              />
-              <button type="submit">Explore scholarships</button>
-            </div>
-          </form>
-          <a className="text-link" href="#/profile">
-            Or start with your student profile <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-        <aside className="journey-panel" aria-label="How it works">
-          <div className="orbital-mark" aria-hidden="true">
-            <svg viewBox="0 0 240 180">
-              <ellipse cx="120" cy="90" rx="100" ry="60" />
-              <ellipse
-                cx="120"
-                cy="90"
-                rx="45"
-                ry="85"
-                transform="rotate(40 120 90)"
-              />
-              <path d="M20 90h200M120 10v160" />
-              <circle cx="120" cy="90" r="16" />
-              <circle cx="193" cy="48" r="8" />
-            </svg>
-          </div>
-          <h2>
-            Your next chapter,
-            <br />
-            with a clearer direction.
-          </h2>
-          <ol className="journey-steps">
-            <li>
-              <strong>Discover</strong>
-              <span>Browse a curated, source-linked catalogue.</span>
-            </li>
-            <li>
-              <strong>Understand</strong>
-              <span>Compare your profile with documented rules.</span>
-            </li>
-            <li>
-              <strong>Decide</strong>
-              <span>See what matches and what still needs checking.</span>
-            </li>
-          </ol>
-        </aside>
-      </section>
-      <section className="trust-section" aria-label="Our approach">
-        <div>
-          <h2>Official sources, always in view.</h2>
-          <p>
-            Every record links back to its provider and shows a verification
-            date.
-          </p>
-        </div>
-        <div>
-          <h2>Uncertainty stays visible.</h2>
-          <p>
-            A missing requirement is a reason to check, never an automatic yes.
-          </p>
-        </div>
-        <div>
-          <h2>Your profile stays yours.</h2>
-          <p>
-            No account. No saved profile. Comparisons use the local application.
-          </p>
-        </div>
-      </section>
-    </>
-  )
-}
 
 export function Pagination({
   page,
@@ -143,7 +44,7 @@ export function Pagination({
       ) : (
         <span />
       )}
-      <span>
+      <span className="pagination-position" aria-current="page">
         {page > pages
           ? `Page ${page} is outside the available results`
           : `Page ${page} of ${pages}`}
@@ -188,22 +89,28 @@ export function Explorer({ query }: { query: string }) {
     [country, field, funding, page],
   )
   return (
-    <>
-      <div className="page-heading">
+    <div className="catalogue-page">
+      <div className="page-heading catalogue-hero">
         <div>
           <p className="breadcrumb">
             <a href="#/">Home</a> / Explorer
           </p>
           <h1>Scholarship explorer</h1>
-          <p>Find opportunities that deserve a closer look.</p>
+          <p>
+            Browse international master’s scholarships and compare funding,
+            destinations and official application details.
+          </p>
         </div>
         <a className="button button-secondary" href="#/profile">
           Find my matches
         </a>
       </div>
       <div className="explorer-layout">
-        <aside className="filter-panel">
-          <h2>Refine your search</h2>
+        <aside className="filter-panel catalogue-filters">
+          <div className="filter-heading">
+            <span className="filter-mark" aria-hidden="true" />
+            <h2>Refine your search</h2>
+          </div>
           <form
             onSubmit={(event: FormEvent) => {
               event.preventDefault()
@@ -212,7 +119,9 @@ export function Explorer({ query }: { query: string }) {
                 search.set('country', draft.country.trim())
               if (draft.field.trim()) search.set('field', draft.field.trim())
               if (draft.funding) search.set('funding_type', draft.funding)
-              window.location.hash = `/explore?${search}`
+              window.location.hash = search.size
+                ? `/explore?${search}`
+                : '/explore'
             }}
           >
             <div className="field">
@@ -225,8 +134,9 @@ export function Explorer({ query }: { query: string }) {
                 }
                 maxLength={100}
                 placeholder="e.g. Germany"
+                aria-describedby="filter-country-help"
               />
-              <small>Matches a full country name.</small>
+              <small id="filter-country-help">Enter a full country name.</small>
             </div>
             <div className="field">
               <label htmlFor="filter-field">Study field</label>
@@ -237,9 +147,10 @@ export function Explorer({ query }: { query: string }) {
                   setDraft({ ...draft, field: event.target.value })
                 }
                 maxLength={100}
-                placeholder="e.g. Computer Science"
+                placeholder="e.g. Physics"
+                aria-describedby="filter-field-help"
               />
-              <small>Searches documented study fields.</small>
+              <small id="filter-field-help">Searches published study fields.</small>
             </div>
             <div className="field">
               <label htmlFor="filter-funding">Funding type</label>
@@ -256,16 +167,18 @@ export function Explorer({ query }: { query: string }) {
                 <option value="unknown">Not confirmed</option>
               </select>
             </div>
-            <button type="submit">Apply filters</button>
-            <a className="reset-link" href="#/explore">
-              Clear filters
-            </a>
+            <div className="filter-actions">
+              <button type="submit">Apply filters</button>
+              <a className="reset-link" href="#/explore">
+                Clear filters
+              </a>
+            </div>
           </form>
           <p className="filter-note">
-            A filter match is a starting point, not an eligibility decision.
+            Eligibility depends on the programme’s requirements and your profile.
           </p>
         </aside>
-        <section aria-label="Scholarship results">
+        <section className="catalogue-results" aria-label="Scholarship results">
           {invalid ? (
             <ErrorState
               message="This search link contains an invalid filter or page. Clear the filters to start again."
@@ -278,7 +191,7 @@ export function Explorer({ query }: { query: string }) {
           )}
         </section>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -303,17 +216,18 @@ function ExplorerResults({
   }
   return (
     <>
-      <div className="results-heading">
-        <p aria-live="polite">
-          <strong>{result.total}</strong>{' '}
-          {result.total === 1 ? 'opportunity' : 'opportunities'} in this search
+      <div className="catalogue-results-intro">
+        <div className="results-heading">
+          <p aria-live="polite">
+            <strong>{result.total}</strong>{' '}
+            {result.total === 1 ? 'opportunity' : 'opportunities'} in this search
+          </p>
+        </div>
+        <p className="catalogue-note">
+          Funding and requirements can change. Recheck the official source before
+          applying.
         </p>
-        <span className="muted">Curated catalogue</span>
       </div>
-      <p className="catalogue-note">
-        Funding and requirements can change. Recheck the official source before
-        applying.
-      </p>
       {result.items.length ? (
         <div className="card-list">
           {result.items.map((item) => (
@@ -355,10 +269,12 @@ export function ScholarshipDetails({ id }: { id: number }) {
     return <LoadingState>Loading scholarship details…</LoadingState>
   if (resource.status === 'error')
     return (
-      <>
-        <a href="#/explore">Back to explorer</a>
+      <div className="catalogue-detail">
+        <p className="breadcrumb">
+          <a href="#/explore">Back to explorer</a>
+        </p>
         <ErrorState message={resource.message} retry={retry} />
-      </>
+      </div>
     )
   const item = resource.data
   const facts: [string, string | null][] = [
@@ -387,16 +303,21 @@ export function ScholarshipDetails({ id }: { id: number }) {
     ],
   ]
   return (
-    <>
+    <div className="catalogue-detail">
       <p className="breadcrumb">
         <a href="#/explore">Scholarship explorer</a> / Details
       </p>
       <div className="detail-heading">
-        <span className={`badge funding-${item.funding_type}`}>
-          {fundingLabels[item.funding_type]}
-        </span>
+        <div className="detail-provider">
+          <span className="provider-mark" aria-hidden="true">
+            {item.university_or_provider.slice(0, 2).toUpperCase()}
+          </span>
+          <p>{item.university_or_provider}</p>
+          <span className={`badge funding-${item.funding_type}`}>
+            {fundingLabels[item.funding_type]}
+          </span>
+        </div>
         <h1>{item.scholarship_name}</h1>
-        <p>{item.university_or_provider}</p>
         <div className="action-row">
           <a className="button" href={`#/profile?scholarship=${id}`}>
             Check my eligibility
@@ -406,7 +327,7 @@ export function ScholarshipDetails({ id }: { id: number }) {
       </div>
       <div className="details-layout">
         <div>
-          <section className="content-panel">
+          <section className="content-panel detail-panel">
             <h2>At a glance</h2>
             <dl className="detail-facts">
               {facts.map(([label, value]) => (
@@ -423,20 +344,26 @@ export function ScholarshipDetails({ id }: { id: number }) {
               ))}
             </dl>
           </section>
-          <section className="content-panel">
+          <section className="content-panel detail-panel">
             <h2>Funding and coverage</h2>
-            <h3>Tuition</h3>
-            <p>
-              {item.tuition_coverage ?? 'Tuition coverage is not confirmed.'}
-            </p>
-            <h3>Living support</h3>
-            <p>{item.living_stipend ?? 'Living support is not confirmed.'}</p>
+            <div className="funding-breakdown">
+              <div>
+                <h3>Tuition</h3>
+                <p>
+                  {item.tuition_coverage ?? 'Tuition coverage is not confirmed.'}
+                </p>
+              </div>
+              <div>
+                <h3>Living support</h3>
+                <p>{item.living_stipend ?? 'Living support is not confirmed.'}</p>
+              </div>
+            </div>
             <p className="notice">
               Published funding terms describe the opportunity. Receiving an
               award remains subject to selection.
             </p>
           </section>
-          <section className="content-panel">
+          <section className="content-panel detail-panel">
             <h2>Requirements and important notes</h2>
             <p className="preserve-lines">
               {item.additional_requirements ??
@@ -449,11 +376,13 @@ export function ScholarshipDetails({ id }: { id: number }) {
         </div>
         <aside className="detail-sidebar">
           <section className="evidence-panel">
+            <span className="source-mark" aria-hidden="true" />
             <h2>Check the evidence</h2>
-            <p>
-              Last verified
-              <br />
-              <strong>{calendarDate(item.last_verified_at)}</strong>
+            <p className="evidence-date">
+              <span>Last verified</span>
+              <time dateTime={item.last_verified_at}>
+                {calendarDate(item.last_verified_at)}
+              </time>
             </p>
             <SourceLink url={item.official_source_url} />
             <p>
@@ -467,7 +396,7 @@ export function ScholarshipDetails({ id }: { id: number }) {
           </p>
         </aside>
       </div>
-    </>
+    </div>
   )
 }
 

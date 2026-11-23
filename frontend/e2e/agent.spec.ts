@@ -464,6 +464,30 @@ test('clarifies an ambiguous programme name with real catalogue choices', async 
   await expect(page.getByText('No tool calls were executed.')).toBeVisible()
 })
 
+test('reports a strict destination miss through the real API without substituting programmes', async ({
+  page,
+}) => {
+  await openAgentWithProfile(page)
+  await page
+    .getByLabel('What would you like to find?')
+    .fill("Find master's scholarships in Canada only, including partial funding options.")
+  const apiResponse = page.waitForResponse((response) =>
+    response.url().endsWith('/api/agent/recommend'),
+  )
+  await page.getByRole('button', { name: 'Generate AI recommendations', exact: true }).click()
+
+  const result: AgentResponse = await (await apiResponse).json()
+  expect(result.status).toBe('no_matches')
+  expect(result.tool_calls).toBe(0)
+  expect(result.discovery_candidate_ids).toEqual([])
+  expect(result.recommendations).toEqual([])
+
+  const output = page.getByRole('region', { name: 'Local AI response' })
+  await expect(output.getByRole('heading', { name: 'No confirmed matches' })).toBeVisible()
+  await expect(output).toContainText('Canada')
+  await expect(output.getByRole('region', { name: 'Eligibility assessment' })).toHaveCount(0)
+})
+
 test('supports a mobile AI profile handoff and forgets the profile on refresh', async ({
   page,
 }, testInfo) => {

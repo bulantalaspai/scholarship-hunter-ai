@@ -195,13 +195,17 @@ export default function ProfileForm({
           Please check the highlighted fields.
         </div>
       )}
-      <fieldset className="form-section" disabled={busy}>
+      <fieldset
+        className="profile-section"
+        disabled={busy}
+        aria-describedby={`${id}-academic-note`}
+      >
         <legend>Your academic background</legend>
-        <p>
-          Use the terms in the official requirements. Related fields and degree
-          equivalence may need verification.
+        <p className="profile-section-note" id={`${id}-academic-note`}>
+          Use the field and degree names from your academic records. Related
+          fields and degree equivalence may need verification.
         </p>
-        <div className="form-grid">
+        <div className="profile-field-grid">
           <div className="field">
             <label htmlFor={`${id}-nationality`}>Nationality</label>
             <input
@@ -253,13 +257,17 @@ export default function ProfileForm({
           </div>
         </div>
       </fieldset>
-      <fieldset className="form-section" disabled={busy}>
+      <fieldset
+        className="profile-section"
+        disabled={busy}
+        aria-describedby={`${id}-scores-note`}
+      >
         <legend>Grades and language evidence</legend>
-        <p>
-          Optional. Unknown scores stay unknown. We do not convert between GPA
-          scales.
+        <p className="profile-section-note" id={`${id}-scores-note`}>
+          These scores are optional. If you include a GPA, enter it on its
+          original scale. Fields left blank remain unknown.
         </p>
-        <div className="form-grid">
+        <div className="profile-field-grid profile-field-grid--scores">
           <div className="field">
             <label htmlFor={`${id}-gpa`}>GPA</label>
             <input
@@ -306,9 +314,17 @@ export default function ProfileForm({
           </div>
         </div>
       </fieldset>
-      <fieldset className="form-section" disabled={busy}>
+      <fieldset
+        className="profile-section"
+        disabled={busy}
+        aria-describedby={`${id}-plans-note`}
+      >
         <legend>Your plans</legend>
-        <div className="form-grid">
+        <p className="profile-section-note" id={`${id}-plans-note`}>
+          Choose when you intend to start and which funding options you would
+          consider.
+        </p>
+        <div className="profile-field-grid">
           <div className="field">
             <label htmlFor={`${id}-intended_start_year`}>
               Intended start year
@@ -337,11 +353,11 @@ export default function ProfileForm({
           </div>
         </div>
       </fieldset>
-      <p className="privacy-note">
-        No account or identity documents are needed. Your profile is used for
-        this check and is not saved by the application. Refreshing clears it.
-      </p>
-      <div className="form-actions">
+      <div className="profile-form-footer">
+        <p className="privacy-note">
+          Your profile is used for this check and is not saved by the
+          application. Refreshing clears it.
+        </p>
         <button type="submit" disabled={busy}>
           {busy ? 'Checking your profile…' : submitLabel}
         </button>

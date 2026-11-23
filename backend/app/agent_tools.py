@@ -18,7 +18,11 @@ from backend.app.agent_schemas import (
     SearchArguments,
     ToolTrace,
 )
-from backend.app.candidate_discovery import DiscoveryResult, discover_candidates
+from backend.app.candidate_discovery import (
+    DiscoveryResult,
+    discover_candidates,
+    rank_for_preferences,
+)
 from backend.app.eligibility import rank_programmes
 from backend.app.eligibility_schemas import (
     EligibilityResult,
@@ -32,6 +36,7 @@ from backend.app.official_pages import (
     fetch_official_page,
 )
 from backend.app.programme_resolution import resolve_programme
+from backend.app.request_preferences import matches_destination
 from backend.app.schemas import ScholarshipQuery, ScholarshipRead
 from backend.app.scholarships import query_scholarships
 
@@ -170,7 +175,26 @@ class AgentTools:
         }
         if self.discovery and self.discovery.named_target:
             context["target_ids"] = self.discovery.candidate_ids
+        if self.discovery and self.discovery.preferences:
+            context["request"] = [
+                item.model_dump() for item in self.discovery.preferences
+            ]
+            for candidate in context["candidates"]:
+                candidate["fit"] = self._compact_fit(candidate["id"])
         return context
+
+    def _compact_fit(self, identifier: int) -> dict[str, str]:
+        return {
+            check.kind: check.status
+            for check in self.discovery.preference_checks[identifier]
+        }
+
+    def _can_assess(self, identifier: int) -> bool:
+        return identifier in self.discovered and (
+            not self.discovery
+            or not self.discovery.preferences
+            or identifier in self.discovery.candidate_ids
+        )
 
     def _search(self, args: SearchArguments) -> ToolOutput:
         named_ids = (
@@ -180,6 +204,9 @@ class AgentTools:
         )
         resolution = None
         filters_ignored = []
+        scoped = self.discovery is not None and bool(self.discovery.preferences)
+        if scoped and args.programme_name and not named_ids:
+            raise PublicPageError("outside_request_scope")
         if named_ids or args.programme_name:
             records = [
                 ScholarshipRead.model_validate(record)
@@ -223,6 +250,25 @@ class AgentTools:
                 for key in ("country", "field", "funding_type")
                 if getattr(args, key) is not None
             ]
+        elif scoped:
+            # Apply the model's optional filters within the verified request scope.
+            # A model query can refine or return zero rows, with no escape from scope.
+            field = args.field.casefold() if args.field else None
+            matches = [
+                record
+                for record in self.discovery.scoped_records
+                if (not args.country or matches_destination(record, args.country))
+                and (not args.funding_type or args.funding_type == record.funding_type)
+                and (
+                    not field
+                    or any(
+                        field in value.casefold()
+                        for value in record.eligible_study_fields or []
+                    )
+                )
+            ]
+            total = len(matches)
+            items = matches[:3]
         else:
             page = query_scholarships(
                 ScholarshipQuery(
@@ -250,6 +296,10 @@ class AgentTools:
         }
         if named_ids:
             data["target_ids"] = named_ids
+        if scoped:
+            data["request_scoped"] = True
+            for candidate in data["candidates"]:
+                candidate["fit"] = self._compact_fit(candidate["id"])
         if filters_ignored:
             data["filters_ignored"] = filters_ignored
             data["filter_notice"] = (
@@ -281,6 +331,8 @@ class AgentTools:
             for identifier in ids
         ]
         ranked = rank_programmes(self.profile, candidates, today=self.today)
+        if self.discovery and self.discovery.preferences:
+            ranked = rank_for_preferences(ranked, self.discovery.preference_checks)
         validated = [
             RankedProgramme.model_validate(item.model_dump()) for item in ranked
         ]
@@ -317,7 +369,9 @@ class AgentTools:
             elif name == "fetch_official_page":
                 args = FetchArguments.model_validate(arguments)
                 approved_candidates = {
-                    str(item.official_source_url) for item in self.discovered.values()
+                    str(item.official_source_url)
+                    for item in self.discovered.values()
+                    if self._can_assess(item.id)
                 }
                 if args.url not in approved_candidates:
                     raise PublicPageError("not_discovered_source")
@@ -342,7 +396,7 @@ class AgentTools:
                 )
             elif name == "check_eligibility":
                 args = CheckArguments.model_validate(arguments)
-                if args.scholarship_id not in self.discovered:
+                if not self._can_assess(args.scholarship_id):
                     raise PublicPageError("id_not_discovered")
                 item = self._rank([args.scholarship_id])[0]
                 output = ToolOutput(
@@ -354,7 +408,7 @@ class AgentTools:
             elif name == "rank_scholarships":
                 args = RankArguments.model_validate(arguments)
                 if any(
-                    identifier not in self.discovered
+                    not self._can_assess(identifier)
                     for identifier in args.scholarship_ids
                 ):
                     raise PublicPageError("id_not_discovered")
@@ -426,10 +480,10 @@ class AgentTools:
             raise ValueError("Final IDs must have a validated tool assessment")
         if (
             self.discovery
-            and self.discovery.named_target
+            and (self.discovery.named_target or self.discovery.preferences)
             and not set(ids).issubset(self.discovery.candidate_ids)
         ):
-            raise ValueError("Final IDs must retain the explicitly named target")
+            raise ValueError("Final IDs must stay within the verified request scope")
         return self._rank(ids) if ids else []
 
     def grounded_explanations(

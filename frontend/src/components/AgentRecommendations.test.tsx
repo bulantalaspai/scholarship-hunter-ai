@@ -2,7 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { fetchAgentRecommendations } from '../agent'
-import type { AgentResponse } from '../agent'
+import type { AgentResponse, RequestPreference } from '../agent'
 import type { RankedProgramme, StudentProfile } from '../types'
 import { demoAssessment } from '../test/fixtures'
 import AgentRecommendations from './AgentRecommendations'
@@ -108,6 +108,47 @@ function reliabilityResponse(): AgentResponse {
   }
 }
 
+function scopedResponse(destination: 'Germany' | 'Japan'): AgentResponse {
+  const isGermany = destination === 'Germany'
+  const records = isGermany
+    ? [candidate(1), candidate(2), candidate(3)]
+    : [candidate(4)]
+  const location = {
+    kind: 'destination',
+    label: destination,
+    mode: 'required',
+  } satisfies RequestPreference
+  const partial = {
+    kind: 'funding',
+    label: 'Partially funded',
+    mode: 'preferred',
+  } satisfies RequestPreference
+  const fundingChecks = [
+    { status: 'unmatched', evidence: 'The catalogue records full funding.' },
+    { status: 'confirmed', evidence: 'The catalogue records partial funding.' },
+    { status: 'unverified', evidence: 'The catalogue funding type is unknown.' },
+  ] as const
+  return {
+    ...response(),
+    recommendations: records.slice(0, 1),
+    discovery_candidates: records,
+    discovery_candidate_ids: records.map((item) => item.assessment.scholarship_id),
+    discovery_scope: 'catalogue',
+    request_preferences: isGermany ? [location, partial] : [location],
+    request_matches: records.map((item, index) => ({
+      scholarship_id: item.assessment.scholarship_id,
+      checks: [
+        {
+          ...location,
+          status: 'confirmed',
+          evidence: `The catalogue records ${destination} as a study destination.`,
+        },
+        ...(isGermany ? [{ ...partial, ...fundingChecks[index] }] : []),
+      ],
+    })),
+  }
+}
+
 function outageResponse(): AgentResponse {
   const original = reliabilityResponse()
   return {
@@ -176,6 +217,56 @@ function overrideResolution(fields: Record<string, unknown>) {
 }
 
 describe('local agent API contract', () => {
+  it('accepts scoped named results with no confirmed match', async () => {
+    const payload = {
+      ...nameResponse('matched'),
+      status: 'no_matches',
+      steps: 0,
+      recommendations: [],
+      discovery_candidates: [],
+      discovery_candidate_ids: [],
+      request_preferences: scopedResponse('Germany').request_preferences,
+      request_matches: [],
+    }
+    mockResponse(payload)
+    await expect(
+      fetchAgentRecommendations(
+        profile,
+        'Fictional Award in Germany',
+        new AbortController().signal,
+      ),
+    ).resolves.toEqual(payload)
+  })
+
+  it.each([
+    ['missing evidence for visible results', { request_matches: [] }],
+    ['evidence for an unrelated scholarship', {
+      request_matches: [
+        ...scopedResponse('Japan').request_matches!,
+        { ...scopedResponse('Japan').request_matches![0], scholarship_id: 5 },
+      ],
+    }],
+    ['a required destination that lacks confirmation', {
+      request_matches: [{
+        scholarship_id: 4,
+        checks: [{
+          ...scopedResponse('Japan').request_preferences![0],
+          status: 'unverified',
+          evidence: 'Japan has no confirmed destination evidence.',
+        }],
+      }],
+    }],
+  ])('rejects %s', async (_label, fields) => {
+    mockResponse({ ...scopedResponse('Japan'), ...fields })
+    await expect(
+      fetchAgentRecommendations(
+        profile,
+        'Find programmes in Japan',
+        new AbortController().signal,
+      ),
+    ).rejects.toThrow('unexpected response')
+  })
+
   it('accepts unrequested names and legacy responses with a null resolution', async () => {
     for (const resolution of [null, {
       status: 'not_requested', query: null, method: null,
@@ -589,6 +680,99 @@ describe('local agent API contract', () => {
 })
 
 describe('local agent recommendations', () => {
+  it('displays different request fits for Germany and Japan with the same profile', async () => {
+    const user = userEvent.setup()
+    const mock = vi.fn()
+      .mockResolvedValueOnce(Response.json(scopedResponse('Germany')))
+      .mockResolvedValueOnce(Response.json(scopedResponse('Japan')))
+    vi.stubGlobal('fetch', mock)
+    render(<AgentRecommendations profile={profile} />)
+    const input = screen.getByLabelText('What would you like to find?')
+    const submit = screen.getByRole('button', {
+      name: 'Generate AI recommendations',
+    })
+    const germany = 'Find programmes in Germany, including partial funding options.'
+    const japan = 'Find programmes in Japan.'
+
+    await user.clear(input)
+    await user.type(input, germany)
+    await user.click(submit)
+    const selections = await screen.findByRole('region', {
+      name: 'Model selections',
+    })
+    const selectedFit = within(selections).getByRole('region', {
+      name: 'Request fit',
+    })
+    expect(within(selectedFit).getByText('Required destination')).toBeVisible()
+    expect(within(selectedFit).getByText('Germany')).toBeVisible()
+    expect(within(selectedFit).getByText('Confirmed')).toBeVisible()
+    expect(within(selectedFit).getByText('Preferred funding')).toBeVisible()
+    expect(within(selectedFit).getByText('Unmatched')).toBeVisible()
+    expect(
+      within(selectedFit).getByText('The catalogue records full funding.'),
+    ).toBeVisible()
+    const discovery = screen.getByRole('region', {
+      name: 'Deterministic discovery candidates',
+    })
+    const retainedFits = within(discovery).getAllByRole('region', {
+      name: 'Request fit',
+    })
+    expect(retainedFits[0]).toHaveTextContent('The catalogue records partial funding.')
+    expect(retainedFits[1]).toHaveTextContent('Needs verification')
+    expect(retainedFits[1]).toHaveTextContent('The catalogue funding type is unknown.')
+
+    await user.clear(input)
+    await user.type(input, japan)
+    await user.click(submit)
+    const japanEvidence = await screen.findByText(
+      'The catalogue records Japan as a study destination.',
+    )
+    expect(japanEvidence).toBeVisible()
+    expect(
+      screen.getByRole('heading', { name: 'Fictional Candidate 4' }),
+    ).toBeVisible()
+    expect(
+      screen.queryByRole('heading', { name: 'Fictional Candidate 1' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('region', { name: 'Deterministic discovery candidates' }),
+    ).not.toBeInTheDocument()
+    expect(mock.mock.calls.map(([, options]) => JSON.parse(options.body))).toEqual([
+      { goal: germany, profile },
+      { goal: japan, profile },
+    ])
+  })
+
+  it('preserves a required no-match response without presenting unrelated programmes', async () => {
+    const user = userEvent.setup()
+    const message =
+      'The catalogue has no confirmed scholarship for both Germany and partial funding.'
+    mockResponse({
+      ...scopedResponse('Germany'),
+      status: 'no_matches',
+      recommendations: [],
+      discovery_candidates: [],
+      discovery_candidate_ids: [],
+      request_matches: [],
+      request_preferences: scopedResponse('Germany').request_preferences?.map(
+        (preference) => ({ ...preference, mode: 'required' }),
+      ),
+      message,
+    })
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(
+      screen.getByRole('button', { name: 'Generate AI recommendations' }),
+    )
+    expect(
+      await screen.findByRole('heading', { name: 'No confirmed matches' }),
+    ).toBeVisible()
+    expect(screen.getByText(message)).toBeVisible()
+    expect(screen.queryByText(/Try a simpler request/)).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('region', { name: 'Eligibility assessment' }),
+    ).not.toBeInTheDocument()
+  })
+
   it('waits for an explicit request and preserves unverified eligibility', async () => {
     const user = userEvent.setup()
     const mock = mockResponse(response())
