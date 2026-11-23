@@ -1,0 +1,40 @@
+# Local AI recommendation relevance
+
+## Investigation
+
+The 23 November 2026 comparison used a fresh SQLite import of the same 22 source-backed records for each version, catalogue evaluation date 2026-11-23, Ollama 0.40.17 and the installed `qwen3:4b-instruct`. The synthetic profile stayed constant across requests. It specified Kazakhstan nationality, a completed bachelor's degree in Computer Science, GPA 3.5/4, IELTS 7.0, intended entry in 2027, and any funding. Each table row represents one run. The reported times include discovery and inference, and the first before run included an approved official-page fetch. They are observations, with no estimate of latency variance.
+
+The initial deterministic shortlist considered profile eligibility and ranking. Except for named lookups, it did not apply the request's destination or funding terms. Qwen could search with separate filters, but a successful model choice did not remove the unrelated deterministic candidates shown on the same page. A failed model run reused that same shortlist as recovery. The ranking service also sorted fully funded awards ahead of partial awards within an eligibility group. In the Europe run, the model's searches returned zero because the original country filter matched country names literally. The model then ranked the seeded, fully funded candidates. Japan also needed a second attempt at a valid final reply because the first included extra schema fields.
+
+SMACCs is catalogue ID 2. Its documented destinations are Belgium, Greece, Spain and Finland, and its funding classification is fully funded. It matched the Europe destination and the named lookup. Germany and Japan were outside its recorded destinations. The catalogue's verification date for this record is 2026-11-11. [SMACCs official scholarship page](https://www.smaccs.eu/practical/scholarships/)
+
+## Live tool traces
+
+Germany, Japan and Europe use `Find master's scholarships in <destination> for a student from Kazakhstan, including partial funding options.` The named request is `Assess SMACCs for my profile.` The other request text is written out below. Search options and IDs are from the observed calls and catalogue. In the before run, a one-record Germany or Japan search was followed by an assessment of the returned record.
+
+| Request | Before, in execution order | Before model / deterministic shortlist / recovery | After, in execution order | After model / deterministic shortlist / recovery |
+| --- | --- | --- | --- | --- |
+| Germany | Search Germany, Computer Science, partial → 18. Fetch DAAD detail `57742130`. Check 18. Final grounded. 9.858 s. | `[18]` / `[2, 3, 4]` / `[]` | Rank `[18, 1, 6]` → `[18, 1, 6]`. Final grounded. 4.239 s. | `[18, 1, 6]` / `[18, 1, 6]` / `[]` |
+| Japan | Search Japan, Computer Science, partial → 15. Check 15. Invalid final schema, then grounded final. 4.251 s. | `[15]` / `[2, 3, 4]` / `[]` | Rank `[15, 7]` → `[15, 7]`. Check 15. Check 7. Final grounded. 3.842 s. | `[15]` / `[15, 7]` / `[]` |
+| Europe | Search Europe, Computer Science, partial → zero. Search same with full → zero. Rank `[2, 3, 4]`. Final grounded. 5.260 s. | `[2, 3, 4]` / `[2, 3, 4]` / `[]` | Rank `[15, 18, 1]` → `[15, 18, 1]`. Final grounded. 3.822 s. | `[15, 18, 1]` / `[15, 18, 1]` / `[]` |
+| Named SMACCs | Check 2. Rank `[2]`. Final grounded. 2.718 s. | `[2]` / `[2]` / `[]` | Check 2. Rank `[2]`. Final grounded. 2.405 s. | `[2]` / `[2]` / `[]` |
+| Find master's scholarships in Canada only, including partial funding options. | — | — | `no_matches`. No Ollama request or tool call. 0.004 s. | `[]` / `[]` / `[]` |
+| Find only partially funded master's scholarships in Germany. | — | — | Rank `[18, 1]` → `[18, 1]`. Final grounded. 2.914 s. | `[18, 1]` / `[18, 1]` / `[]` |
+
+All dispatched tools in this table succeeded. In an intermediate rerun, both Germany and Europe ranked three scoped records and then repeated two individual checks. The estimated prompt size crossed the local guard before the final response. Both requests recovered their scoped shortlists with `needs_verification` and had zero model selections. The final iteration reserves the fourth step for final JSON on preference-scoped requests. Four steps, eight tool calls and a 4096-token model context remain the ceilings.
+
+## Behaviour and evidence
+
+- Discovery applies documented destination and funding constraints before giving records to Qwen. Model search can refine the scoped candidates. The assessment, source-fetch and final-selection guards reject out-of-scope IDs or sources. A strict filter with no shortlist returns a no-match response without inference. Named resolution still clarifies ambiguous names and retains deterministic failures on resolved targets.
+- Optional criteria influence order within an eligibility group. The tool and final response still use deterministic assessments. The same request constraints apply if Ollama is busy, unavailable, times out or produces no validated result. The student profile's funding preference still governs eligibility. A profile restricted to full funding may exclude partial options even when the request expresses a soft preference for them.
+- The API provides per-record `request_matches` for returned cards, backed by the catalogue. The page labels each requirement or preference as **Confirmed**, **Unmatched** or **Needs verification**, keeps source links and verification dates visible, and separates the model's selections from the omitted deterministic candidates and recovery.
+- For Germany, the partial funding preference was confirmed for the two DAAD records, IDs 18 and 1. CyberMACS, ID 6, had a documented German destination and remained a fully funded option labeled **Unmatched** for the partial preference. Asking for partial funding only excluded it. The deterministic eligibility status for all three German recommendations remained `needs_verification`. [DAAD STEM](https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=57742130) · [DAAD all academic disciplines](https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200) · [CyberMACS](https://cybermacs.eu/scholarships/)
+- For Japan, Qwen selected the partially funded JEMARO, ID 15. IMLEX, ID 7, remained in the separately labeled deterministic shortlist and had an unmatched partial-funding preference. JEMARO also qualified for the Europe search because France is one of its documented destinations. A confirmed destination on a multi-country programme does not guarantee a placement there. [JEMARO](https://jemaro.ec-nantes.fr/english-version/admission/jemaro-fees-and-scholarships) · [IMLEX](https://www.imlex.org/fees-and-scholarships/)
+
+## Reproduction and limitations
+
+Run the existing local application with its reviewed catalogue and Ollama. Use the profile and request text above or submit them to `POST /api/agent/recommend`. Compare `tool_trace`, `recommendations`, `discovery_candidates`, `fallback_recommendations`, and `request_matches`. Catalogue IDs here refer to a fresh import in file order. The pytest and Vitest regressions use scripted model replies. The Chromium suite includes a real strict no-match API request that requires no inference. The traces above came from the real local model using the agent and its tools directly.
+
+Verification passed with 688 backend tests, 199 Vitest tests and 21 Chromium tests. Ruff lint and formatting, ESLint, TypeScript, the production build and installed dependency checks also passed. The browser suite used an isolated seeded database and alternate loopback ports to leave the running application undisturbed.
+
+Intent extraction covers common English phrasing, known country names and aliases, Europe and the European Union, and full or partial funding. The form gives examples of optional and required funding. Phrasing outside the supported patterns can require rewording. Results are limited to the catalogue and its recorded evidence. These six targeted runs measure request fit for one profile. They provide no estimate of general recommendation accuracy or independent eligibility accuracy.

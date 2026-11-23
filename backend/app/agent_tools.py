@@ -2,9 +2,11 @@
 
 import json
 from collections.abc import Callable
+from copy import deepcopy
 from datetime import date
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.app.agent_schemas import (
@@ -16,7 +18,11 @@ from backend.app.agent_schemas import (
     SearchArguments,
     ToolTrace,
 )
-from backend.app.candidate_discovery import DiscoveryResult, discover_candidates
+from backend.app.candidate_discovery import (
+    DiscoveryResult,
+    discover_candidates,
+    rank_for_preferences,
+)
 from backend.app.eligibility import rank_programmes
 from backend.app.eligibility_schemas import (
     EligibilityResult,
@@ -29,6 +35,8 @@ from backend.app.official_pages import (
     PublicPageError,
     fetch_official_page,
 )
+from backend.app.programme_resolution import resolve_programme
+from backend.app.request_preferences import matches_destination
 from backend.app.schemas import ScholarshipQuery, ScholarshipRead
 from backend.app.scholarships import query_scholarships
 
@@ -55,6 +63,11 @@ TOOL_DEFINITIONS = [
         "search_scholarships",
         "Search SQLite for up to 3 IDs and official sources.",
         {
+            "programme_name": {
+                "type": "string",
+                "maxLength": 300,
+                "description": "Full name or documented programme alias. Optional.",
+            },
             "country": {
                 "type": "string",
                 "maxLength": 100,
@@ -129,17 +142,23 @@ class AgentTools:
         self.pages: dict[str, OfficialPage] = {}
         self.discovery: DiscoveryResult | None = None
 
+    def definitions(self) -> list[dict]:
+        """Offer programme-name arguments only for a resolved named request."""
+        definitions = deepcopy(TOOL_DEFINITIONS)
+        if not self.discovery or not self.discovery.named_target:
+            properties = definitions[0]["function"]["parameters"]["properties"]
+            properties.pop("programme_name")
+        return definitions
+
     def prepare(self, goal: str) -> None:
         """Retain deterministic candidates independently of model search choices."""
         self.discovery = discover_candidates(
             self.session, self.profile, self.today, goal
         )
-        for item in self.discovery.candidates:
-            record = self.session.get(Scholarship, item.assessment.scholarship_id)
-            self.discovered[record.id] = ScholarshipRead.model_validate(record)
+        self.discovered.update({record.id: record for record in self.discovery.records})
 
     def candidate_context(self) -> dict:
-        return {
+        context = {
             "scope": "named_target"
             if self.discovery and self.discovery.named_target
             else "catalogue",
@@ -154,6 +173,149 @@ class AgentTools:
             if self.discovery
             else [],
         }
+        if self.discovery and self.discovery.named_target:
+            context["target_ids"] = self.discovery.candidate_ids
+        if self.discovery and self.discovery.preferences:
+            context["request"] = [
+                item.model_dump() for item in self.discovery.preferences
+            ]
+            for candidate in context["candidates"]:
+                candidate["fit"] = self._compact_fit(candidate["id"])
+        return context
+
+    def _compact_fit(self, identifier: int) -> dict[str, str]:
+        return {
+            check.kind: check.status
+            for check in self.discovery.preference_checks[identifier]
+        }
+
+    def _can_assess(self, identifier: int) -> bool:
+        return identifier in self.discovered and (
+            not self.discovery
+            or not self.discovery.preferences
+            or identifier in self.discovery.candidate_ids
+        )
+
+    def _search(self, args: SearchArguments) -> ToolOutput:
+        named_ids = (
+            self.discovery.candidate_ids
+            if self.discovery and self.discovery.named_target
+            else []
+        )
+        resolution = None
+        filters_ignored = []
+        scoped = self.discovery is not None and bool(self.discovery.preferences)
+        if scoped and args.programme_name and not named_ids:
+            raise PublicPageError("outside_request_scope")
+        if named_ids or args.programme_name:
+            records = [
+                ScholarshipRead.model_validate(record)
+                for record in self.session.scalars(
+                    select(Scholarship).order_by(Scholarship.id)
+                )
+            ]
+            if args.programme_name:
+                resolution = resolve_programme(
+                    args.programme_name, records, explicit=True
+                )
+                if resolution.status != "matched":
+                    if named_ids and set(named_ids).issubset(resolution.candidate_ids):
+                        resolution = self.discovery.resolution
+                    else:
+                        return ToolOutput(
+                            data={
+                                "total": 0,
+                                "candidates": [],
+                                "name_resolution": {
+                                    "status": resolution.status,
+                                    "message": resolution.message,
+                                    "options": [
+                                        {
+                                            "id": option.scholarship_id,
+                                            "name": option.scholarship_name[:72],
+                                        }
+                                        for option in resolution.options[:3]
+                                    ],
+                                },
+                            },
+                            summary=resolution.message[:200],
+                        )
+                if named_ids and not set(resolution.candidate_ids).issubset(named_ids):
+                    raise PublicPageError("outside_named_target")
+            identifiers = named_ids or resolution.candidate_ids
+            items = [item for item in records if item.id in identifiers][:3]
+            total = len(identifiers)
+            filters_ignored = [
+                key
+                for key in ("country", "field", "funding_type")
+                if getattr(args, key) is not None
+            ]
+        elif scoped:
+            # Apply the model's optional filters within the verified request scope.
+            # A model query can refine or return zero rows, with no escape from scope.
+            field = args.field.casefold() if args.field else None
+            matches = [
+                record
+                for record in self.discovery.scoped_records
+                if (not args.country or matches_destination(record, args.country))
+                and (not args.funding_type or args.funding_type == record.funding_type)
+                and (
+                    not field
+                    or any(
+                        field in value.casefold()
+                        for value in record.eligible_study_fields or []
+                    )
+                )
+            ]
+            total = len(matches)
+            items = matches[:3]
+        else:
+            page = query_scholarships(
+                ScholarshipQuery(
+                    **args.model_dump(exclude={"programme_name"}), page=1, page_size=3
+                ),
+                self.session,
+            )
+            items = [
+                ScholarshipRead.model_validate(item.model_dump()) for item in page.items
+            ]
+            total = page.total
+        self.discovered.update({item.id: item for item in items})
+        data = {
+            "total": total,
+            "candidates": [
+                {
+                    "id": item.id,
+                    "name": item.scholarship_name[:72],
+                    "funding": item.funding_type.value,
+                    "source": str(item.official_source_url),
+                    "verified": item.last_verified_at.isoformat(),
+                }
+                for item in items
+            ],
+        }
+        if named_ids:
+            data["target_ids"] = named_ids
+        if scoped:
+            data["request_scoped"] = True
+            for candidate in data["candidates"]:
+                candidate["fit"] = self._compact_fit(candidate["id"])
+        if filters_ignored:
+            data["filters_ignored"] = filters_ignored
+            data["filter_notice"] = (
+                "Named-programme lookup takes priority over discovery filters. "
+                "Eligibility checks retain failures."
+            )
+        if resolution:
+            data["name_resolution"] = {
+                "status": resolution.status,
+                "method": resolution.method,
+                "message": resolution.message,
+            }
+        return ToolOutput(
+            data=data,
+            summary=f"Found {total} records; returned {len(items)} candidates.",
+        )
 
     def _rank(
         self, ids: list[int], *, record_assessment: bool = True
@@ -169,6 +331,8 @@ class AgentTools:
             for identifier in ids
         ]
         ranked = rank_programmes(self.profile, candidates, today=self.today)
+        if self.discovery and self.discovery.preferences:
+            ranked = rank_for_preferences(ranked, self.discovery.preference_checks)
         validated = [
             RankedProgramme.model_validate(item.model_dump()) for item in ranked
         ]
@@ -201,42 +365,13 @@ class AgentTools:
         try:
             if name == "search_scholarships":
                 args = SearchArguments.model_validate(arguments)
-                page = query_scholarships(
-                    ScholarshipQuery(
-                        **args.model_dump(),
-                        page=1,
-                        page_size=3,
-                    ),
-                    self.session,
-                )
-                items = [
-                    ScholarshipRead.model_validate(item.model_dump())
-                    for item in page.items
-                ]
-                self.discovered.update({item.id: item for item in items})
-                output = ToolOutput(
-                    data={
-                        "total": page.total,
-                        "candidates": [
-                            {
-                                "id": item.id,
-                                "name": item.scholarship_name[:72],
-                                "funding": item.funding_type.value,
-                                "source": str(item.official_source_url),
-                                "verified": item.last_verified_at.isoformat(),
-                            }
-                            for item in items
-                        ],
-                    },
-                    summary=(
-                        f"Found {page.total} matching records; "
-                        f"returned {len(items)} candidates."
-                    ),
-                )
+                output = self._search(args)
             elif name == "fetch_official_page":
                 args = FetchArguments.model_validate(arguments)
                 approved_candidates = {
-                    str(item.official_source_url) for item in self.discovered.values()
+                    str(item.official_source_url)
+                    for item in self.discovered.values()
+                    if self._can_assess(item.id)
                 }
                 if args.url not in approved_candidates:
                     raise PublicPageError("not_discovered_source")
@@ -261,7 +396,7 @@ class AgentTools:
                 )
             elif name == "check_eligibility":
                 args = CheckArguments.model_validate(arguments)
-                if args.scholarship_id not in self.discovered:
+                if not self._can_assess(args.scholarship_id):
                     raise PublicPageError("id_not_discovered")
                 item = self._rank([args.scholarship_id])[0]
                 output = ToolOutput(
@@ -273,7 +408,7 @@ class AgentTools:
             elif name == "rank_scholarships":
                 args = RankArguments.model_validate(arguments)
                 if any(
-                    identifier not in self.discovered
+                    not self._can_assess(identifier)
                     for identifier in args.scholarship_ids
                 ):
                     raise PublicPageError("id_not_discovered")
@@ -328,7 +463,10 @@ class AgentTools:
                 "blocked",
                 "Tool request was blocked by source or candidate validation.",
             )
-            return {"error": "source_or_candidate_not_allowed"}, trace
+            data = {"error": "source_or_candidate_not_allowed"}
+            if self.discovery and self.discovery.named_target:
+                data["target_ids"] = self.discovery.candidate_ids
+            return data, trace
         except TimeoutError, OSError:
             trace.status, trace.summary = (
                 "error",
@@ -342,10 +480,10 @@ class AgentTools:
             raise ValueError("Final IDs must have a validated tool assessment")
         if (
             self.discovery
-            and self.discovery.named_target
+            and (self.discovery.named_target or self.discovery.preferences)
             and not set(ids).issubset(self.discovery.candidate_ids)
         ):
-            raise ValueError("Final IDs must retain the explicitly named target")
+            raise ValueError("Final IDs must stay within the verified request scope")
         return self._rank(ids) if ids else []
 
     def grounded_explanations(

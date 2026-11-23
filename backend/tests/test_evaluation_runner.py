@@ -142,9 +142,11 @@ def test_observer_uses_actual_final_validation_without_mutation_or_queries(
         funding_preference="any_funding",
     )
     tools = AgentTools(session, profile, date(2026, 1, 2))
-    tools.prepare("Assess Fictional Demo Engineering Award")
     tools.dispatch("search_scholarships", {}, step=1, timeout=1)
     tools.dispatch("rank_scholarships", {"scholarship_ids": [1, 2]}, step=1, timeout=1)
+    # Bind the target after filling the cache to independently exercise the
+    # observer's scope guard, including a previously assessed substitute.
+    tools.prepare("Assess Fictional Demo Engineering Award")
     assessed = dict(tools.assessed)
     discovered = dict(tools.discovered)
     reply = OllamaReply(

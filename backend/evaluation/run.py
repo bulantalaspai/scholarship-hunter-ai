@@ -21,7 +21,7 @@ from pydantic import ValidationError
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from backend.app.agent import estimated_input_tokens, run_agent
+from backend.app.agent import estimated_input_tokens, run_agent, selection_issues
 from backend.app.agent_schemas import MODEL, AgentRequest, FinalSelection
 from backend.app.agent_tools import AgentTools
 from backend.app.database import create_database_engine, initialize_database
@@ -53,6 +53,7 @@ IMPLEMENTATION_FILES = sorted((ROOT / "backend" / "app").glob("*.py")) + [
     Path(__file__).with_name("extract.py"),
     Path(__file__).with_name("metrics.py"),
     Path(__file__).with_name("reliability.py"),
+    ROOT / "backend" / "data" / "programme_aliases.json",
 ]
 
 
@@ -130,8 +131,9 @@ class ObservedClient(OllamaClient):
             if not reply.message.tool_calls:
                 try:
                     final = FinalSelection.model_validate_json(reply.message.content)
-                except ValidationError:
+                except ValidationError as error:
                     event["final_validation"] = "invalid_schema"
+                    event["validation_issues"] = selection_issues(error)
                 else:
                     event["final_ids"] = final.recommendation_ids
                     event["final_explanation_keys"] = [
@@ -213,6 +215,7 @@ def agent_run(item: dict, goal: str, session: Session, today: date) -> dict:
         "discovery_scope": None,
         "model_error": None,
         "model_explanations": [],
+        "name_resolution": None,
         "warnings": [],
     }
     try:
@@ -230,6 +233,9 @@ def agent_run(item: dict, goal: str, session: Session, today: date) -> dict:
             discovery_candidate_ids=result.discovery_candidate_ids,
             discovery_scope=result.discovery_scope,
             model_error=result.model_error,
+            name_resolution=result.name_resolution.model_dump(mode="json")
+            if result.name_resolution
+            else None,
             model_explanations=[
                 item.model_dump(mode="json") for item in result.model_explanations
             ],

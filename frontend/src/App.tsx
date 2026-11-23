@@ -4,11 +4,11 @@ import { useHashRoute } from './hooks'
 import {
   EligibilityPage,
   Explorer,
-  Home,
   MatchesPage,
   ScholarshipDetails,
 } from './pages'
 import ProfileForm from './components/ProfileForm'
+import Home from './components/Home'
 import AgentRecommendations from './components/AgentRecommendations'
 import { EmptyState } from './components/ui'
 
@@ -42,7 +42,7 @@ export default function App() {
   else if (path === '/profile' && (!params.has('scholarship') || scholarship))
     content = (
       <>
-        <div className="page-heading">
+        <div className="page-heading profile-heading">
           <div>
             <p className="breadcrumb">
               <a
@@ -91,7 +91,8 @@ export default function App() {
             }}
           />
           <aside className="profile-aside">
-            <h2>Only what’s needed.</h2>
+            <span className="profile-privacy-icon" aria-hidden="true" />
+            <h2>Your profile stays local</h2>
             <p>
               No name, email, account, or documents. Your profile is held in
               this browser tab’s memory and sent only to the local application
@@ -192,9 +193,7 @@ export default function App() {
             href="#/"
             aria-label="Scholarship Hunter AI home"
           >
-            <span className="brand-mark" aria-hidden="true">
-              SH
-            </span>
+            <span className="brand-mark" aria-hidden="true" />
             <span>
               Scholarship Hunter<span className="brand-ai">AI</span>
             </span>
@@ -223,9 +222,11 @@ export default function App() {
               </a>
             )}
             <a
+              className="nav-ai"
               href="#/agent"
               aria-current={path === '/agent' ? 'page' : undefined}
             >
+              <span aria-hidden="true">✦</span>
               Local AI
             </a>
           </nav>
@@ -239,18 +240,20 @@ export default function App() {
         {content}
       </main>
       <footer className="site-footer">
-        <div>
-          <a className="footer-brand" href="#/">
-            Scholarship Hunter AI
-          </a>
-          <p>A clearer next step for students in Kazakhstan.</p>
+        <div className="footer-inner">
+          <div>
+            <a className="footer-brand" href="#/">
+              Scholarship Hunter AI
+            </a>
+            <p>
+              International master’s scholarships for students from Kazakhstan.
+            </p>
+          </div>
+          <p className="footer-note">
+            Eligibility checks cannot guarantee admission or funding.
+          </p>
+          <a href="#/explore">Explore the catalogue</a>
         </div>
-        <p>
-          Official sources. Transparent checks.
-          <br />
-          No guarantee of admission or funding.
-        </p>
-        <a href="#/explore">Explore the catalogue</a>
       </footer>
     </div>
   )

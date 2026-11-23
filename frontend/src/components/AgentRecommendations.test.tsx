@@ -2,7 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { fetchAgentRecommendations } from '../agent'
-import type { AgentResponse } from '../agent'
+import type { AgentResponse, RequestPreference } from '../agent'
 import type { RankedProgramme, StudentProfile } from '../types'
 import { demoAssessment } from '../test/fixtures'
 import AgentRecommendations from './AgentRecommendations'
@@ -108,6 +108,47 @@ function reliabilityResponse(): AgentResponse {
   }
 }
 
+function scopedResponse(destination: 'Germany' | 'Japan'): AgentResponse {
+  const isGermany = destination === 'Germany'
+  const records = isGermany
+    ? [candidate(1), candidate(2), candidate(3)]
+    : [candidate(4)]
+  const location = {
+    kind: 'destination',
+    label: destination,
+    mode: 'required',
+  } satisfies RequestPreference
+  const partial = {
+    kind: 'funding',
+    label: 'Partially funded',
+    mode: 'preferred',
+  } satisfies RequestPreference
+  const fundingChecks = [
+    { status: 'unmatched', evidence: 'The catalogue records full funding.' },
+    { status: 'confirmed', evidence: 'The catalogue records partial funding.' },
+    { status: 'unverified', evidence: 'The catalogue funding type is unknown.' },
+  ] as const
+  return {
+    ...response(),
+    recommendations: records.slice(0, 1),
+    discovery_candidates: records,
+    discovery_candidate_ids: records.map((item) => item.assessment.scholarship_id),
+    discovery_scope: 'catalogue',
+    request_preferences: isGermany ? [location, partial] : [location],
+    request_matches: records.map((item, index) => ({
+      scholarship_id: item.assessment.scholarship_id,
+      checks: [
+        {
+          ...location,
+          status: 'confirmed',
+          evidence: `The catalogue records ${destination} as a study destination.`,
+        },
+        ...(isGermany ? [{ ...partial, ...fundingChecks[index] }] : []),
+      ],
+    })),
+  }
+}
+
 function outageResponse(): AgentResponse {
   const original = reliabilityResponse()
   return {
@@ -126,7 +167,203 @@ function outageResponse(): AgentResponse {
   }
 }
 
+function nameResponse(
+  status: 'matched' | 'ambiguous' | 'not_found' = 'ambiguous',
+  method: 'exact' | 'alias' | 'fuzzy' = 'alias',
+): AgentResponse {
+  const records = status === 'not_found' ? [] :
+    status === 'ambiguous' ? [candidate(1), candidate(2)] : [candidate(1)]
+  const selected = status === 'matched' ? records : []
+  const message = status === 'ambiguous'
+    ? 'This name refers to multiple catalogue programmes.'
+    : status === 'not_found'
+      ? 'No catalogue programme matches this name. Check its spelling.'
+      : `Interpreted the requested name as Fictional Candidate 1 using ${method} matching.`
+  return {
+    ...response(),
+    status: status === 'matched' ? 'needs_verification' :
+      status === 'ambiguous' ? 'ambiguous_match' : 'no_matches',
+    steps: status === 'matched' ? 2 : 0,
+    tool_calls: 0,
+    tool_trace: [],
+    recommendations: selected,
+    discovery_candidates: selected,
+    discovery_candidate_ids: selected.map((item) => item.assessment.scholarship_id),
+    discovery_scope: status === 'matched' ? 'named_target' : 'catalogue',
+    model_error: null,
+    message,
+    name_resolution: {
+      status,
+      query: status === 'not_found' ? 'Fictional Missing Award' : 'Fictional Award',
+      method: status === 'not_found' ? null : method,
+      candidate_ids: records.map((item) => item.assessment.scholarship_id),
+      options: records.map((item) => ({
+        scholarship_id: item.assessment.scholarship_id,
+        scholarship_name: item.assessment.scholarship_name,
+        official_source_url: item.assessment.official_source_url,
+        last_verified_at: item.assessment.last_verified_at,
+      })),
+      message,
+    },
+  }
+}
+
+function overrideResolution(fields: Record<string, unknown>) {
+  const payload = nameResponse()
+  return {
+    ...payload,
+    name_resolution: { ...payload.name_resolution, ...fields },
+  }
+}
+
 describe('local agent API contract', () => {
+  it('accepts scoped named results with no confirmed match', async () => {
+    const payload = {
+      ...nameResponse('matched'),
+      status: 'no_matches',
+      steps: 0,
+      recommendations: [],
+      discovery_candidates: [],
+      discovery_candidate_ids: [],
+      request_preferences: scopedResponse('Germany').request_preferences,
+      request_matches: [],
+    }
+    mockResponse(payload)
+    await expect(
+      fetchAgentRecommendations(
+        profile,
+        'Fictional Award in Germany',
+        new AbortController().signal,
+      ),
+    ).resolves.toEqual(payload)
+  })
+
+  it.each([
+    ['missing evidence for visible results', { request_matches: [] }],
+    ['evidence for an unrelated scholarship', {
+      request_matches: [
+        ...scopedResponse('Japan').request_matches!,
+        { ...scopedResponse('Japan').request_matches![0], scholarship_id: 5 },
+      ],
+    }],
+    ['a required destination that lacks confirmation', {
+      request_matches: [{
+        scholarship_id: 4,
+        checks: [{
+          ...scopedResponse('Japan').request_preferences![0],
+          status: 'unverified',
+          evidence: 'Japan has no confirmed destination evidence.',
+        }],
+      }],
+    }],
+  ])('rejects %s', async (_label, fields) => {
+    mockResponse({ ...scopedResponse('Japan'), ...fields })
+    await expect(
+      fetchAgentRecommendations(
+        profile,
+        'Find programmes in Japan',
+        new AbortController().signal,
+      ),
+    ).rejects.toThrow('unexpected response')
+  })
+
+  it('accepts unrequested names and legacy responses with a null resolution', async () => {
+    for (const resolution of [null, {
+      status: 'not_requested', query: null, method: null,
+      candidate_ids: [], options: [], message: 'General catalogue discovery.',
+    }]) {
+      const payload = { ...reliabilityResponse(), name_resolution: resolution }
+      mockResponse(payload)
+      await expect(fetchAgentRecommendations(profile, 'Find candidates.',
+        new AbortController().signal)).resolves.toEqual(payload)
+    }
+  })
+
+  it('preserves deterministic ranking when multiple resolved names have another display order', async () => {
+    const records = [candidate(1), candidate(2)]
+    const original = nameResponse('matched')
+    const payload = {
+      ...original,
+      discovery_candidates: records,
+      discovery_candidate_ids: [1, 2],
+      name_resolution: {
+        ...original.name_resolution!,
+        candidate_ids: [2, 1],
+        options: records.toReversed().map((item) => ({
+          scholarship_id: item.assessment.scholarship_id,
+          scholarship_name: item.assessment.scholarship_name,
+          official_source_url: item.assessment.official_source_url,
+          last_verified_at: item.assessment.last_verified_at,
+        })),
+      },
+    }
+    mockResponse(payload)
+    await expect(fetchAgentRecommendations(profile, 'Compare two programmes.',
+      new AbortController().signal)).resolves.toEqual(payload)
+  })
+  it.each(['ambiguous', 'not_found', 'matched'] as const)(
+    'accepts a consistent %s programme resolution', async (status) => {
+      const payload = nameResponse(status)
+      mockResponse(payload)
+      await expect(fetchAgentRecommendations(profile, 'Check a name.',
+        new AbortController().signal)).resolves.toEqual(payload)
+    },
+  )
+
+  it.each(['alias', 'fuzzy'] as const)(
+    'accepts an explained %s match with canonical source metadata', async (method) => {
+      const payload = nameResponse('matched', method)
+      mockResponse(payload)
+      await expect(fetchAgentRecommendations(profile, 'Check a name.',
+        new AbortController().signal)).resolves.toEqual(payload)
+    },
+  )
+
+  it.each([
+    { ...nameResponse(), name_resolution: undefined },
+    { ...nameResponse(), name_resolution: null },
+    { ...nameResponse(), status: 'completed' },
+    { ...nameResponse(), steps: 1 },
+    { ...nameResponse(), discovery_candidates: [candidate(1)], discovery_candidate_ids: [1] },
+    { ...nameResponse(), recommendations: [candidate(1)] },
+    overrideResolution({ status: 'invented' }),
+    overrideResolution({ method: null }),
+    overrideResolution({ method: 'probable' }),
+    overrideResolution({ query: 'x'.repeat(301) }),
+    overrideResolution({ query: '' }),
+    overrideResolution({ candidate_ids: [1, 1] }),
+    overrideResolution({ candidate_ids: [2, 1] }),
+    overrideResolution({ options: [] }),
+    overrideResolution({
+      candidate_ids: [1],
+      options: nameResponse().name_resolution!.options.slice(0, 1),
+    }),
+    overrideResolution({
+      options: nameResponse().name_resolution!.options.map((option) => ({
+        ...option,
+        official_source_url: 'javascript:alert(1)',
+      })),
+    }),
+    overrideResolution({
+      options: nameResponse().name_resolution!.options.map((option) => ({
+        ...option,
+        last_verified_at: '2026-02-30',
+      })),
+    }),
+    { ...nameResponse('not_found'), status: 'needs_verification' },
+    { ...nameResponse('not_found'), name_resolution: { ...nameResponse().name_resolution, status: 'not_found' } },
+    { ...nameResponse('matched'), discovery_scope: 'catalogue' },
+    { ...nameResponse('matched'), discovery_candidates: [] },
+    { ...nameResponse('matched'), name_resolution: { ...nameResponse('matched').name_resolution, candidate_ids: [2] } },
+    { ...nameResponse('matched'), name_resolution: {
+      ...nameResponse('matched').name_resolution,
+      options: [{ ...nameResponse('matched').name_resolution!.options[0], scholarship_name: 'Fictional Substitute' }],
+    } },
+  ])('rejects unsafe or inconsistent programme resolution %j', async (payload) => {
+    mockResponse(payload)
+    await expect(fetchAgentRecommendations(profile, 'Check a name.',
+      new AbortController().signal)).rejects.toThrow('unexpected response')
+  })
   it('posts the profile and request only to the existing local endpoint', async () => {
     const expected = response()
     const mock = mockResponse(expected)
@@ -443,6 +680,99 @@ describe('local agent API contract', () => {
 })
 
 describe('local agent recommendations', () => {
+  it('displays different request fits for Germany and Japan with the same profile', async () => {
+    const user = userEvent.setup()
+    const mock = vi.fn()
+      .mockResolvedValueOnce(Response.json(scopedResponse('Germany')))
+      .mockResolvedValueOnce(Response.json(scopedResponse('Japan')))
+    vi.stubGlobal('fetch', mock)
+    render(<AgentRecommendations profile={profile} />)
+    const input = screen.getByLabelText('What would you like to find?')
+    const submit = screen.getByRole('button', {
+      name: 'Generate AI recommendations',
+    })
+    const germany = 'Find programmes in Germany, including partial funding options.'
+    const japan = 'Find programmes in Japan.'
+
+    await user.clear(input)
+    await user.type(input, germany)
+    await user.click(submit)
+    const selections = await screen.findByRole('region', {
+      name: 'Model selections',
+    })
+    const selectedFit = within(selections).getByRole('region', {
+      name: 'Request fit',
+    })
+    expect(within(selectedFit).getByText('Required destination')).toBeVisible()
+    expect(within(selectedFit).getByText('Germany')).toBeVisible()
+    expect(within(selectedFit).getByText('Confirmed')).toBeVisible()
+    expect(within(selectedFit).getByText('Preferred funding')).toBeVisible()
+    expect(within(selectedFit).getByText('Unmatched')).toBeVisible()
+    expect(
+      within(selectedFit).getByText('The catalogue records full funding.'),
+    ).toBeVisible()
+    const discovery = screen.getByRole('region', {
+      name: 'Deterministic discovery candidates',
+    })
+    const retainedFits = within(discovery).getAllByRole('region', {
+      name: 'Request fit',
+    })
+    expect(retainedFits[0]).toHaveTextContent('The catalogue records partial funding.')
+    expect(retainedFits[1]).toHaveTextContent('Needs verification')
+    expect(retainedFits[1]).toHaveTextContent('The catalogue funding type is unknown.')
+
+    await user.clear(input)
+    await user.type(input, japan)
+    await user.click(submit)
+    const japanEvidence = await screen.findByText(
+      'The catalogue records Japan as a study destination.',
+    )
+    expect(japanEvidence).toBeVisible()
+    expect(
+      screen.getByRole('heading', { name: 'Fictional Candidate 4' }),
+    ).toBeVisible()
+    expect(
+      screen.queryByRole('heading', { name: 'Fictional Candidate 1' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('region', { name: 'Deterministic discovery candidates' }),
+    ).not.toBeInTheDocument()
+    expect(mock.mock.calls.map(([, options]) => JSON.parse(options.body))).toEqual([
+      { goal: germany, profile },
+      { goal: japan, profile },
+    ])
+  })
+
+  it('preserves a required no-match response without presenting unrelated programmes', async () => {
+    const user = userEvent.setup()
+    const message =
+      'The catalogue has no confirmed scholarship for both Germany and partial funding.'
+    mockResponse({
+      ...scopedResponse('Germany'),
+      status: 'no_matches',
+      recommendations: [],
+      discovery_candidates: [],
+      discovery_candidate_ids: [],
+      request_matches: [],
+      request_preferences: scopedResponse('Germany').request_preferences?.map(
+        (preference) => ({ ...preference, mode: 'required' }),
+      ),
+      message,
+    })
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(
+      screen.getByRole('button', { name: 'Generate AI recommendations' }),
+    )
+    expect(
+      await screen.findByRole('heading', { name: 'No confirmed matches' }),
+    ).toBeVisible()
+    expect(screen.getByText(message)).toBeVisible()
+    expect(screen.queryByText(/Try a simpler request/)).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('region', { name: 'Eligibility assessment' }),
+    ).not.toBeInTheDocument()
+  })
+
   it('waits for an explicit request and preserves unverified eligibility', async () => {
     const user = userEvent.setup()
     const mock = mockResponse(response())
@@ -722,4 +1052,57 @@ describe('local agent recommendations', () => {
       within(retained).queryByText('Eligible', { exact: true }),
     ).not.toBeInTheDocument()
   })
+
+  it('asks for a full programme name and shows sourced ambiguity options', async () => {
+    const user = userEvent.setup()
+    mockResponse(nameResponse())
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(
+      screen.getByRole('button', { name: 'Generate AI recommendations' }),
+    )
+    expect(await screen.findByRole('heading', { name: 'Choose a programme' })).toBeVisible()
+    const choices = screen.getByRole('region', { name: 'Matching programmes' })
+    expect(within(choices).getByText('Enter the full programme name in your request.')).toBeVisible()
+    expect(within(choices).getByText('Fictional Candidate 1')).toBeVisible()
+    expect(within(choices).getByText('Fictional Candidate 2')).toBeVisible()
+    expect(within(choices).getAllByRole('link', { name: /Official source for/ })).toHaveLength(2)
+    expect(within(choices).getAllByText(/Last verified 11 Nov 2026/)).toHaveLength(2)
+    expect(screen.queryByRole('region', { name: 'Eligibility assessment' })).not.toBeInTheDocument()
+    expect(screen.queryByText(/No grounded recommendation was returned/)).not.toBeInTheDocument()
+    expect(screen.getByText('No tool calls were executed.')).toBeVisible()
+  })
+
+  it('shows a specific unknown-programme state without unrelated cards', async () => {
+    const user = userEvent.setup()
+    const payload = nameResponse('not_found')
+    mockResponse(payload)
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(
+      screen.getByRole('button', { name: 'Generate AI recommendations' }),
+    )
+    expect(await screen.findByRole('heading', { name: 'Programme not found' })).toBeVisible()
+    expect(screen.getByText(payload.message)).toBeVisible()
+    expect(screen.queryByRole('region', { name: 'Eligibility assessment' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Matching programmes' })).not.toBeInTheDocument()
+    expect(screen.queryByText(/No grounded recommendation was returned/)).not.toBeInTheDocument()
+  })
+
+  it.each(['alias', 'fuzzy'] as const)(
+    'explains the %s name interpretation before the canonical assessment',
+    async (method) => {
+      const user = userEvent.setup()
+      const payload = nameResponse('matched', method)
+      mockResponse(payload)
+      render(<AgentRecommendations profile={profile} />)
+      await user.click(
+        screen.getByRole('button', { name: 'Generate AI recommendations' }),
+      )
+      const interpretation = await screen.findByRole('region', {
+        name: 'Programme-name interpretation',
+      })
+      expect(within(interpretation).getByText(payload.name_resolution!.message)).toBeVisible()
+      expect(screen.getByRole('heading', { name: 'Fictional Candidate 1' })).toBeVisible()
+      expect(screen.getAllByRole('region', { name: 'Eligibility assessment' })).toHaveLength(1)
+    },
+  )
 })

@@ -411,6 +411,83 @@ test('retains the named negative target and the actual deadline failure', async 
   await expect(retained.getByText('Eligible', { exact: true })).toHaveCount(0)
 })
 
+test('clarifies an ambiguous programme name with real catalogue choices', async ({ page }) => {
+  const catalogueResponse = await page.request.get('/api/scholarships?page_size=100')
+  expect(catalogueResponse.ok()).toBe(true)
+  const catalogue: ScholarshipPage = await catalogueResponse.json()
+  const choices = catalogue.items.filter((item) =>
+    item.university_or_provider.toLowerCase().includes('daad'),
+  )
+  expect(choices).toHaveLength(2)
+  const response: AgentResponse = {
+    status: 'ambiguous_match',
+    model: 'qwen3:4b-instruct',
+    evaluated_on: '2026-11-12',
+    steps: 0,
+    tool_calls: 0,
+    recommendations: [],
+    discovery_candidates: [],
+    discovery_candidate_ids: [],
+    discovery_scope: 'catalogue',
+    model_explanations: [],
+    fallback_recommendations: [],
+    name_resolution: {
+      status: 'ambiguous',
+      query: 'DAAD',
+      method: 'alias',
+      candidate_ids: choices.map((item) => item.id),
+      options: choices.map((item) => ({
+        scholarship_id: item.id,
+        scholarship_name: item.scholarship_name,
+        official_source_url: item.official_source_url,
+        last_verified_at: item.last_verified_at,
+      })),
+      message: 'DAAD refers to multiple catalogue programmes. Specify a full name.',
+    },
+    message: 'DAAD refers to multiple catalogue programmes. Specify a full name.',
+    warnings: [],
+    tool_trace: [],
+    disclaimer: 'Programme lookup preserves the catalogue evidence.',
+  }
+  await page.route('**/api/agent/recommend', (route) => route.fulfill({ json: response }))
+  await openAgentWithProfile(page)
+  await page.getByLabel('What would you like to find?').fill('Assess DAAD for my profile.')
+  await page.getByRole('button', { name: 'Generate AI recommendations', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Choose a programme' })).toBeVisible()
+  const options = page.getByRole('region', { name: 'Matching programmes' })
+  for (const choice of choices) {
+    await expect(options.getByText(choice.scholarship_name, { exact: true })).toBeVisible()
+    await expect(options.getByRole('link', { name: `Official source for ${choice.scholarship_name}` }))
+      .toHaveAttribute('href', choice.official_source_url)
+  }
+  await expect(page.getByRole('region', { name: 'Eligibility assessment' })).toHaveCount(0)
+  await expect(page.getByText('No tool calls were executed.')).toBeVisible()
+})
+
+test('reports a strict destination miss through the real API without substituting programmes', async ({
+  page,
+}) => {
+  await openAgentWithProfile(page)
+  await page
+    .getByLabel('What would you like to find?')
+    .fill("Find master's scholarships in Canada only, including partial funding options.")
+  const apiResponse = page.waitForResponse((response) =>
+    response.url().endsWith('/api/agent/recommend'),
+  )
+  await page.getByRole('button', { name: 'Generate AI recommendations', exact: true }).click()
+
+  const result: AgentResponse = await (await apiResponse).json()
+  expect(result.status).toBe('no_matches')
+  expect(result.tool_calls).toBe(0)
+  expect(result.discovery_candidate_ids).toEqual([])
+  expect(result.recommendations).toEqual([])
+
+  const output = page.getByRole('region', { name: 'Local AI response' })
+  await expect(output.getByRole('heading', { name: 'No confirmed matches' })).toBeVisible()
+  await expect(output).toContainText('Canada')
+  await expect(output.getByRole('region', { name: 'Eligibility assessment' })).toHaveCount(0)
+})
+
 test('supports a mobile AI profile handoff and forgets the profile on refresh', async ({
   page,
 }, testInfo) => {

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "annotation_origin": "AI-prepared evidence references. Human review is pending.",
+  "evidence": {
+    "S01": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://www.smaccs.eu/practical/scholarships/",
+      "verified_at": "2026-11-12",
+      "excerpt": "SMACCs [...] grant of 1400€ per month of study [...] consortium will not charge tuition fees to EMJM scholarship holders.",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/0",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S02": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://www.master-ediss.eu/scholarship/",
+      "verified_at": "2026-11-12",
+      "excerpt": "EDISS [...] Participation costs [...] Tuition fees [...] EMJM scholarship [...] waiver of the participation costs [...] monthly contribution to subsistence costs (1400€ per month)",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/1",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S03": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://deai.ulb.be/home/students/tuition-fees-scholarships/",
+      "verified_at": "2026-11-12",
+      "excerpt": "Full DEAI Scholarship [...] Full coverage of tuition fees [...] A monthly grant of €1,400 [...] up to 24 months",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/2",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S04": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://www.cybersure-master.eu/faq",
+      "verified_at": "2026-11-12",
+      "excerpt": "CYBERSURE [...] Full scholarships cover tuition fees, travel costs, insurance, and provide a monthly allowance for living expenses",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/3",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S05": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://cybermacs.eu/scholarships/",
+      "verified_at": "2026-11-12",
+      "excerpt": "CyberMACS [...] tuition fee waiver to every student [...] Scholarship Pathway: Exceptional students can be awarded a prestigious monthly scholarship of 1400 euros.",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/4",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S06": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://www.imlex.org/fees-and-scholarships/",
+      "verified_at": "2026-11-12",
+      "excerpt": "IMLEX [...] participation costs (including the tuition fees, library and laboratory costs) [...] a monthly subsistence allowance [...] 1400 EUR/month.",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/5",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S07": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://densys.univ-lorraine.fr/fees-and-scholarships/",
+      "verified_at": "2026-11-12",
+      "excerpt": "DENSYS [...] scholarship covers the participation costs and a monthly allowance (1,400 €/month) [...] The participation costs include [...] institutional tuition fees",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/6",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S08": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200",
+      "verified_at": "2026-11-12",
+      "excerpt": "Study Scholarships - Master Studies for All Academic Disciplines [...] Scholarship payments of 992 euros a month [...] DAAD does not cover tuition fees",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/7",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S09": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://www.gist.ac.kr/iadm/html/sub05/0503.html",
+      "verified_at": "2026-11-12",
+      "excerpt": "GIST [...] applicants must meet minimum score requirements: TOEFL iBT 80, PBT 550 IELTS 6.5 TOEIC 750 NEW TEPS 285",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/8",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S10": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://eminent-master.eu/application-requirement/",
+      "verified_at": "2026-11-12",
+      "excerpt": "EMINENT [...] TOEFL iBT [...] IELTS Academic (minimum score 6.5 with no individual score under 6), PTE Academic",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/9",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S11": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://www.imlex.org/how-to-apply/admission-criteria/",
+      "verified_at": "2026-11-12",
+      "excerpt": "IMLEX Admission Requirements 2027 [...] The application period opens on 2 December 2026 and closes on 13 January 2027",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/10",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "S12": {
+      "kind": "frozen_official_excerpt",
+      "source_url": "https://www.unite-codas-master.eu/",
+      "verified_at": "2026-11-12",
+      "excerpt": "CoDaS [...] Open for applications from [...] 1 Dec 2026 - 5 January 2027",
+      "source_reference": "evaluation/data/source_annotations.json#/examples/11",
+      "review_status": "ai_generated_provisional",
+      "limitations": "The excerpt covers only its stated fields. Independent human source review is pending."
+    },
+    "E-MEXT-CLOSED": {
+      "kind": "official_excerpt",
+      "source_url": "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html",
+      "verified_at": "2026-11-13",
+      "excerpt": "Прием заявлений – до 17:00, 29 мая 2026 года (пт.) (по време г. Астана)",
+      "source_reference": "evaluation/data/README.md#e-mext-closed",
+      "review_status": "ai_generated_provisional",
+      "limitations": "This quote concerns the Kazakhstan embassy 2027 call. English interpretation is a 29 May 2026 deadline at 17:00 Astana time. Other routes and future calls require separate evidence."
+    },
+    "E-SMACCS-REVIEW": {
+      "kind": "official_excerpt",
+      "source_url": "https://www.smaccs.eu/admissions/admission-criteria/",
+      "verified_at": "2026-11-13",
+      "excerpt": "The EMJM scholarships, SMACCs consortium scholarships and Associated Partner scholarships are awarded to applicants who succeed in the interview process.",
+      "source_reference": "evaluation/data/README.md#e-smaccs-review",
+      "review_status": "ai_generated_provisional",
+      "limitations": "Admission, language alternatives, qualification equivalence and scholarship selection have additional conditions. The short excerpt cannot establish a complete student verdict."
+    },
+    "E-PROFILE-PAST": {
+      "kind": "official_excerpt",
+      "source_url": "https://www.smaccs.eu/admissions/deadlines/",
+      "verified_at": "2026-11-13",
+      "excerpt": "At least four Editions will be enrolled in the SMACCs (2024-2026, 2025-2027, 2026-2028, 2027-2029)",
+      "source_reference": "evaluation/data/README.md#e-profile-past",
+      "review_status": "ai_generated_provisional",
+      "limitations": "P20 independently requests an intake before the fixed assessment year. This excerpt identifies published editions and supplies no current opening or individual award decision."
+    },
+    "E-HUNGARY-CLOSED": {
+      "kind": "curator_paraphrase_pending_verbatim_verification",
+      "source_url": "https://stipendiumhungaricum.hu/news/application-is-on-for-the-2026-2027-stipendium-hungaricum-scholarship/",
+      "verified_at": "2026-11-12",
+      "excerpt": null,
+      "curator_note": "The frozen annotation records a 15 January 2026 deadline for the 2026/27 call. Current official-page retrieval failed on 2026-11-13. An independent reviewer must verify the historical deadline.",
+      "source_reference": "evaluation/data/README.md#e-hungary-closed",
+      "review_status": "unresolved_source_access",
+      "limitations": "No new official quote or live verification is claimed."
+    }
+  }
+}

@@ -10,6 +10,8 @@ from backend.app.eligibility_schemas import (
     RequirementResult,
     StudentProfile,
 )
+from backend.app.programme_resolution import ProgrammeResolution
+from backend.app.request_preferences import PreferenceCheck, RequestPreference
 from backend.app.schemas import FundingType, SearchText
 
 MODEL = "qwen3:4b-instruct"
@@ -52,9 +54,19 @@ class GroundedExplanation(BaseModel):
     requirements: list[RequirementResult] = Field(min_length=1, max_length=4)
 
 
+class RequestMatch(BaseModel):
+    scholarship_id: ScholarshipId
+    checks: list[PreferenceCheck] = Field(min_length=1, max_length=2)
+
+
 class AgentResponse(BaseModel):
     status: Literal[
-        "completed", "needs_verification", "limit_reached", "no_matches", "model_error"
+        "completed",
+        "needs_verification",
+        "limit_reached",
+        "no_matches",
+        "model_error",
+        "ambiguous_match",
     ]
     model: Literal["qwen3:4b-instruct"] = MODEL
     evaluated_on: date
@@ -70,6 +82,9 @@ class AgentResponse(BaseModel):
     )
     discovery_candidate_ids: list[ScholarshipId] = Field(default_factory=list)
     discovery_scope: Literal["catalogue", "named_target"] = "catalogue"
+    name_resolution: ProgrammeResolution | None = None
+    request_preferences: list[RequestPreference] = Field(default_factory=list)
+    request_matches: list[RequestMatch] = Field(default_factory=list)
     model_error: (
         Literal["unavailable", "timeout", "invalid_response", "busy"] | None
     ) = None
@@ -90,6 +105,12 @@ class ToolArguments(BaseModel):
 
 
 class SearchArguments(ToolArguments):
+    programme_name: (
+        Annotated[
+            str, StringConstraints(strip_whitespace=True, min_length=1, max_length=300)
+        ]
+        | None
+    ) = None
     country: SearchText | None = None
     field: SearchText | None = None
     funding_type: FundingType | None = None

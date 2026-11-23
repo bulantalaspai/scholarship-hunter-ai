@@ -1,0 +1,283 @@
+{
+  "phase": "06D_before_diagnostics",
+  "as_of": "2026-11-12",
+  "input_hashes": {
+    "backend/data/curated_scholarships.json": "6cf30b41a8f004e91932680efd3cbbe8833b052bb33d9906e2de6f8a175674b2",
+    "evaluation/data/eligibility_cases.json": "cd7166924df1651fafbf9e52517f2d7a15a842bd68f77122c6bd459c806757cc",
+    "evaluation/data/profiles.json": "3041b0a31aef3d2456db7af55f9496cb69451ee1758cb741de5795f674647566",
+    "evaluation/data/relevance_judgments.json": "476259384db1802d830d9257442df5edc4548d2dec46e944fecb8d2f139ab0e8",
+    "evaluation/data/source_annotations.json": "d8d2c278fc241fa0827d45d28611381c767ea46c9cc5bb62f2038ceeb2d6abe8"
+  },
+  "implementation_hashes": {
+    "backend/app/__init__.py": "45390889d8a4a81a685fa8f8fb38422e5f6ff8840d7df1405f088ab5347ae8e2",
+    "backend/app/agent.py": "bb72dce9919ea81d6d61335203f9d4edf4d484eac0f31348671b40a854043dc4",
+    "backend/app/agent_api.py": "9927ef008e50aaf4d25a3aaa2fc5d1d3b5571d0699b5de2dce2be1e10e82101c",
+    "backend/app/agent_schemas.py": "f5d55973a344541a48bc228b102c8b0ab30e2da7485380b97d7a834eaa17765e",
+    "backend/app/agent_tools.py": "75814f71f9ad723d639c406caccc79e81ccbd5abaf0a49105413f13d7ae8a307",
+    "backend/app/candidate_discovery.py": "5060f0bf20f04ab77a3f1075edc128d1b142f5f6aa18785afbc5a753d08a8860",
+    "backend/app/catalogue_quality.py": "8a1be01d19509b0646bb0e5db3192f24e01ee713b24f7b3d81ab21397d8d6f57",
+    "backend/app/database.py": "0e924705fc75c6bd97088e95dc72c5d5dfe578e4633bbac88c6a9271b36351da",
+    "backend/app/eligibility.py": "02eac162c48adaaa9fe3286ab093bbaa96cd2016d686e5ef348f58c422e439a7",
+    "backend/app/eligibility_api.py": "0353d09231cee1af3d5c6e3398f07742ed6c4c942790acbba4620324bf3ad14b",
+    "backend/app/eligibility_rules.py": "d8035fa6e21ea8d51676698ce725ed578a2767ba22b65ae57fc69c89d2fd6939",
+    "backend/app/eligibility_schemas.py": "dd788412b2295cc7079a0165b7e761e0115bdce06319a95eb11ab8c545825c2d",
+    "backend/app/import_catalogue.py": "78b9b322e11ca14e6ec9160e15ef28103b7bb4ac33d9b4fc8ab53b070d68373b",
+    "backend/app/main.py": "548f5c2f570b5ce1e6a49f6a569f366e9799fa8c799c3fa2e22522941f76a551",
+    "backend/app/models.py": "5ff9faf226d1cfdf79559f0883fb428dc28af4c01c7b7172941634d4f1ab1367",
+    "backend/app/official_pages.py": "ea72a972fc95532d854de06c467c58619cbddb91e0b9b7bbbf117fa8c7cfde21",
+    "backend/app/ollama_client.py": "55f428677f5646d693090e0843d980465f79a92a08f60a3bd3b182739b6ca674",
+    "backend/app/schemas.py": "88739ef72605d11b81207b67a4893a59cd48794dd50609cecdb03a67c467bba5",
+    "backend/app/scholarships.py": "d26b4fd93654f2985e79d22f9391f715de9a64b222aec5c0c8b4059120e40ede",
+    "backend/evaluation/run.py": "7993add5425c80c940c2aeda59f1dd9b982d4c316e510c012a2f8576a30fdefc",
+    "backend/evaluation/extract.py": "2124fd89f35a2d798c56250389cea442596aa3d61fbc57b984888410b20fd899",
+    "backend/evaluation/metrics.py": "58b80473e4db500cb1914d0408a3f6df725de9c9c4233c4e4fafdfbdd37eb68f",
+    "backend/evaluation/reliability.py": "a1d944502c18154430785ae114bf4f0847745c3530da1451168714c02f28bf01"
+  },
+  "runs": [
+    {
+      "case_id": "P01-DAAD-FUNDING",
+      "status": "limit_reached",
+      "seconds": 12.615445,
+      "rounds": [
+        {
+          "estimated_input_tokens": 1705,
+          "prompt_tokens": 811,
+          "requested_tools": [
+            "search_scholarships"
+          ],
+          "final_validation": null,
+          "seconds": 7.140196
+        },
+        {
+          "estimated_input_tokens": 2299,
+          "prompt_tokens": 1102,
+          "requested_tools": [
+            "rank_scholarships"
+          ],
+          "final_validation": null,
+          "seconds": 0.983023
+        },
+        {
+          "estimated_input_tokens": 2870,
+          "prompt_tokens": 1364,
+          "requested_tools": [],
+          "final_validation": "outside_named_target",
+          "final_ids": [
+            6,
+            9,
+            11
+          ],
+          "final_explanation_keys": [
+            {
+              "scholarship_id": 6,
+              "requirements": [
+                "rule_evidence",
+                "prior_degree",
+                "gpa",
+                "language"
+              ]
+            },
+            {
+              "scholarship_id": 9,
+              "requirements": [
+                "rule_evidence",
+                "prior_degree",
+                "gpa",
+                "language"
+              ]
+            },
+            {
+              "scholarship_id": 11,
+              "requirements": [
+                "rule_evidence",
+                "nationality",
+                "prior_degree",
+                "gpa"
+              ]
+            }
+          ],
+          "seconds": 2.272292
+        },
+        {
+          "estimated_input_tokens": 3069,
+          "prompt_tokens": 1435,
+          "requested_tools": [],
+          "final_validation": "outside_named_target",
+          "final_ids": [
+            6,
+            9,
+            11
+          ],
+          "final_explanation_keys": [
+            {
+              "scholarship_id": 6,
+              "requirements": [
+                "rule_evidence",
+                "prior_degree",
+                "gpa",
+                "language"
+              ]
+            },
+            {
+              "scholarship_id": 9,
+              "requirements": [
+                "rule_evidence",
+                "prior_degree",
+                "gpa",
+                "language"
+              ]
+            },
+            {
+              "scholarship_id": 11,
+              "requirements": [
+                "rule_evidence",
+                "nationality",
+                "prior_degree",
+                "gpa"
+              ]
+            }
+          ],
+          "seconds": 2.200693
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "name": "search_scholarships",
+          "status": "ok",
+          "arguments": {
+            "country": "Germany",
+            "field": "Computer Science"
+          },
+          "summary": "Found 4 matching records; returned 3 candidates.",
+          "source_url": null,
+          "fetched_at": null
+        },
+        {
+          "step": 2,
+          "name": "rank_scholarships",
+          "status": "ok",
+          "arguments": {
+            "scholarship_ids": [
+              6,
+              9,
+              11
+            ]
+          },
+          "summary": "Ranked 3 candidates without changing eligibility.",
+          "source_url": null,
+          "fetched_at": null
+        }
+      ],
+      "assessed_ids": [
+        6,
+        9,
+        11
+      ],
+      "discovery_ids": [
+        1
+      ]
+    },
+    {
+      "case_id": "P02-MEXT-CLOSED",
+      "status": "limit_reached",
+      "seconds": 3.927972,
+      "rounds": [
+        {
+          "estimated_input_tokens": 1692,
+          "prompt_tokens": 808,
+          "requested_tools": [
+            "search_scholarships"
+          ],
+          "final_validation": null,
+          "seconds": 1.191931
+        },
+        {
+          "estimated_input_tokens": 1958,
+          "prompt_tokens": 898,
+          "requested_tools": [
+            "check_eligibility"
+          ],
+          "final_validation": null,
+          "seconds": 0.674415
+        },
+        {
+          "estimated_input_tokens": 2285,
+          "prompt_tokens": 1064,
+          "requested_tools": [],
+          "final_validation": "invalid_schema",
+          "seconds": 1.036781,
+          "schema_errors": [
+            {
+              "type": "too_long",
+              "loc": [
+                "explanations",
+                0,
+                "requirements"
+              ]
+            }
+          ],
+          "json_shape": "dict",
+          "keys": [
+            "recommendation_ids",
+            "explanations"
+          ]
+        },
+        {
+          "estimated_input_tokens": 2411,
+          "prompt_tokens": 1098,
+          "requested_tools": [],
+          "final_validation": "invalid_schema",
+          "seconds": 1.008934,
+          "schema_errors": [
+            {
+              "type": "too_long",
+              "loc": [
+                "explanations",
+                0,
+                "requirements"
+              ]
+            }
+          ],
+          "json_shape": "dict",
+          "keys": [
+            "recommendation_ids",
+            "explanations"
+          ]
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "name": "search_scholarships",
+          "status": "ok",
+          "arguments": {
+            "country": "Japan",
+            "field": "Artificial Intelligence",
+            "funding_type": "fully_funded"
+          },
+          "summary": "Found 0 matching records; returned 0 candidates.",
+          "source_url": null,
+          "fetched_at": null
+        },
+        {
+          "step": 2,
+          "name": "check_eligibility",
+          "status": "ok",
+          "arguments": {
+            "scholarship_id": 20
+          },
+          "summary": "Deterministic eligibility: ineligible.",
+          "source_url": null,
+          "fetched_at": null
+        }
+      ],
+      "assessed_ids": [
+        20
+      ],
+      "discovery_ids": [
+        20
+      ]
+    }
+  ]
+}

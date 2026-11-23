@@ -16,7 +16,9 @@ describe('connection check', () => {
     render(<App />)
 
     expect(
-      screen.getByRole('heading', { name: 'Scholarship Hunter AI' }),
+      screen.getByRole('heading', {
+        name: 'Find funding for your master’s abroad.',
+      }),
     ).toBeVisible()
     expect(screen.getByRole('status')).toHaveTextContent(
       'Checking the API connection',
