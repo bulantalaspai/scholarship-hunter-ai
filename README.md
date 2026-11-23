@@ -29,6 +29,39 @@ in a local SQLite file. Development servers bind to `127.0.0.1` only.
 
 ## Local setup (Windows PowerShell)
 
+### One-click start and stop
+
+On Windows 10 or 11, double-click **Start Scholarship Hunter AI.bat** in the
+repository root. The launcher checks the project's Python 3.14 environment,
+Node.js 24, npm, installed dependencies and local Ollama model. It reuses an
+available Ollama service or starts `ollama serve` on loopback. It verifies the
+curated SQLite catalogue, then opens **http://localhost:5173** in your default
+browser after FastAPI, the Vite page and the Vite API proxy respond.
+
+Double-click **Stop Scholarship Hunter AI.bat** when you finish. It stops the
+services owned by this checkout's launcher. An Ollama instance that was already
+running stays available. Opening Start again reuses a healthy launcher session.
+
+The launcher uses the default SQLite file or the `SCHOLARSHIP_DATABASE_PATH`
+inherited by the Start process. On a fresh or partial database it imports only
+missing curated identities using the existing initializer and importer. Existing
+rows, including local edits and additional records, are preserved. The backend
+uses Uvicorn without auto-reload and the frontend uses the configured Vite dev
+server. Both bind to `127.0.0.1`.
+
+| Startup issue | What to check |
+| --- | --- |
+| Missing Python environment or packages | Use the setup commands below and retry. |
+| Missing Node.js, npm or frontend packages | Use Node.js 24 and run `npm.cmd --prefix frontend ci` from the repository root. |
+| Ollama unavailable or model missing | Install or start Ollama locally, then run `ollama pull qwen3:4b-instruct` once if the model is missing. |
+| Port 8000, 5173 or 11434 unavailable | Close the conflicting manual server or other application. The launcher reports the port and leaves unrelated processes alone. |
+| Startup fails or a service exits | Open the latest timestamped folder under `.local-run/` and read `launcher.log`, `backend.log`, `frontend.log` or `ollama.log`. The Ollama log is present when the launcher starts that service. |
+
+Logs remain local and are ignored by Git. For terminal-based verification without
+opening a browser, run `& '.\Start Scholarship Hunter AI.bat' --no-browser`.
+
+### Dependency setup and manual startup
+
 Use the existing root `.venv` with Python **3.14.2**, Node.js **24.19.0**, and
 npm **11.17.0**. Commands use `npm.cmd` to avoid PowerShell's `npm.ps1` execution
 policy restriction; no execution policy change or virtual environment activation
@@ -51,8 +84,8 @@ Start the backend in one terminal from the repository root:
 .\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Startup creates missing catalogue tables but never imports records automatically.
-Use the import instructions below to populate the catalogue.
+The manual Uvicorn command creates missing catalogue tables. Use the import
+instructions below to populate the catalogue when starting it manually.
 
 Start the frontend in a second terminal from the repository root:
 
