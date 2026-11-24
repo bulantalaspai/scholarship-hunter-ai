@@ -50,11 +50,22 @@ def test_transport_only_calls_fixed_local_chat_without_pull_or_cloud(monkeypatch
     args, kwargs = client.request.call_args
     assert args == ("POST", "/api/chat")
     body = json.loads(kwargs["body"])
+    assert "format" not in body
     assert body["model"] == "qwen3:4b-instruct"
     assert body["options"]["num_ctx"] == 4096
     assert body["stream"] is False and body["think"] is False
     assert reply.message.content == '{"recommendation_ids":[]}'
     client.close.assert_called_once()
+
+
+def test_extractor_can_request_constrained_local_output(monkeypatch):
+    client, _ = connection(monkeypatch)
+    schema = {"type": "object", "additionalProperties": False}
+    OllamaClient().chat([], [], timeout=2, output_schema=schema)
+    body = json.loads(client.request.call_args.kwargs["body"])
+    assert body["format"] == schema
+    assert body["tools"] == []
+    assert body["options"]["num_predict"] == ollama_client.PREDICT_TOKENS
 
 
 @pytest.mark.parametrize("status", [404, 503])

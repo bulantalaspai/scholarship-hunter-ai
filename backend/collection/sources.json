@@ -1,0 +1,354 @@
+[
+  {
+    "organization": "DAAD",
+    "official_domain": "www2.daad.de",
+    "entry_urls": [
+      "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-11",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "SMACCs consortium",
+    "official_domain": "www.smaccs.eu",
+    "entry_urls": [
+      "https://www.smaccs.eu/practical/scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-11",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "EDISS consortium",
+    "official_domain": "www.master-ediss.eu",
+    "entry_urls": [
+      "https://www.master-ediss.eu/scholarship/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "DEAI consortium",
+    "official_domain": "deai.ulb.be",
+    "entry_urls": [
+      "https://deai.ulb.be/home/students/tuition-fees-scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "CYBERSURE consortium",
+    "official_domain": "www.cybersure-master.eu",
+    "entry_urls": [
+      "https://www.cybersure-master.eu/scholarships-and-fees"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "CyberMACS consortium",
+    "official_domain": "cybermacs.eu",
+    "entry_urls": [
+      "https://cybermacs.eu/scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "IMLEX consortium",
+    "official_domain": "www.imlex.org",
+    "entry_urls": [
+      "https://www.imlex.org/fees-and-scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "DENSYS consortium",
+    "official_domain": "densys.univ-lorraine.fr",
+    "entry_urls": [
+      "https://densys.univ-lorraine.fr/fees-and-scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "EMIMEP consortium / University of Limoges",
+    "official_domain": "www.erasmus-mundus.emimep.eu",
+    "entry_urls": [
+      "https://www.erasmus-mundus.emimep.eu/admission-applications/erasmus-scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "EMSSE consortium / Universite de technologie de Compiegne",
+    "official_domain": "emsse.eu",
+    "entry_urls": [
+      "https://emsse.eu/admission-and-scholarships/scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "CoDaS consortium / Aalto University",
+    "official_domain": "www.unite-codas-master.eu",
+    "entry_urls": [
+      "https://www.unite-codas-master.eu/scholarship.html"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "AMASE consortium / EUSMAT, Saarland University",
+    "official_domain": "www.eusmat.net",
+    "entry_urls": [
+      "https://www.eusmat.net/international-studies/master/amase/application/fees-and-scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "E-PiCo+ consortium / Centrale Nantes",
+    "official_domain": "master-epico.ec-nantes.fr",
+    "entry_urls": [
+      "https://master-epico.ec-nantes.fr/english-version/admission/fees-scholarships-1"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "EU-CORE consortium / Centrale Nantes",
+    "official_domain": "master-eu-core.ec-nantes.fr",
+    "entry_urls": [
+      "https://master-eu-core.ec-nantes.fr/admission/students/fees-scholarships"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "JEMARO consortium / Centrale Nantes and Keio University",
+    "official_domain": "jemaro.ec-nantes.fr",
+    "entry_urls": [
+      "https://jemaro.ec-nantes.fr/english-version/admission/jemaro-fees-and-scholarships"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "IFRoS consortium / Universitat de Girona",
+    "official_domain": "ifrosmaster.org",
+    "entry_urls": [
+      "https://ifrosmaster.org/ifros-applicants/fees-grants"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "EMINENT consortium / University of Siegen",
+    "official_domain": "eminent-master.eu",
+    "entry_urls": [
+      "https://eminent-master.eu/scholarships/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "DAAD",
+    "official_domain": "www2.daad.de",
+    "entry_urls": [
+      "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=57742130"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "Tempus Public Foundation / Hungarian Government",
+    "official_domain": "stipendiumhungaricum.hu",
+    "entry_urls": [
+      "https://stipendiumhungaricum.hu/about/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "Japan Ministry of Education, Culture, Sports, Science and Technology (MEXT)",
+    "official_domain": "www.kz.emb-japan.go.jp",
+    "entry_urls": [
+      "https://www.kz.emb-japan.go.jp/itpr_ru/11_000001_00641.html"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "Korea Advanced Institute of Science and Technology (KAIST)",
+    "official_domain": "admission.kaist.ac.kr",
+    "entry_urls": [
+      "https://admission.kaist.ac.kr/intl-graduate/FinancialSupport/Scholarship/KAISTScholarship/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "Gwangju Institute of Science and Technology (GIST)",
+    "official_domain": "www.gist.ac.kr",
+    "entry_urls": [
+      "https://www.gist.ac.kr/iadm/html/sub04/0401.html"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unreviewed",
+    "robots_status": "unreviewed",
+    "policy_checked_on": null,
+    "terms_evidence": null,
+    "robots_evidence": null,
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-12",
+    "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  }
+]
