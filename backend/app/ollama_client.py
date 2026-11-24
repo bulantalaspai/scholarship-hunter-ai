@@ -55,7 +55,12 @@ class OllamaReply(BaseModel):
 
 class OllamaClient:
     def chat(
-        self, messages: list[dict], tools: list[dict], *, timeout: float
+        self,
+        messages: list[dict],
+        tools: list[dict],
+        *,
+        timeout: float,
+        output_schema: dict | None = None,
     ) -> OllamaReply:
         connection = http.client.HTTPConnection("127.0.0.1", 11434, timeout=timeout)
         deadline = time.monotonic() + timeout
@@ -80,6 +85,7 @@ class OllamaClient:
                         "model": MODEL,
                         "messages": messages,
                         "tools": tools,
+                        **({"format": output_schema} if output_schema else {}),
                         "stream": False,
                         "think": False,
                         "keep_alive": "5m",

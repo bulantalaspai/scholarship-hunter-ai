@@ -3,6 +3,7 @@
 import http.client
 import ipaddress
 import math
+import re
 import socket
 import ssl
 import threading
@@ -299,7 +300,19 @@ class _VisibleText(HTMLParser):
             self.parts.append(data)
 
 
-def fetch_official_page(url: str, *, timeout: float = 6.0) -> OfficialPage:
+_ACCESS_BARRIER = re.compile(
+    r"\bcaptcha\b|\b(?:hcaptcha|recaptcha|paywall)\b|cf-(?:chl|turnstile)|"
+    r"verify (?:that )?you are human|access denied|checking your browser|"
+    r"sign in to (?:view|continue)|log in to (?:view|continue)|"
+    r"(?:login|authentication|subscription) required|subscribe to (?:read|continue)|"
+    r"<input\b[^>]{0,1024}\btype\s*=\s*[\"']?password\b",
+    re.IGNORECASE,
+)
+
+
+def fetch_official_page(
+    url: str, *, timeout: float = 6.0, for_collection: bool = False
+) -> OfficialPage:
     """Fetch one approved excerpt; it cannot alter catalogue facts or rules.
 
     A socket-shutdown watchdog enforces the overall deadline even for a peer
@@ -332,6 +345,8 @@ def fetch_official_page(url: str, *, timeout: float = 6.0) -> OfficialPage:
             )
             response = connection.getresponse()
             if response.status in (301, 302, 303, 307, 308):
+                if for_collection:
+                    raise PublicPageError("redirect_blocked")
                 if hop >= MAX_REDIRECTS:
                     raise PublicPageError("redirect_limit")
                 location = response.getheader("Location")
@@ -341,6 +356,11 @@ def fetch_official_page(url: str, *, timeout: float = 6.0) -> OfficialPage:
                 continue
             if response.status != 200:
                 raise PublicPageError("http_error")
+            if for_collection and (
+                response.getheader("WWW-Authenticate")
+                or response.getheader("cf-mitigated", "").lower() == "challenge"
+            ):
+                raise PublicPageError("access_barrier")
             content_type = (
                 response.getheader("Content-Type", "").split(";", 1)[0].strip().lower()
             )
@@ -370,6 +390,8 @@ def fetch_official_page(url: str, *, timeout: float = 6.0) -> OfficialPage:
                     raise PublicPageError("content_limit")
             _remaining(deadline)
             text = body.decode("utf-8", errors="replace")
+            if for_collection and _ACCESS_BARRIER.search(text):
+                raise PublicPageError("access_barrier")
             if content_type == "text/html":
                 parser = _VisibleText()
                 parser.feed(text)
