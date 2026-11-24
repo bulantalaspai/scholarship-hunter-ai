@@ -682,9 +682,13 @@ describe('local agent API contract', () => {
 describe('local agent recommendations', () => {
   it('displays different request fits for Germany and Japan with the same profile', async () => {
     const user = userEvent.setup()
-    const mock = vi.fn()
-      .mockResolvedValueOnce(Response.json(scopedResponse('Germany')))
-      .mockResolvedValueOnce(Response.json(scopedResponse('Japan')))
+    const mock = vi.fn(async (url: string, options: RequestInit) => {
+      if (url === '/api/agent/recommend') {
+        const { goal } = JSON.parse(String(options.body)) as { goal: string }
+        return Response.json(scopedResponse(goal.includes('Germany') ? 'Germany' : 'Japan'))
+      }
+      return Response.json({}, { status: 404 })
+    })
     vi.stubGlobal('fetch', mock)
     render(<AgentRecommendations profile={profile} />)
     const input = screen.getByLabelText('What would you like to find?')
@@ -708,26 +712,35 @@ describe('local agent recommendations', () => {
     expect(within(selectedFit).getByText('Confirmed')).toBeVisible()
     expect(within(selectedFit).getByText('Preferred funding')).toBeVisible()
     expect(within(selectedFit).getByText('Unmatched')).toBeVisible()
-    expect(
-      within(selectedFit).getByText('The catalogue records full funding.'),
-    ).toBeVisible()
+    await user.click(within(selections).getByText('Assessment details'))
+    expect(within(selections).getByRole('region', { name: 'Request evidence' }))
+      .toHaveTextContent('The catalogue records full funding.')
     const discovery = screen.getByRole('region', {
       name: 'Deterministic discovery candidates',
     })
     const retainedFits = within(discovery).getAllByRole('region', {
       name: 'Request fit',
     })
-    expect(retainedFits[0]).toHaveTextContent('The catalogue records partial funding.')
+    expect(retainedFits[0]).toHaveTextContent('Confirmed')
     expect(retainedFits[1]).toHaveTextContent('Needs verification')
-    expect(retainedFits[1]).toHaveTextContent('The catalogue funding type is unknown.')
+    for (const summary of within(discovery).getAllByText('Assessment details')) {
+      await user.click(summary)
+    }
+    const evidence = within(discovery).getAllByRole('region', { name: 'Request evidence' })
+    expect(evidence[0]).toHaveTextContent('The catalogue records partial funding.')
+    expect(evidence[1]).toHaveTextContent('The catalogue funding type is unknown.')
 
+    await user.click(screen.getByRole('button', { name: 'Edit request' }))
+    expect(input).toHaveValue(germany)
+    expect(screen.queryByRole('region', { name: 'Local AI response' })).not.toBeInTheDocument()
     await user.clear(input)
     await user.type(input, japan)
     await user.click(submit)
-    const japanEvidence = await screen.findByText(
-      'The catalogue records Japan as a study destination.',
-    )
-    expect(japanEvidence).toBeVisible()
+    const japanFit = await screen.findByRole('region', { name: 'Request fit' })
+    expect(japanFit).toHaveTextContent('Japan')
+    await user.click(screen.getByText('Assessment details'))
+    expect(screen.getByRole('region', { name: 'Request evidence' }))
+      .toHaveTextContent('The catalogue records Japan as a study destination.')
     expect(
       screen.getByRole('heading', { name: 'Fictional Candidate 4' }),
     ).toBeVisible()
@@ -737,7 +750,8 @@ describe('local agent recommendations', () => {
     expect(
       screen.queryByRole('region', { name: 'Deterministic discovery candidates' }),
     ).not.toBeInTheDocument()
-    expect(mock.mock.calls.map(([, options]) => JSON.parse(options.body))).toEqual([
+    expect(mock.mock.calls.filter(([url]) => url === '/api/agent/recommend')
+      .map(([, options]) => JSON.parse(String(options.body)))).toEqual([
       { goal: germany, profile },
       { goal: japan, profile },
     ])
@@ -816,6 +830,44 @@ describe('local agent recommendations', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('1–300 characters')
     expect(screen.getByLabelText('What would you like to find?')).toHaveFocus()
     expect(mock).not.toHaveBeenCalled()
+  })
+
+  it('fills an editable example, clears validation and waits for explicit submission', async () => {
+    const user = userEvent.setup()
+    const mock = mockResponse(response())
+    render(<AgentRecommendations profile={profile} />)
+    const input = screen.getByLabelText('What would you like to find?')
+    await user.clear(input)
+    await user.click(screen.getByRole('button', { name: 'Generate AI recommendations' }))
+    await user.click(screen.getByRole('button', { name: 'Study in Germany' }))
+    expect(input).toHaveFocus()
+    expect(input).toHaveValue('Find scholarships in Germany, including partial funding options.')
+    expect(input).toHaveAttribute('aria-invalid', 'false')
+    expect(mock).not.toHaveBeenCalled()
+    await user.click(screen.getByRole('button', { name: 'Generate AI recommendations' }))
+    expect(JSON.parse(mock.mock.calls[0][1].body).goal).toBe(
+      'Find scholarships in Germany, including partial funding options.',
+    )
+  })
+
+  it('stops waiting without losing the request and ignores late responses', async () => {
+    const user = userEvent.setup()
+    let finish!: (response: Response) => void
+    const fetchMock = vi.fn().mockReturnValue(new Promise<Response>((resolve) => { finish = resolve }))
+    vi.stubGlobal('fetch', fetchMock)
+    render(<AgentRecommendations profile={profile} />)
+    await user.click(screen.getByRole('button', { name: 'Check SMACCs' }))
+    await user.click(screen.getByRole('button', { name: 'Generate AI recommendations' }))
+    expect(screen.getByRole('button', { name: 'Check SMACCs' })).toBeDisabled()
+    await user.click(screen.getByRole('button', { name: 'Stop waiting' }))
+    expect(fetchMock.mock.calls[0][1].signal.aborted).toBe(true)
+    finish(Response.json(response()))
+    await user.tab()
+    expect(screen.getByRole('status')).toHaveTextContent('You stopped waiting')
+    expect(screen.queryByRole('region', { name: 'Local AI response' })).toBeNull()
+    expect(screen.getByLabelText('What would you like to find?')).toHaveValue(
+      'Assess SMACCs for my profile and explain what needs verification.',
+    )
   })
 
   it.each(['no_matches', 'limit_reached'] as const)(
@@ -952,6 +1004,10 @@ describe('local agent recommendations', () => {
     expect(
       screen.getAllByRole('region', { name: 'Eligibility assessment' }),
     ).toHaveLength(3)
+    const disclosure = within(selected).getByText('Assessment details').closest('summary')!
+    expect(disclosure.parentElement).not.toHaveAttribute('open')
+    await user.click(disclosure)
+    expect(disclosure.parentElement).toHaveAttribute('open')
     const explanation = within(selected).getByRole('region', {
       name: 'Model-selected explanation points',
     })
@@ -1045,6 +1101,8 @@ describe('local agent recommendations', () => {
     })
     expect(within(retained).getByText('Fictional Closed Programme')).toBeVisible()
     expect(within(retained).getAllByText('Ineligible').length).toBeGreaterThan(0)
+    expect(within(retained).getByText('Unmet requirements')).toBeVisible()
+    await user.click(within(retained).getByText('Assessment details'))
     expect(
       within(retained).getByText('The published application deadline has passed.'),
     ).toBeVisible()

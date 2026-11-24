@@ -4,6 +4,7 @@ import type {
   Scholarship,
 } from '../types'
 import { calendarDate, fundingLabels, statusLabels } from '../display'
+import ProgrammeFacts from './ProgrammeFacts'
 
 export function StatusBadge({ status }: { status: EligibilityStatus }) {
   return (
@@ -87,71 +88,64 @@ export function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
   const details = `#/scholarships/${scholarship.id}`
   return (
     <article className="scholarship-card">
-      <div className="card-top">
-        <span className="provider-mark" aria-hidden="true">
-          {scholarship.university_or_provider.slice(0, 2).toUpperCase()}
-        </span>
-        <span className="card-provider">
+      <div className="directory-programme">
+        <p className="directory-provider">
           {scholarship.university_or_provider}
-        </span>
+          <span>{scholarship.degree_level ?? 'Degree level not confirmed'}</span>
+        </p>
+        <h2>
+          <a href={details}>{scholarship.scholarship_name}</a>
+        </h2>
+        <p className="directory-fields">
+          {scholarship.eligible_study_fields?.join(', ') ||
+            'Study fields need verification'}
+        </p>
+      </div>
+      <div className="directory-award">
         <span className={`badge funding-${scholarship.funding_type}`}>
           {fundingLabels[scholarship.funding_type]}
         </span>
-      </div>
-      <h2>
-        <a href={details}>{scholarship.scholarship_name}</a>
-      </h2>
-      <p className="card-destination">
-        <span className="card-location">
+        <p className="directory-destination">
           <span className="destination-mark" aria-hidden="true" />
           <span>
-            {scholarship.destination_country?.join(', ') ??
+            {scholarship.destination_country?.join(', ') ||
               'Destination not confirmed'}
           </span>
-        </span>
-        <span className="card-degree">
-          {scholarship.degree_level ?? 'Degree level not confirmed'}
-        </span>
-      </p>
-      <div className="card-fields">
-        {scholarship.eligible_study_fields?.length ? (
-          <ul className="field-tags" aria-label="Study fields">
-            {scholarship.eligible_study_fields.map((field, index) => (
-              <li key={`${index}:${field}`}>{field}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="field-tags">Study fields need verification</p>
-        )}
+        </p>
       </div>
-      <dl className="card-facts">
-        <div>
-          <dt>Application deadline</dt>
-          <dd>
-            {scholarship.application_deadline ? (
-              <time dateTime={scholarship.application_deadline}>
-                {calendarDate(scholarship.application_deadline)}
+      <div className="directory-evidence">
+        <dl>
+          <div>
+            <dt>Deadline</dt>
+            <dd>
+              {scholarship.application_deadline ? (
+                <time dateTime={scholarship.application_deadline}>
+                  {calendarDate(scholarship.application_deadline)}
+                </time>
+              ) : (
+                calendarDate(null)
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt>Last verified</dt>
+            <dd>
+              <time dateTime={scholarship.last_verified_at}>
+                {calendarDate(scholarship.last_verified_at)}
               </time>
-            ) : (
-              calendarDate(null)
-            )}
-          </dd>
-        </div>
-        <div>
-          <dt>Last verified</dt>
-          <dd>
-            <time dateTime={scholarship.last_verified_at}>
-              {calendarDate(scholarship.last_verified_at)}
-            </time>
-          </dd>
-        </div>
-      </dl>
-      <div className="card-actions">
-        <a className="button button-secondary" href={details}>
-          View scholarship
-        </a>
+            </dd>
+          </div>
+        </dl>
         <SourceLink url={scholarship.official_source_url} />
       </div>
+      <a
+        className="directory-open"
+        aria-label="View scholarship"
+        title={scholarship.scholarship_name}
+        href={details}
+      >
+        <span aria-hidden="true">→</span>
+      </a>
     </article>
   )
 }
@@ -159,116 +153,114 @@ export function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
 export function Assessment({
   result,
   children,
+  details,
+  agentSummary = false,
 }: {
   result: EligibilityResult
   children?: React.ReactNode
+  details?: React.ReactNode
+  agentSummary?: boolean
 }) {
+  const checks = [
+    { count: result.matched_requirements.length, label: 'met', style: 'met' },
+    { count: result.failed_requirements.length, label: 'failed', style: 'failed' },
+    { count: result.unknown_requirements.length, label: 'unknown', style: 'unknown' },
+  ]
+  const scopeChecks = (
+    <div className="scope-grid">
+      {(['admission', 'funding', 'application'] as const).map((scope) => (
+        <div className="scope-result" key={scope}>
+          <h3>
+            {scope === 'application'
+              ? 'Application availability'
+              : `${scope[0].toUpperCase()}${scope.slice(1)} eligibility`}
+          </h3>
+          <StatusBadge status={result[`${scope}_status`]} />
+        </div>
+      ))}
+    </div>
+  )
+  const Heading = agentSummary ? 'h3' : 'h2'
   return (
-    <section
-      className={`assessment assessment-${result.status}`}
-      aria-label="Eligibility assessment"
-    >
-      <div className="assessment-intro">
+    <section className={`assessment assessment-${result.status}`} aria-label="Eligibility assessment">
+      <header className="assessment-intro">
+        <Heading>{result.scholarship_name}</Heading>
         <StatusBadge status={result.status} />
-        <h2>{result.scholarship_name}</h2>
-        <p>{result.explanation}</p>
+      </header>
+      <div className="assessment-reference">
+        {agentSummary && <ProgrammeFacts assessment={result} />}
+        <p className="assessment-source">
+          <SourceLink url={result.official_source_url} />
+          <span>Last verified {calendarDate(result.last_verified_at)}</span>
+        </p>
       </div>
-      <div className="scope-grid">
-        {(['admission', 'funding', 'application'] as const).map((scope) => (
-          <div className="scope-result" key={scope}>
-            <h3>
-              {scope === 'application'
-                ? 'Application availability'
-                : `${scope[0].toUpperCase()}${scope.slice(1)} eligibility`}
-            </h3>
-            <StatusBadge status={result[`${scope}_status`]} />
-          </div>
-        ))}
-      </div>
-      <p className="notice assessment-disclaimer">{result.disclaimer}</p>
+      {!agentSummary && scopeChecks}
+      {result.failed_requirements.length > 0 && (
+        <p className="assessment-failures">
+          <strong>Unmet requirements</strong>{' '}
+          {result.failed_requirements.map((key) => key.replaceAll('_', ' ')).join(', ')}
+        </p>
+      )}
       {children}
-      <div className="assessment-details">
-        <div className="assessment-evidence evidence-panel">
-          <h3>Evidence behind this check</h3>
-          <div className="assessment-source">
-            <SourceLink url={result.official_source_url} />
-            <p>Last verified {calendarDate(result.last_verified_at)}</p>
-          </div>
-          <p>Assessed on {calendarDate(result.evaluated_on)} (UTC).</p>
-          <p>
-            Structured rules{' '}
-            {result.rules_verified_at
-              ? `reviewed ${calendarDate(result.rules_verified_at)}`
-              : 'not confirmed for this record'}
-            .
-          </p>
-          {result.rule_source_urls.length > 0 && (
-            <ul>
-              {result.rule_source_urls.map((url, index) => (
-                <li key={url}>
-                  <SourceLink url={url} label={`Rule evidence ${index + 1}`} />
+      {!agentSummary && <p className="assessment-disclaimer">{result.disclaimer}</p>}
+      <details className="assessment-disclosure">
+        <summary>
+          <strong>Assessment details</strong>
+          <span className="assessment-tally">
+            {checks.map((item) => (
+              <span className={`count-${item.style}`} key={item.style}>
+                {item.count} {item.label}
+              </span>
+            ))}
+          </span>
+        </summary>
+        <div className="assessment-details">
+          {agentSummary && scopeChecks}
+          <p className="assessment-explanation">{result.explanation}</p>
+          {details}
+          <div className="assessment-checks">
+            <h3>Requirement checks</h3>
+            <ul className="requirement-list">
+              {result.requirements.map((item) => (
+                <li key={item.requirement}>
+                  <div className="requirement-heading">
+                    <h4>{item.requirement === 'gpa' ? 'GPA' : item.requirement.replaceAll('_', ' ')}</h4>
+                    <span className={`check-label check-${item.status}`}>
+                      {item.status === 'met' ? 'Met' : item.status === 'failed' ? 'Not met' : 'Needs verification'}
+                    </span>
+                  </div>
+                  <div>
+                    <p>{item.explanation}</p>
+                    {item.suggestion && <p className="suggestion">Next step: {item.suggestion}</p>}
+                  </div>
                 </li>
               ))}
             </ul>
-          )}
-        </div>
-        <div className="assessment-checks">
-          <h3>Requirement checks</h3>
-          <ul className="requirement-list">
-            {result.requirements.map((item) => (
-              <li key={item.requirement}>
-                <span
-                  className={`check-symbol check-${item.status}`}
-                  aria-hidden="true"
-                >
-                  {item.status === 'met'
-                    ? '✓'
-                    : item.status === 'failed'
-                      ? '×'
-                      : '?'}
-                </span>
-                <div>
-                  <div className="requirement-heading">
-                    <h4>{item.requirement.replaceAll('_', ' ')}</h4>
-                    <span className={`check-label check-${item.status}`}>
-                      {item.status === 'met'
-                        ? 'Met'
-                        : item.status === 'failed'
-                          ? 'Not met'
-                          : 'Needs verification'}
-                    </span>
-                  </div>
-                  <p>{item.explanation}</p>
-                  {item.suggestion && (
-                    <p className="suggestion">Next step: {item.suggestion}</p>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+          </div>
           {result.unknown_requirements.length > 0 && (
-            <div className="notice assessment-unknowns">
+            <div className="assessment-unknowns">
               <h3>Information still to verify</h3>
-              <p>
-                {result.unknown_requirements
-                  .map((name) => name.replaceAll('_', ' '))
-                  .join(', ')}
-                .
-              </p>
+              <p>{result.unknown_requirements.map((name) => name.replaceAll('_', ' ')).join(', ')}.</p>
             </div>
           )}
           {result.suggestions.length > 0 && (
             <section className="assessment-next-steps">
               <h3>Suggested next steps</h3>
-              <ul>
-                {result.suggestions.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
+              <ul>{result.suggestions.map((item) => <li key={item}>{item}</li>)}</ul>
             </section>
           )}
+          <section className="assessment-evidence">
+            <h3>Evidence behind this check</h3>
+            <p>Assessed on {calendarDate(result.evaluated_on)} (UTC).</p>
+            <p>Structured rules {result.rules_verified_at ? `reviewed ${calendarDate(result.rules_verified_at)}` : 'not confirmed for this record'}.</p>
+            {result.rule_source_urls.length > 0 && (
+              <ul>{result.rule_source_urls.map((url, index) => (
+                <li key={url}><SourceLink url={url} label={`Rule evidence ${index + 1}`} /></li>
+              ))}</ul>
+            )}
+          </section>
         </div>
-      </div>
+      </details>
     </section>
   )
 }

@@ -406,6 +406,8 @@ test('retains the named negative target and the actual deadline failure', async 
       exact: true,
     }),
   ).toBeVisible()
+  await expect(retained.getByText('Unmet requirements')).toBeVisible()
+  await retained.locator('summary').filter({ hasText: 'Assessment details' }).click()
   await expect(retained.getByText(failure.explanation, { exact: true })).toBeVisible()
   await expect(retained.getByText('Ineligible', { exact: true }).first()).toBeVisible()
   await expect(retained.getByText('Eligible', { exact: true })).toHaveCount(0)
@@ -549,4 +551,23 @@ test('can leave a pending AI request and continue browsing the real catalogue', 
   await expect(
     page.getByRole('heading', { name: 'Local AI is unavailable', exact: true }),
   ).toHaveCount(0)
+})
+
+test('can choose an example by keyboard and stop waiting without losing the draft', async ({ page }) => {
+  await page.route('**/api/agent/recommend', () => {})
+  await openAgentWithProfile(page)
+  const example = page.getByRole('button', { name: 'Study in Germany' })
+  await example.focus()
+  await page.keyboard.press('Enter')
+  const request = page.getByLabel('What would you like to find?')
+  const expected = 'Find scholarships in Germany, including partial funding options.'
+  await expect(request).toBeFocused()
+  await expect(request).toHaveValue(expected)
+  await page.getByRole('button', { name: 'Generate AI recommendations' }).click()
+  await expect(example).toBeDisabled()
+  await page.getByRole('button', { name: 'Stop waiting' }).click()
+  await expect(page.getByRole('status')).toContainText('You stopped waiting')
+  await expect(request).toBeFocused()
+  await expect(request).toHaveValue(expected)
+  await expect(example).toBeEnabled()
 })

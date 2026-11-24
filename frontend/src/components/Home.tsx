@@ -1,107 +1,76 @@
 import { useState } from 'react'
 import ConnectionCheck from './ConnectionCheck'
 
-const steps = [
-  {
-    name: 'Discover',
-    icon: 'search',
-    description: 'Browse scholarships by destination, field, and funding.',
-  },
-  {
-    name: 'Understand',
-    icon: 'paper',
-    description: 'Compare your academic profile with documented requirements.',
-  },
-  {
-    name: 'Decide',
-    icon: 'check',
-    description: 'See which conditions you meet and which need more evidence.',
-  },
-] as const
+const subjects = ['Engineering', 'Computer Science', 'Data Science']
+
+const paths = [
+  { title: 'Explore the catalogue', description: 'Compare destinations, funding and deadlines.', href: '#/explore' },
+  { title: 'Check your eligibility', description: 'See which requirements your academic profile meets.', href: '#/profile' },
+  { title: 'Ask Local AI', description: 'Request a shortlist with evidence for each selection.', href: '#/agent' },
+]
 
 export default function Home() {
   const [field, setField] = useState('')
 
   return (
     <>
-      <ConnectionCheck />
+      <div className="home-running-head">
+        <p className="home-audience">For students applying from Kazakhstan</p>
+        <ConnectionCheck />
+      </div>
       <section className="home-hero" aria-labelledby="home-title">
         <div className="hero-copy">
-          <p className="hero-audience">For students applying from Kazakhstan</p>
-          <h1 id="home-title">Find funding for your master’s abroad.</h1>
+          <h1 id="home-title">A field guide to master’s funding.</h1>
           <p className="hero-description">
-            Explore scholarships from official providers and see how the
-            requirements fit your academic profile.
+            Find scholarships abroad, compare what they cover, and check your
+            eligibility against official sources.
           </p>
-          <form
-            className="home-search"
-            onSubmit={(event) => {
-              event.preventDefault()
-              const studyField = field.trim()
-              const params = new URLSearchParams(
-                studyField ? { field: studyField } : {},
-              )
-              window.location.hash = `/explore?${params}`
-            }}
-          >
+          <form className="home-search" onSubmit={(event) => {
+            event.preventDefault()
+            const params = new URLSearchParams(field.trim() ? { field: field.trim() } : {})
+            window.location.hash = `/explore?${params}`
+          }}>
             <label htmlFor="home-field">What would you like to study?</label>
             <div className="hero-search-controls">
-              <div className="hero-input-wrap">
-                <span className="home-icon icon-search" aria-hidden="true" />
-                <input
-                  id="home-field"
-                  value={field}
-                  onChange={(event) => setField(event.target.value)}
-                  maxLength={100}
-                  placeholder="e.g. Engineering"
-                />
-              </div>
-              <button type="submit">Explore scholarships</button>
+              <span className="search-lens" aria-hidden="true" />
+              <input id="home-field" value={field} maxLength={100}
+                placeholder="Enter a field of study"
+                onChange={(event) => setField(event.target.value)} />
+              <button type="submit" aria-label="Explore scholarships">
+                <span>Explore<span className="search-action-detail"> scholarships</span></span>
+              </button>
+            </div>
+            <div className="field-shortcuts" aria-label="Browse by field">
+              {subjects.map(subject => (
+                <a key={subject} href={`#/explore?${new URLSearchParams({ field: subject })}`}>{subject}</a>
+              ))}
             </div>
           </form>
-          <a className="hero-profile-link" href="#/profile">
-            Start with your student profile <span aria-hidden="true">→</span>
-          </a>
         </div>
-        <div className="hero-visual">
-          <img
-            src="/campus-1080.webp"
-            srcSet="/campus-640.webp 640w, /campus-1080.webp 1080w"
-            sizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1260px) 42vw, 520px"
-            alt=""
-            width="1080"
-            height="810"
-            fetchPriority="high"
-          />
-          <div className="hero-evidence">
-            <span className="hero-evidence-mark" aria-hidden="true">
-              <span className="home-icon icon-check" />
-            </span>
-            <div>
-              <strong>Official sources, always in view</strong>
-              <p>Every listing shows a provider link and verification date.</p>
-            </div>
+        <figure className="hero-print">
+          <div className="print-arch">
+            <img src="/radcliffe-library.jpg" alt="Engraved view of the domed Radcliffe Camera in Oxford"
+              width="1200" height="788" fetchPriority="high" />
           </div>
-        </div>
+          <figcaption>
+            <span>Radcliffe Camera, Oxford</span>
+            <a href="https://wellcomecollection.org/works/kpu9usad" target="_blank" rel="noreferrer">Wellcome Collection</a>
+          </figcaption>
+        </figure>
       </section>
-      <section className="home-journey" aria-labelledby="home-journey-title">
-        <h2 id="home-journey-title">From search to shortlist</h2>
-        <ol className="home-steps">
-          {steps.map(({ name, icon, description }) => (
-            <li key={name}>
-              <span className="home-step-mark" aria-hidden="true">
-                <span className={`home-icon icon-${icon}`} />
-              </span>
-              <div>
-                <h3>{name}</h3>
-                <p>{description}</p>
-              </div>
+      <section className="home-directory" aria-labelledby="directory-title">
+        <h2 id="directory-title">From search<br /> to shortlist.</h2>
+        <ul>
+          {paths.map(item => (
+            <li key={item.href}>
+              <a href={item.href}>
+                <span className="directory-title">{item.title}</span>
+                <span className="directory-description">{item.description}</span>
+                <span className="directory-arrow" aria-hidden="true">↗</span>
+              </a>
             </li>
           ))}
-        </ol>
-        <p className="home-privacy">
-          Your profile stays in this tab. No account is needed.
-        </p>
+        </ul>
       </section>
     </>
   )

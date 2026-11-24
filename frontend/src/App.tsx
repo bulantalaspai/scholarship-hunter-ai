@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { StudentProfile } from './types'
 import { useHashRoute } from './hooks'
 import {
@@ -20,6 +20,7 @@ function validId(value: string | null) {
 
 export default function App() {
   const hash = useHashRoute()
+  const previousHash = useRef(hash)
   const [profile, setProfile] = useState<StudentProfile>()
   const [pathname, query = ''] = hash.slice(1).split('?')
   const path = pathname || '/'
@@ -32,7 +33,10 @@ export default function App() {
   const matchPage = Number(params.get('page') ?? 1)
 
   useEffect(() => {
-    document.getElementById('main-content')?.focus()
+    if (previousHash.current === hash) return
+    previousHash.current = hash
+    document.documentElement.scrollTop = 0
+    document.getElementById('main-content')?.focus({ preventScroll: true })
   }, [hash])
 
   let content
@@ -42,7 +46,7 @@ export default function App() {
   else if (path === '/profile' && (!params.has('scholarship') || scholarship))
     content = (
       <>
-        <div className="page-heading profile-heading">
+        <header className="page-heading profile-heading">
           <div>
             <p className="breadcrumb">
               <a
@@ -63,48 +67,26 @@ export default function App() {
             </h1>
             <p>
               {aiMode
-                ? 'Add your academic background, then choose a request for the local AI. No model call starts when you submit this form.'
+                ? 'Add your study details here. You choose when to ask the local AI for recommendations.'
                 : scholarship
                   ? 'Compare your background with this scholarship’s documented requirements.'
-                  : 'Tell us about your studies to find and understand your matches.'}
+                  : 'Compare your academic background and study plans with published scholarship requirements.'}
             </p>
           </div>
-        </div>
-        <div className="profile-layout">
-          <ProfileForm
-            key={`${aiMode ? 'ai' : (scholarship ?? 'matches')}:${profile ? 'saved' : 'empty'}`}
-            initialProfile={profile}
-            submitLabel={
-              aiMode
-                ? 'Continue to local AI'
-                : scholarship
-                  ? 'Check my eligibility'
-                  : 'Find my matches'
-            }
-            onSubmit={(value) => {
-              setProfile(value)
-              window.location.hash = aiMode
-                ? '/agent'
-                : scholarship
-                  ? `/results/${scholarship}`
-                  : '/matches'
-            }}
-          />
           <aside className="profile-aside">
-            <span className="profile-privacy-icon" aria-hidden="true" />
-            <h2>Your profile stays local</h2>
-            <p>
-              No name, email, account, or documents. Your profile is held in
-              this browser tab’s memory and sent only to the local application
-              when you request a check.
-            </p>
-            <p>
-              Leave optional scores blank when you don’t have them. Missing
-              information stays unknown.
-            </p>
+            <details className="profile-privacy">
+              <summary>
+                <span className="profile-privacy-icon" aria-hidden="true" />
+                Your profile stays local
+              </summary>
+              <p>
+                Your details stay in this tab and go to the local application
+                when you request a check. No name, email, account or documents are needed.
+              </p>
+            </details>
             {profile && (
               <button
-                className="button-secondary"
+                className="button-text profile-clear"
                 onClick={() => {
                   setProfile(undefined)
                   window.location.hash = aiMode
@@ -116,7 +98,26 @@ export default function App() {
               </button>
             )}
           </aside>
-        </div>
+        </header>
+        <ProfileForm
+          key={`${aiMode ? 'ai' : (scholarship ?? 'matches')}:${profile ? 'saved' : 'empty'}`}
+          initialProfile={profile}
+          submitLabel={
+            aiMode
+              ? 'Continue to local AI'
+              : scholarship
+                ? 'Check my eligibility'
+                : 'Find my matches'
+          }
+          onSubmit={(value) => {
+            setProfile(value)
+            window.location.hash = aiMode
+              ? '/agent'
+              : scholarship
+                ? `/results/${scholarship}`
+                : '/matches'
+          }}
+        />
       </>
     )
   else if (path === '/agent')
@@ -193,7 +194,7 @@ export default function App() {
             href="#/"
             aria-label="Scholarship Hunter AI home"
           >
-            <span className="brand-mark" aria-hidden="true" />
+            <span className="brand-mark" aria-hidden="true">S</span>
             <span>
               Scholarship Hunter<span className="brand-ai">AI</span>
             </span>
@@ -201,24 +202,27 @@ export default function App() {
           <nav aria-label="Main navigation">
             <a
               href="#/explore"
+              aria-label="Explore scholarships"
               aria-current={path === '/explore' || detail ? 'page' : undefined}
             >
-              Explore scholarships
+              <span>Explore<span className="nav-detail"> scholarships</span></span>
             </a>
             <a
               href="#/profile"
+              aria-label="My profile"
               aria-current={path === '/profile' ? 'page' : undefined}
             >
-              My profile
+              Profile
             </a>
             {profile && (
               <a
                 href="#/matches"
+                aria-label="My matches"
                 aria-current={
                   path === '/matches' || result ? 'page' : undefined
                 }
               >
-                My matches
+                Matches
               </a>
             )}
             <a

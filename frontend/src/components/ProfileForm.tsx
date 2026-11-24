@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import type { ChangeEvent, FormEvent } from 'react'
+import type { ChangeEvent, FormEvent, ReactNode } from 'react'
 import type { StudentProfile } from '../types'
 
 type Props = {
@@ -35,6 +35,42 @@ const degrees = [
 
 function optionalNumber(value: string): number | null {
   return value.trim() === '' ? null : Number(value)
+}
+
+function ProfileSection({
+  number,
+  title,
+  note,
+  busy,
+  children,
+}: {
+  number: string
+  title: string
+  note: string
+  busy: boolean
+  children: ReactNode
+}) {
+  const id = useId()
+  return (
+    <section className="profile-section" aria-labelledby={id}>
+      <div className="profile-section-intro">
+        <span className="profile-section-number" aria-hidden="true">
+          {number}
+        </span>
+        <div>
+          <h2 id={id}>{title}</h2>
+          <p id={`${id}-note`}>{note}</p>
+        </div>
+      </div>
+      <fieldset
+        disabled={busy}
+        aria-labelledby={id}
+        aria-describedby={`${id}-note`}
+      >
+        {children}
+      </fieldset>
+    </section>
+  )
 }
 
 function validate(values: FormValues): FormErrors {
@@ -195,16 +231,12 @@ export default function ProfileForm({
           Please check the highlighted fields.
         </div>
       )}
-      <fieldset
-        className="profile-section"
-        disabled={busy}
-        aria-describedby={`${id}-academic-note`}
+      <ProfileSection
+        number="01"
+        title="Academic background"
+        note="Use your academic records. Related fields and equivalent qualifications may need verification."
+        busy={busy}
       >
-        <legend>Your academic background</legend>
-        <p className="profile-section-note" id={`${id}-academic-note`}>
-          Use the field and degree names from your academic records. Related
-          fields and degree equivalence may need verification.
-        </p>
         <div className="profile-field-grid">
           <div className="field">
             <label htmlFor={`${id}-nationality`}>Nationality</label>
@@ -213,34 +245,38 @@ export default function ProfileForm({
               type="text"
               required
               maxLength={300}
-              placeholder="Country name"
+              placeholder="e.g. Kazakhstan"
             />
             <small id={`${id}-nationality-hint`}>
-              Use the country name, for example Kazakhstan.
+              Country of citizenship.
             </small>
             {error('nationality')}
           </div>
           <div className="field">
             <label htmlFor={`${id}-degree_level`}>Degree level</label>
-            <select {...attributes('degree_level')} required>
-              <option value="">Choose a qualification</option>
-              {degrees.map(([value, label]) => (
-                <option value={value} key={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
+            <div className="profile-select">
+              <select {...attributes('degree_level')} required>
+                <option value="">Choose a qualification</option>
+                {degrees.map(([value, label]) => (
+                  <option value={value} key={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
             {error('degree_level')}
           </div>
           <div className="field">
             <label htmlFor={`${id}-degree_completed`}>Degree completion</label>
-            <select {...attributes('degree_completed', true)}>
-              <option value="unknown">Not specified</option>
-              <option value="true">Completed</option>
-              <option value="false">Currently studying</option>
-            </select>
+            <div className="profile-select">
+              <select {...attributes('degree_completed', true)}>
+                <option value="unknown">Not specified</option>
+                <option value="true">Completed</option>
+                <option value="false">Currently studying</option>
+              </select>
+            </div>
             <small id={`${id}-degree_completed-hint`}>
-              An unfinished degree needs confirmation of completion timing.
+              An unfinished degree needs a verified completion date.
             </small>
             {error('degree_completed')}
           </div>
@@ -251,22 +287,18 @@ export default function ProfileForm({
               type="text"
               required
               maxLength={300}
-              placeholder="Your academic field"
+              placeholder="e.g. Computer Science"
             />
             {error('field_of_study')}
           </div>
         </div>
-      </fieldset>
-      <fieldset
-        className="profile-section"
-        disabled={busy}
-        aria-describedby={`${id}-scores-note`}
+      </ProfileSection>
+      <ProfileSection
+        number="02"
+        title="Grades & language"
+        note="These scores are optional. Enter your original grading scale. Blank scores remain unknown."
+        busy={busy}
       >
-        <legend>Grades and language evidence</legend>
-        <p className="profile-section-note" id={`${id}-scores-note`}>
-          These scores are optional. If you include a GPA, enter it on its
-          original scale. Fields left blank remain unknown.
-        </p>
         <div className="profile-field-grid profile-field-grid--scores">
           <div className="field">
             <label htmlFor={`${id}-gpa`}>GPA</label>
@@ -291,7 +323,7 @@ export default function ProfileForm({
               placeholder="Optional"
             />
             <small id={`${id}-gpa_scale-hint`}>
-              Enter the maximum of your grading scale.
+              Maximum possible GPA.
             </small>
             {error('gpa_scale')}
           </div>
@@ -307,23 +339,18 @@ export default function ProfileForm({
               placeholder="Optional"
             />
             <small id={`${id}-ielts_overall-hint`}>
-              Alternative tests, exemptions, and component scores require
-              separate verification.
+              Other tests, exemptions and component scores need separate verification.
             </small>
             {error('ielts_overall')}
           </div>
         </div>
-      </fieldset>
-      <fieldset
-        className="profile-section"
-        disabled={busy}
-        aria-describedby={`${id}-plans-note`}
+      </ProfileSection>
+      <ProfileSection
+        number="03"
+        title="Study plans"
+        note="Choose your intended intake and the funding you would consider."
+        busy={busy}
       >
-        <legend>Your plans</legend>
-        <p className="profile-section-note" id={`${id}-plans-note`}>
-          Choose when you intend to start and which funding options you would
-          consider.
-        </p>
         <div className="profile-field-grid">
           <div className="field">
             <label htmlFor={`${id}-intended_start_year`}>
@@ -344,19 +371,20 @@ export default function ProfileForm({
             <label htmlFor={`${id}-funding_preference`}>
               Funding preference
             </label>
-            <select {...attributes('funding_preference')} required>
-              <option value="">Choose a funding preference</option>
-              <option value="fully_funded">Fully funded only</option>
-              <option value="any_funding">Full or partial funding</option>
-            </select>
+            <div className="profile-select">
+              <select {...attributes('funding_preference')} required>
+                <option value="">Choose a funding preference</option>
+                <option value="fully_funded">Fully funded only</option>
+                <option value="any_funding">Full or partial funding</option>
+              </select>
+            </div>
             {error('funding_preference')}
           </div>
         </div>
-      </fieldset>
+      </ProfileSection>
       <div className="profile-form-footer">
         <p className="privacy-note">
-          Your profile is used for this check and is not saved by the
-          application. Refreshing clears it.
+          Your profile is not saved by the application. Refreshing clears it.
         </p>
         <button type="submit" disabled={busy}>
           {busy ? 'Checking your profile…' : submitLabel}

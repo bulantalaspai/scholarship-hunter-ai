@@ -157,6 +157,9 @@ test('filters Germany and checks eligibility without turning unknown conditions 
   await expect(
     assessment.getByRole('heading', { name: 'Application availability' }),
   ).toBeVisible()
+  const evidence = assessment.locator('summary').filter({ hasText: 'Assessment details' })
+  await evidence.focus()
+  await page.keyboard.press('Enter')
   await expect(
     assessment.getByRole('heading', { name: 'Information still to verify' }),
   ).toBeVisible()
@@ -364,7 +367,8 @@ test('supports skip navigation and submitting a search with the keyboard', async
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('link', { name: 'Skip to content', exact: true }).focus()
+  await page.keyboard.press('Tab')
+  await expect(page.getByRole('link', { name: 'Skip to content', exact: true })).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(page.locator('#main-content')).toBeFocused()
   await page.getByLabel('What would you like to study?').fill('Engineering')
