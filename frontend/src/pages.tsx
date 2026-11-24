@@ -90,27 +90,23 @@ export function Explorer({ query }: { query: string }) {
   )
   return (
     <div className="catalogue-page">
-      <div className="page-heading catalogue-hero">
-        <div>
-          <p className="breadcrumb">
-            <a href="#/">Home</a> / Explorer
-          </p>
-          <h1>Scholarship explorer</h1>
+      <header className="catalogue-hero">
+        <p className="breadcrumb">
+          <a href="#/">Home</a> / Explorer
+        </p>
+        <h1>Scholarship explorer</h1>
+        <div className="catalogue-introduction">
           <p>
-            Browse international master’s scholarships and compare funding,
-            destinations and official application details.
+            Compare international master’s programmes by destination, funding
+            and published requirements.
           </p>
+          <a href="#/profile">
+            Find my matches <span aria-hidden="true">→</span>
+          </a>
         </div>
-        <a className="button button-secondary" href="#/profile">
-          Find my matches
-        </a>
-      </div>
+      </header>
       <div className="explorer-layout">
-        <aside className="filter-panel catalogue-filters">
-          <div className="filter-heading">
-            <span className="filter-mark" aria-hidden="true" />
-            <h2>Refine your search</h2>
-          </div>
+        <section className="catalogue-filters" aria-label="Refine your search">
           <form
             onSubmit={(event: FormEvent) => {
               event.preventDefault()
@@ -134,9 +130,7 @@ export function Explorer({ query }: { query: string }) {
                 }
                 maxLength={100}
                 placeholder="e.g. Germany"
-                aria-describedby="filter-country-help"
               />
-              <small id="filter-country-help">Enter a full country name.</small>
             </div>
             <div className="field">
               <label htmlFor="filter-field">Study field</label>
@@ -147,10 +141,8 @@ export function Explorer({ query }: { query: string }) {
                   setDraft({ ...draft, field: event.target.value })
                 }
                 maxLength={100}
-                placeholder="e.g. Physics"
-                aria-describedby="filter-field-help"
+                placeholder="e.g. Engineering"
               />
-              <small id="filter-field-help">Searches published study fields.</small>
             </div>
             <div className="field">
               <label htmlFor="filter-funding">Funding type</label>
@@ -161,7 +153,7 @@ export function Explorer({ query }: { query: string }) {
                   setDraft({ ...draft, funding: event.target.value })
                 }
               >
-                <option value="">All funding types</option>
+                <option value="">Any funding</option>
                 <option value="fully_funded">Fully funded</option>
                 <option value="partially_funded">Partially funded</option>
                 <option value="unknown">Not confirmed</option>
@@ -169,15 +161,16 @@ export function Explorer({ query }: { query: string }) {
             </div>
             <div className="filter-actions">
               <button type="submit">Apply filters</button>
-              <a className="reset-link" href="#/explore">
+              <a
+                className="reset-link"
+                href="#/explore"
+                onClick={() => setDraft({ country: '', field: '', funding: '' })}
+              >
                 Clear filters
               </a>
             </div>
           </form>
-          <p className="filter-note">
-            Eligibility depends on the programme’s requirements and your profile.
-          </p>
-        </aside>
+        </section>
         <section className="catalogue-results" aria-label="Scholarship results">
           {invalid ? (
             <ErrorState
@@ -217,15 +210,12 @@ function ExplorerResults({
   return (
     <>
       <div className="catalogue-results-intro">
-        <div className="results-heading">
-          <p aria-live="polite">
-            <strong>{result.total}</strong>{' '}
-            {result.total === 1 ? 'opportunity' : 'opportunities'} in this search
-          </p>
-        </div>
+        <p aria-live="polite">
+          <strong>{result.total}</strong>{' '}
+          {result.total === 1 ? 'opportunity' : 'opportunities'} in this search
+        </p>
         <p className="catalogue-note">
-          Funding and requirements can change. Recheck the official source before
-          applying.
+          Terms can change. Check the official source before applying.
         </p>
       </div>
       {result.items.length ? (
@@ -307,11 +297,8 @@ export function ScholarshipDetails({ id }: { id: number }) {
       <p className="breadcrumb">
         <a href="#/explore">Scholarship explorer</a> / Details
       </p>
-      <div className="detail-heading">
+      <header className="detail-heading">
         <div className="detail-provider">
-          <span className="provider-mark" aria-hidden="true">
-            {item.university_or_provider.slice(0, 2).toUpperCase()}
-          </span>
           <p>{item.university_or_provider}</p>
           <span className={`badge funding-${item.funding_type}`}>
             {fundingLabels[item.funding_type]}
@@ -324,7 +311,7 @@ export function ScholarshipDetails({ id }: { id: number }) {
           </a>
           <SourceLink url={item.official_source_url} />
         </div>
-      </div>
+      </header>
       <div className="details-layout">
         <div>
           <section className="content-panel detail-panel">
@@ -376,7 +363,6 @@ export function ScholarshipDetails({ id }: { id: number }) {
         </div>
         <aside className="detail-sidebar">
           <section className="evidence-panel">
-            <span className="source-mark" aria-hidden="true" />
             <h2>Check the evidence</h2>
             <p className="evidence-date">
               <span>Last verified</span>

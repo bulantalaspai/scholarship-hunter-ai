@@ -17,7 +17,7 @@ describe('connection check', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: 'Find funding for your master’s abroad.',
+        name: 'A field guide to master’s funding.',
       }),
     ).toBeVisible()
     expect(screen.getByRole('status')).toHaveTextContent(
