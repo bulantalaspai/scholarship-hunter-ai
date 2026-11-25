@@ -350,5 +350,117 @@
     "min_interval_seconds": 60,
     "last_verified_at": "2026-11-12",
     "notes": "Primary catalogue evidence. Automated collection permission has not been established."
+  },
+  {
+    "organization": "Foreign, Commonwealth & Development Office (Chevening)",
+    "official_domain": "www.chevening.org",
+    "entry_urls": [
+      "https://www.chevening.org/scholarship/kazakhstan/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unclear",
+    "robots_status": "allowed",
+    "policy_checked_on": "2026-11-25",
+    "terms_evidence": "https://www.chevening.org/about/privacy-notice/ — privacy notice reviewed; no terms authorizing this collector were located.",
+    "robots_evidence": "https://www.chevening.org/robots.txt — wildcard restriction for /wp-admin/ does not match the country page.",
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-25",
+    "notes": "Phase 8B candidate (chevening-kz). Date records manual source review. Human programme approval is pending."
+  },
+  {
+    "organization": "University of Oxford",
+    "official_domain": "www.ox.ac.uk",
+    "entry_urls": [
+      "https://www.ox.ac.uk/admissions/graduate/fees-and-funding/funding/clarendon"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unclear",
+    "robots_status": "allowed",
+    "policy_checked_on": "2026-11-25",
+    "terms_evidence": "https://www.ox.ac.uk/legal — general lawful use and copyright provisions; no explicit automated collection authorization.",
+    "robots_evidence": "https://www.ox.ac.uk/robots.txt — wildcard crawl delay is 20 seconds; no listed disallow matches this path.",
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-25",
+    "notes": "Phase 8B candidate (clarendon). Date records manual source review. Human programme approval is pending."
+  },
+  {
+    "organization": "The Cambridge Trust and University of Central Asia",
+    "official_domain": "www.cambridgetrust.org",
+    "entry_urls": [
+      "https://www.cambridgetrust.org/scholarship/university-of-central-asia-cambridge-scholarship/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unclear",
+    "robots_status": "allowed",
+    "policy_checked_on": "2026-11-25",
+    "terms_evidence": "https://www.cambridgetrust.org/privacy-statement/ and https://www.cambridgetrust.org/cookies/ — privacy and cookie policies reviewed; no applicable automated collection terms located.",
+    "robots_evidence": "https://www.cambridgetrust.org/robots.txt — wildcard restriction for /wp-admin/ does not match the scholarship page.",
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-25",
+    "notes": "Phase 8B candidate (uca-cambridge). Date records manual source review. Human programme approval is pending."
+  },
+  {
+    "organization": "Italian Ministry of Foreign Affairs and International Cooperation (MAECI)",
+    "official_domain": "ambastana.esteri.it",
+    "entry_urls": [
+      "https://ambastana.esteri.it/ru/news/dall_ambasciata/2026/03/scholarships-to-study-in-italy-2026-2027-academic-year/"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unclear",
+    "robots_status": "unclear",
+    "policy_checked_on": "2026-11-25",
+    "terms_evidence": "https://www.esteri.it/it/note-legali/ — legal notice linked by the embassy; it provides for informational consultation and reserves rights. No explicit automated collection authorization was found.",
+    "robots_evidence": "https://ambastana.esteri.it/robots.txt — could not retrieve via the reference tool. Rules could not be confirmed.",
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-25",
+    "notes": "Phase 8B candidate (maeci-italy). Date records manual source review. Human programme approval is pending."
+  },
+  {
+    "organization": "Presidency for Turks Abroad and Related Communities (YTB)",
+    "official_domain": "www.turkiyeburslari.gov.tr",
+    "entry_urls": [
+      "https://www.turkiyeburslari.gov.tr/fulltimeprograms"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unclear",
+    "robots_status": "unclear",
+    "policy_checked_on": "2026-11-25",
+    "terms_evidence": "Reviewed the public site's navigation and footer. No terms granting automated collection located. Application portal privacy notices concern applicants and do not authorize page collection.",
+    "robots_evidence": "https://www.turkiyeburslari.gov.tr/robots.txt — could not retrieve via the reference tool. Rules could not be confirmed.",
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-25",
+    "notes": "Phase 8B candidate (turkiye). Date records manual source review. Human programme approval is pending."
+  },
+  {
+    "organization": "Asian Development Bank (ADB)",
+    "official_domain": "www.adb.org",
+    "entry_urls": [
+      "https://www.adb.org/work-with-us/careers/japan-scholarship-program"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unclear",
+    "robots_status": "allowed",
+    "policy_checked_on": "2026-11-25",
+    "terms_evidence": "https://www.adb.org/terms-use — supports personal noncommercial reference use; no explicit automated authorization for this path or client established.",
+    "robots_evidence": "https://www.adb.org/robots.txt — no matching wildcard disallow for this award page.",
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-25",
+    "notes": "Phase 8B candidate (adb-jsp). Date records manual source review. Human programme approval is pending."
+  },
+  {
+    "organization": "McGill University",
+    "official_domain": "www.mcgill.ca",
+    "entry_urls": [
+      "https://www.mcgill.ca/gradapplicants/funding/external/mccall-macbain-scholarship"
+    ],
+    "collection_method": "manual",
+    "terms_status": "unclear",
+    "robots_status": "allowed",
+    "policy_checked_on": "2026-11-25",
+    "terms_evidence": "https://www.mcgill.ca/copyright/faq — guidance directs readers to applicable conditions for website materials; no terms authorizing this collector were located.",
+    "robots_evidence": "https://www.mcgill.ca/robots.txt — wildcard crawl delay is 5 seconds; graduate program search restrictions do not match the funding page.",
+    "min_interval_seconds": 60,
+    "last_verified_at": "2026-11-25",
+    "notes": "Phase 8B candidate (mccall-macbain). Date records manual source review. Human programme approval is pending."
   }
 ]
