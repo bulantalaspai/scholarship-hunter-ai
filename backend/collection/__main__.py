@@ -20,6 +20,7 @@ from backend.app.models import Scholarship
 from backend.app.official_pages import PublicPageError
 from backend.app.schemas import CatalogueRecord
 from backend.collection.extraction import MAX_SOURCE_BYTES, ExtractionError, extract
+from backend.collection.funding_evidence import funding_conflicts
 from backend.collection.review import (
     decide,
     inspect_review,
@@ -79,6 +80,8 @@ def collect_text(
         "expired_deadline": review["expired_deadline"],
         "missing_fields": review["missing_fields"],
         "unsupported_fields": draft.unsupported_fields,
+        "ambiguous_fields": draft.ambiguous_fields,
+        "funding_conflicts": len(funding_conflicts(draft.funding_observations)),
     }
 
 

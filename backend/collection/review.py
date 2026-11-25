@@ -12,6 +12,7 @@ from pathlib import Path
 from backend.app.programme_resolution import load_aliases, normalize_name
 from backend.app.schemas import CatalogueRecord
 from backend.collection.extraction import ExtractionDraft
+from backend.collection.field_evidence import explicit_deadline
 from backend.collection.sources import get_source
 
 
@@ -142,7 +143,12 @@ def _comparison(draft: ExtractionDraft, catalogue: Sequence[CatalogueRecord]) ->
     duplicates = []
     conflicts = []
     wording_checks = []
-    deadline = _deadline(claims.get("application_deadline", ""))
+    deadline_quote = claims.get("application_deadline", "")
+    deadline = (
+        explicit_deadline(deadline_quote)
+        if draft.evidence_version == 2
+        else _deadline(deadline_quote)
+    )
     for record in catalogue:
         if not _matches(
             claims.get("scholarship_name", ""),
