@@ -10,6 +10,7 @@ import {
 import ProfileForm from './components/ProfileForm'
 import Home from './components/Home'
 import AgentRecommendations from './components/AgentRecommendations'
+import ReviewDashboard from './components/ReviewDashboard'
 import { EmptyState } from './components/ui'
 
 function validId(value: string | null) {
@@ -41,6 +42,7 @@ export default function App() {
 
   let content
   if (path === '/') content = <Home />
+  else if (path === '/review') content = <ReviewDashboard />
   else if (path === '/explore') content = <Explorer key={query} query={query} />
   else if (detail && id) content = <ScholarshipDetails id={id} />
   else if (path === '/profile' && (!params.has('scholarship') || scholarship))

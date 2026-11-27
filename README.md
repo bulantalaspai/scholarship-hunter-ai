@@ -27,6 +27,11 @@ No database server, paid API, cloud account,
 credentials, or personal student data is required. All application data stays
 in a local SQLite file. Development servers bind to `127.0.0.1` only.
 
+The optional local review dashboard supports field-level decisions on staged
+collection drafts and separate approval and publication steps. See the
+[human review workflow](docs/HUMAN_REVIEW_WORKFLOW.md) to enable it with a
+private access key.
+
 ## Local setup (Windows PowerShell)
 
 ### One-click start and stop
